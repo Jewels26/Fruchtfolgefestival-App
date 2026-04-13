@@ -1,0 +1,181 @@
+/* ─── Filter Bar ─── */
+.food-filters {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.food-filters .btn {
+  flex: 1;
+  min-width: 60px;
+  text-align: center;
+  padding: var(--space-2) var(--space-3);
+}
+
+/* ─── Stand List ─── */
+.stand-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ─── Stand Card ─── */
+.stand-card {
+  padding: var(--space-4);
+  cursor: default;
+}
+
+.stand-card--highlight {
+  border-color: var(--color-patrick);
+  box-shadow: 0 0 10px #C69BEB33;
+}
+
+.stand-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  margin-bottom: var(--space-3);
+}
+
+.stand-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: #1a2e1a;
+  border: 1px solid var(--color-accent-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+}
+
+.stand-card--highlight .stand-icon-wrap {
+  background: #1a0d2e;
+  border-color: #C69BEB33;
+}
+
+.stand-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.stand-name {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+  color: var(--color-heading);
+  margin-bottom: 2px;
+}
+
+.stand-location {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+  letter-spacing: 0.06em;
+}
+
+.stand-toggle {
+  font-size: 1.4rem;
+  color: var(--color-accent);
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.stand-toggle--open {
+  transform: rotate(90deg);
+}
+
+.stand-description {
+  font-size: var(--text-sm);
+  color: var(--color-body);
+  line-height: 1.5;
+}
+
+/* ─── Stand Items (expanded) ─── */
+.stand-divider {
+  height: 1px;
+  background: var(--color-accent-dim);
+  margin: var(--space-3) 0;
+}
+
+.stand-item-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stand-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.stand-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.stand-item-name {
+  font-size: var(--text-base);
+  color: var(--color-body);
+}
+
+.stand-item-note {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+}
+
+.stand-item-tags {
+  display: flex;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Tag Varianten */
+.badge--vegan {
+  background: #0d2e0d;
+  color: var(--color-accent);
+  border-color: #1a4a1a;
+}
+
+.badge--veggie {
+  background: #1a2e0d;
+  color: #8BC34A;
+  border-color: #2a4a1a;
+}
+
+.badge--meat {
+  background: #2e1a0d;
+  color: #FF8C42;
+  border-color: #4a2a1a;
+}
+
+.stand-condiments {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+  font-style: italic;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-accent-dim);
+}
+
+.stand-note {
+  font-size: var(--text-sm);
+  color: var(--color-patrick);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  background: #1a0d2e;
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--color-patrick);
+  line-height: 1.5;
+}

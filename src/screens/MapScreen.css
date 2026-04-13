@@ -1,0 +1,124 @@
+/* ─── Map Container ─── */
+.map-container {
+  width: 100%;
+  border: var(--border-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+  background: #0a140a;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Echtes PNG wenn vorhanden */
+.map-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Placeholder */
+.map-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  gap: var(--space-3);
+}
+
+.map-placeholder-icon {
+  font-size: 3rem;
+  opacity: 0.3;
+}
+
+.map-placeholder-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+  opacity: 0.5;
+}
+
+.map-placeholder-text {
+  font-size: var(--text-sm);
+  color: var(--color-label);
+  line-height: 1.5;
+}
+
+.map-placeholder-hint {
+  font-size: var(--text-xs);
+  color: #3a4a3a;
+  line-height: 1.6;
+  margin-top: var(--space-2);
+}
+
+.map-placeholder-hint code {
+  color: var(--color-accent);
+  opacity: 0.6;
+  font-family: monospace;
+  background: #0d1a0d;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* ─── Legende ─── */
+.map-legend {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-card);
+  border: var(--border-card);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-label);
+  text-transform: uppercase;
+}
+
+.map-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.map-legend-dot--stage  { background: var(--color-accent);   box-shadow: 0 0 4px var(--color-accent); }
+.map-legend-dot--food   { background: #FF8C42;                box-shadow: 0 0 4px #FF8C4266; }
+.map-legend-dot--toilet { background: var(--color-patrick);   box-shadow: 0 0 4px #C69BEB66; }
+.map-legend-dot--aid    { background: var(--color-emergency); box-shadow: 0 0 4px #ff333366; }
+
+/* ─── Area Intelligence ─── */
+.map-intel-card {
+  padding: var(--space-4) var(--space-5);
+}
+
+.map-intel-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+  font-style: italic;
+  margin-bottom: var(--space-2);
+}
+
+.map-intel-text {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
