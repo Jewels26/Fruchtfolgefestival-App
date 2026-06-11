@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { LINEUP, DAYS } from '../data/lineup'
+import { asset } from '../utils/assetPath'
 import './LineupScreen.css'
 
 // ─── FAVORITES HOOK (localStorage) ───
@@ -21,12 +23,12 @@ function useFavorites() {
 // ─── HERO CARD ───
 function ArtistCard({ band, isFav, onToggleFav }) {
   return (
-    <div className={`artist-card card ${band.secret ? 'artist-card--secret' : ''}`}>
+    <div id={band.id} className={`artist-card card ${band.secret ? 'artist-card--secret' : ''}`}>
 
       {/* Foto-Bereich */}
       <div className="artist-photo">
         {band.photo ? (
-          <img src={band.photo} alt={band.name} className="artist-photo-img" />
+          <img src={asset(band.photo)} alt={band.name} className="artist-photo-img" />
         ) : (
           <div className="artist-photo-placeholder">
             {band.secret
@@ -47,7 +49,7 @@ function ArtistCard({ band, isFav, onToggleFav }) {
         </div>
       </div>
 
-      {/* Info-Bereich — nur noch Badges + Favorit */}
+      {/* Info-Bereich */}
       <div className="artist-info">
         <div className="artist-info-top">
           <div className="artist-meta">
@@ -91,9 +93,21 @@ function ArtistCard({ band, isFav, onToggleFav }) {
 
 // ─── MAIN SCREEN ───
 export default function LineupScreen() {
-  const [activeDay, setActiveDay] = useState('FRI')
+  const [searchParams] = useSearchParams()
+  const dayParam = searchParams.get('day')?.toUpperCase()
+  const bandParam = searchParams.get('band')
+
+  const [activeDay, setActiveDay] = useState(
+    LINEUP[dayParam] ? dayParam : 'FRI'
+  )
   const [favs, toggleFav] = useFavorites()
   const bands = LINEUP[activeDay]
+
+  useEffect(() => {
+    if (!bandParam) return
+    const el = document.getElementById(bandParam)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [bandParam, activeDay])
 
   return (
     <div className="screen lineup-screen fade-in">

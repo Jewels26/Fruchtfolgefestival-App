@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { IconFeldkueche, IconFestivalbar, IconSansibar, IconKassette } from './FoodIcons'
 import './FoodScreen.css'
 
 const STANDS = [
@@ -7,13 +8,11 @@ const STANDS = [
     name: 'Feldküche',
     category: 'food',
     location: 'Festivalground',
-    icon: '🍖',
+    icon: 'feldkueche',
     description: 'Frisch vom Grill und aus der Fritteuse — für alle was dabei.',
     items: [
-      { name: 'Bratwurstsemmel', tags: ['FLEISCH'] },
-      { name: 'Bratwurstsemmel', tags: ['VEGGIE'] },
-      { name: 'Bratwurstsemmel', tags: ['VEGAN'] },
-      { name: 'Hotdog', note: 'Röstzwiebeln, Pickles, Käse, Jalapeños', tags: [] },
+      { name: 'Bratwurstsemmel', tags: ['FLEISCH', 'VEGGIE', 'VEGAN'] },
+      { name: 'Hotdog', note: 'Röstzwiebeln, Pickles, Käse, Jalapeños', tags: ['FLEISCH'] },
       { name: 'Chilidog', note: '+ Chili sin Carne', tags: ['VEGAN'] },
       { name: 'Falafelsandwich', tags: ['VEGAN'] },
       { name: 'Pommes', tags: ['VEGAN'] },
@@ -28,7 +27,7 @@ const STANDS = [
     name: 'Festivalbar',
     category: 'drinks',
     location: 'Festivalground',
-    icon: '🍺',
+    icon: 'festivalbar',
     description: 'Kalt, laut, gesellig — die Hauptbar des Festivals.',
     items: [
       { name: 'Bier', tags: [] },
@@ -43,7 +42,7 @@ const STANDS = [
     name: 'Sansibar',
     category: 'drinks',
     location: 'Campground',
-    icon: '🏝',
+    icon: 'sansibar',
     description: 'Das besondere Konzept: Bring deinen Alkohol mit, unsere Barkeeper mixen — fast kostenlos.',
     highlight: true,
     items: [
@@ -53,14 +52,29 @@ const STANDS = [
     ],
     note: 'Softdrinks müssen an der Festivalbar dazugekauft werden. Der Rest ist quasi kostenlos. 🤘',
   },
+  {
+    id: 'kassette',
+    name: 'Kassette',
+    category: 'drinks',
+    location: 'Innenhof',
+    icon: 'kassette',
+    description: 'Die kleine Bar im Innenhof. Musik läuft, Getränke sind da, Atmosphäre sowieso.',
+    items: [
+      { name: 'Bier', tags: [] },
+      { name: 'Wein', tags: [] },
+      { name: 'Discoschorle', note: 'Wein + Limo', tags: [] },
+      { name: 'Softdrinks', tags: [] },
+    ],
+  },
 ]
 
-const FILTERS = [
-  { key: 'all',    label: 'ALL' },
-  { key: 'food',   label: 'FOOD' },
-  { key: 'drinks', label: 'DRINKS' },
-  { key: 'vegan',  label: 'VEGAN' },
-]
+function StandIcon({ type }) {
+  if (type === 'feldkueche')  return <IconFeldkueche size={48} />
+  if (type === 'festivalbar') return <IconFestivalbar size={48} />
+  if (type === 'sansibar')    return <IconSansibar size={32} />
+  if (type === 'kassette')    return <IconKassette size={32} />
+  return null
+}
 
 function tagClass(tag) {
   if (tag === 'VEGAN')   return 'badge--vegan'
@@ -75,7 +89,7 @@ function StandCard({ stand }) {
     <div className={`card stand-card ${stand.highlight ? 'stand-card--highlight' : ''}`}>
       <div className="stand-header" onClick={() => setOpen(o => !o)}>
         <div className="stand-icon-wrap">
-          <span className="stand-icon">{stand.icon}</span>
+          <StandIcon type={stand.icon} />
         </div>
         <div className="stand-meta">
           <h2 className="stand-name">{stand.name}</h2>
@@ -105,7 +119,7 @@ function StandCard({ stand }) {
             ))}
           </ul>
           {stand.condiments && <p className="stand-condiments">+ {stand.condiments}</p>}
-          {stand.note     && <p className="stand-note">{stand.note}</p>}
+          {stand.note       && <p className="stand-note">{stand.note}</p>}
         </div>
       )}
     </div>
@@ -113,35 +127,13 @@ function StandCard({ stand }) {
 }
 
 export default function FoodScreen() {
-  const [filter, setFilter] = useState('all')
-
-  const filtered = STANDS.filter(stand => {
-    if (filter === 'all')    return true
-    if (filter === 'food')   return stand.category === 'food'
-    if (filter === 'drinks') return stand.category === 'drinks'
-    if (filter === 'vegan')  return stand.items.some(i => i.tags.includes('VEGAN'))
-    return true
-  })
-
   return (
     <div className="screen food-screen fade-in">
       <h1 className="screen-title">FOOD & DRINKS</h1>
       <div className="screen-title-underline" />
 
-      <div className="food-filters">
-        {FILTERS.map(f => (
-          <button
-            key={f.key}
-            className={`btn ${filter === f.key ? 'active' : ''}`}
-            onClick={() => setFilter(f.key)}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
       <div className="stand-list">
-        {filtered.map(stand => (
+        {STANDS.map(stand => (
           <StandCard key={stand.id} stand={stand} />
         ))}
       </div>

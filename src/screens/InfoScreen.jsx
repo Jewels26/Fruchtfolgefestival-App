@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { fetchFundsachen, FUNDSACHEN_POLL_INTERVAL } from '../utils/fundsachen'
 import './InfoScreen.css'
 
-// ─── LOST & FOUND DATA ───
-// Später: aus Admin-CMS laden
-const LOST_AND_FOUND = [
-  // { id: 1, item: 'Schwarze Jacke, Größe M', found: 'Fr. 22:00', location: 'Bar' },
-  // Einträge hier ergänzen oder später per Admin-Panel
-]
+function useFundsachen() {
+  const [items, setItems] = useState([])
+
+  useEffect(() => {
+    fetchFundsachen().then(setItems)
+    const id = setInterval(() => fetchFundsachen().then(setItems), FUNDSACHEN_POLL_INTERVAL)
+    return () => clearInterval(id)
+  }, [])
+
+  return items
+}
 
 // ─── SUBCOMPONENTS ───
 
@@ -110,20 +116,22 @@ Denn wie auf dem Feld gilt auch für uns: Nur dort, wo Vielfalt wachsen darf, en
 }
 
 function LostAndFound() {
+  const items = useFundsachen()
+
   return (
     <div className="card info-section-card">
       <h3 className="info-section-title">LOST & FOUND</h3>
       <p className="lost-found-hint">
         Gefundene Gegenstände können an der <strong>Bar</strong> oder am <strong>Einlass</strong> abgeholt werden.
       </p>
-      {LOST_AND_FOUND.length === 0 ? (
+      {items.length === 0 ? (
         <p className="lost-found-empty">Noch keine Fundgegenstände gemeldet.</p>
       ) : (
         <ul className="lost-found-list">
-          {LOST_AND_FOUND.map(item => (
+          {items.map(item => (
             <li key={item.id} className="lost-found-item">
-              <span className="lost-found-item-name">{item.item}</span>
-              <span className="lost-found-item-meta">{item.found} · {item.location}</span>
+              <span className="lost-found-item-name">{item.gegenstand}</span>
+              <span className="lost-found-item-meta">{item.gefunden} · {item.abholort}</span>
             </li>
           ))}
         </ul>

@@ -10,7 +10,7 @@ export const LINEUP = {
       time: '16:30',
       genre: 'tbd.',
       origin: null,
-      photo: null, // → '/bands/dessert-oracle.jpg' wenn vorhanden
+      photo: '/bands/Dessert_Oracle.PNG',
     },
     {
       id: 'powasser-moskau78',

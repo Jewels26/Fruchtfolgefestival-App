@@ -37,7 +37,7 @@
 .now-playing-band {
   font-family: var(--font-heading);
   font-size: 1.1rem;
-  color: var(--color-white);
+  color: var(--color-now-playing-band);
   letter-spacing: 0.05em;
   white-space: nowrap;
   overflow: hidden;

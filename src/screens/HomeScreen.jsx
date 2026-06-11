@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
+import { asset } from '../utils/assetPath'
+import { usePatrick } from '../context/PatrickContext'
+import { useWeather } from '../utils/weatherStore'
 import './HomeScreen.css'
 
-// ─── KONFIGURATION — hier anpassen wenn Organisatoren Daten liefern ───
+// ─── KONFIGURATION ───
 const FESTIVAL_CONFIG = {
   year: 2026,
   est: 2025,
-  gatesOpen:   new Date(2026, 8, 28, 14, 0, 0),   // 28. Aug 08:00
-  festivalEnd: new Date(2026, 8, 30, 11, 0, 0),  // 30. Aug 23:59
+  gatesOpen:   new Date(2026, 8, 28, 14, 0, 0),
+  festivalEnd: new Date(2026, 8, 30, 11, 0, 0),
 }
 
-// ─── MOCK DATA — ersetzen wenn echte Daten vorliegen ───
+// ─── WEATHER ───
 const MOCK_WEATHER = {
   temp: 24,
   condition: 'Humid',
@@ -17,19 +20,6 @@ const MOCK_WEATHER = {
   wind: 18,
   icon: '⛈',
 }
-
-const MOCK_ANNOUNCEMENTS = [
-  {
-    id: 1,
-    title: 'CAMPGROUND ACCESS UPDATED',
-    body: 'Early bird gate arrival moved to 06:00 AM Thursday. Metal spirits only.',
-  },
-  {
-    id: 2,
-    title: 'MYSTERY HEADLINER REVEAL',
-    body: 'Check the lineup tab tonight at midnight for the final ritual summoning.',
-  },
-]
 
 // ─── COUNTDOWN HOOK ───
 function useCountdown(target) {
@@ -53,7 +43,7 @@ function useCountdown(target) {
 
 function getFestivalState() {
   const now = Date.now()
-  if (now < FESTIVAL_CONFIG.gatesOpen)   return 'before'
+  if (now < FESTIVAL_CONFIG.gatesOpen)    return 'before'
   if (now <= FESTIVAL_CONFIG.festivalEnd) return 'during'
   return 'after'
 }
@@ -81,10 +71,10 @@ function CountdownCard({ t }) {
   )
 }
 
-function WeatherCard({ w }) {
+function WeatherCard({ w, dayLabel }) {
   return (
     <div className="card weather-card">
-      <p className="weather-forecast-label">FORECAST</p>
+      <p className="weather-forecast-label">{dayLabel ?? 'FORECAST'}</p>
       <div className="weather-body">
         <div className="weather-left">
           <span className="weather-temp">{w.temp}°C</span>
@@ -113,16 +103,17 @@ function AnnouncementCard({ item }) {
 
 // ─── MAIN SCREEN ───
 export default function HomeScreen() {
-  const state = getFestivalState()
-  const t     = useCountdown(FESTIVAL_CONFIG.gatesOpen)
+  const state       = getFestivalState()
+  const t           = useCountdown(FESTIVAL_CONFIG.gatesOpen)
+  const weatherDays = useWeather()
+  const { announcements, announcementsLoading: loading } = usePatrick()
 
   return (
     <div className="screen home-screen fade-in">
 
       {/* ── Logo Hero ── */}
       <div className="home-logo-hero">
-        {/* Sobald SVG vorhanden: <img src="/logo.svg" alt="Fruchtfolge Festival" className="home-logo-img" /> */}
-        <img src="/logo.png" alt="Fruchtfolge Festival" className="home-logo-img" />
+        <img src={asset('logo.png')} alt="Fruchtfolge Festival" className="home-logo-img" />
       </div>
 
       {/* ── Countdown / Festival State ── */}
@@ -146,17 +137,24 @@ export default function HomeScreen() {
       )}
 
       {/* ── Wetter ── */}
-      <WeatherCard w={MOCK_WEATHER} />
+      {weatherDays?.length
+        ? weatherDays.map(day => (
+            <WeatherCard key={day.date} w={day} dayLabel={day.label} />
+          ))
+        : <WeatherCard w={MOCK_WEATHER} />
+      }
 
       {/* ── Announcements ── */}
-      <div className="announcements-section">
-        <div className="announcements-header">
-          <span className="announcements-tag">ANNOUNCEMENTS</span>
+      {!loading && announcements.length > 0 && (
+        <div className="announcements-section">
+          <div className="announcements-header">
+            <span className="announcements-tag">ANNOUNCEMENTS</span>
+          </div>
+          {announcements.map(item => (
+            <AnnouncementCard key={item.id} item={item} />
+          ))}
         </div>
-        {MOCK_ANNOUNCEMENTS.map(item => (
-          <AnnouncementCard key={item.id} item={item} />
-        ))}
-      </div>
+      )}
 
     </div>
   )

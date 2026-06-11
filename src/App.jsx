@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
+import { PatrickProvider } from './context/PatrickContext'
 import AppShell from './components/layout/AppShell'
 import './styles/global.css'
 
@@ -13,17 +14,19 @@ import InfoScreen    from './screens/InfoScreen'
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppShell />}>
-            <Route index        element={<HomeScreen />} />
-            <Route path="lineup" element={<LineupScreen />} />
-            <Route path="map"    element={<MapScreen />} />
-            <Route path="food"   element={<FoodScreen />} />
-            <Route path="info"   element={<InfoScreen />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <PatrickProvider>
+        <BrowserRouter basename="/Fruchtfolgefestival-App">
+          <Routes>
+            <Route element={<AppShell />}>
+              <Route index        element={<HomeScreen />} />
+              <Route path="lineup" element={<LineupScreen />} />
+              <Route path="map"    element={<MapScreen />} />
+              <Route path="food"   element={<FoodScreen />} />
+              <Route path="info"   element={<InfoScreen />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </PatrickProvider>
     </ThemeProvider>
   )
 }

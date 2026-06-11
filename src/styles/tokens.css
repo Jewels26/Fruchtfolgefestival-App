@@ -12,6 +12,8 @@
   --bg-overlay: rgba(1, 1, 1, 0.85); /* Farbverlauf Dark Mode
   --color-bg-emergency:   #1a0808;   /* Emergency Card BG */
 
+  --color-surface-raised: #1a2e1a;   /* Erhöhte Flächen — Icon-Wraps, eingebettete Elemente */
+
   --color-accent:         #1BFE00;   /* Neon Green — CTA, Borders, Aktiv-State */
   --color-accent-dim:     #1BFE0033; /* Neon Green 20% — Now Playing Border-Top */
   --color-accent-glow:    #1BFE0066; /* Neon Green 40% — Card Box Shadow */
@@ -30,6 +32,7 @@
 
   --color-white:          #ffffff;
   --color-now-playing-bg: #0a140a;
+  --color-now-playing-band: #D8AEFF;
 
   /* --- BORDER --- */
   --border-card:    1.5px solid var(--color-accent);
@@ -92,8 +95,12 @@
   --color-body:        #2a3a2a;
   --color-label:       #3A6237;
   --color-now-playing-bg: #cdd8cd;
+  --color-now-playing-band: #BD4688;
+  --color-white:           #1a1a1a;
+  --color-bg-emergency:    #fdf0f0;
   --border-card:       1.5px solid #3A6237;
   --shadow-card:       0 0 8px #1BFE0044;
   --shadow-glow:       0 0 14px #1BFE0066;
-  
+
+  --color-surface-raised: #dde8dd;   /* Helles Graugrün — sichtbar aber dezent auf #F4F4F4 */
 }

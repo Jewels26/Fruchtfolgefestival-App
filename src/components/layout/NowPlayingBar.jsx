@@ -1,25 +1,55 @@
+import { useState, useEffect } from 'react'
+import { LINEUP } from '../../data/lineup'
+import { usePatrick } from '../../context/PatrickContext'
+import { getRandomPlayMessage } from '../ui/Patrick'
 import './NowPlayingBar.css'
 
-// Später: echte Daten aus timetable data
-const MOCK_NOW_PLAYING = {
-  band: 'CULTIVATOR',
-  stage: 'MAIN STAGE',
-  time: '20:00',
+const FESTIVAL_DATES = { FRI: '2026-08-28', SAT: '2026-08-29' }
+
+function getAllBands() {
+  return Object.entries(LINEUP).flatMap(([day, bands]) =>
+    bands.map((b, i) => {
+      const start = new Date(`${FESTIVAL_DATES[day]}T${b.time}:00`)
+      const next = bands[i + 1]
+      const end = next
+        ? new Date(`${FESTIVAL_DATES[day]}T${next.time}:00`)
+        : new Date(start.getTime() + 90 * 60 * 1000)
+      return { ...b, day, start, end }
+    })
+  )
 }
 
-// Zeigt die Bar nur während des Festivals (28.–30. August)
+function getNowPlaying() {
+  const now = new Date()
+  const bands = getAllBands()
+  return bands.find(b => now >= b.start && now < b.end) || null
+}
+
 function isFestivalActive() {
   const now = new Date()
   const year = now.getFullYear()
-  const start = new Date(year, 7, 28, 8, 0)   // 28. August 08:00
-  const end   = new Date(year, 7, 30, 23, 59)  // 30. August 23:59
+  const start = new Date(year, 7, 28, 8, 0)
+  const end   = new Date(year, 7, 30, 23, 59)
   return now >= start && now <= end
 }
 
 export default function NowPlayingBar() {
-  if (!isFestivalActive()) return null
+  const [nowPlaying, setNowPlaying] = useState(getNowPlaying)
+  const { triggerPatrick } = usePatrick()
 
-  const { band, stage, time } = MOCK_NOW_PLAYING
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNowPlaying(getNowPlaying())
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  if (!isFestivalActive()) return null
+  if (!nowPlaying) return null
+
+  function handlePlayClick() {
+    triggerPatrick(getRandomPlayMessage(nowPlaying.name))
+  }
 
   return (
     <div className="now-playing-bar">
@@ -27,13 +57,13 @@ export default function NowPlayingBar() {
         <span className="pulse-dot" />
         <div className="now-playing-text">
           <span className="now-playing-label">NOW PLAYING</span>
-          <span className="now-playing-band">{band}</span>
+          <span className="now-playing-band">{nowPlaying.name}</span>
         </div>
         <div className="now-playing-meta">
-          <span className="now-playing-stage">{stage}</span>
-          <span className="now-playing-time">{time}</span>
+          <span className="now-playing-stage">MAIN STAGE</span>
+          <span className="now-playing-time">{nowPlaying.time}</span>
         </div>
-        <button className="now-playing-play" aria-label="Details">
+        <button className="now-playing-play" aria-label="Details" onClick={handlePlayClick}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5,3 19,12 5,21"/>
           </svg>

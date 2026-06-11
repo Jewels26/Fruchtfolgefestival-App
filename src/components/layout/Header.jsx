@@ -1,10 +1,10 @@
 import { useTheme } from '../../context/ThemeContext'
+import { asset } from '../../utils/assetPath'
 import './Header.css'
 
-// Placeholder bis SVG-Datei vorhanden
 function LogoMark() {
   return (
-    <img src="/minilogo_wurzel.png" alt="FFF" className="logo-mark" />
+    <img src={asset('minilogo_wurzel.png')} alt="FFF" className="logo-mark" />
   )
 }
 
