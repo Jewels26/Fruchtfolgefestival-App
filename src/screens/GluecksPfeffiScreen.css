@@ -1,0 +1,134 @@
+/* ─── Intro / Status ─── */
+.pfeffi-intro-card {
+  text-align: center;
+}
+
+.pfeffi-intro-text {
+  font-size: var(--text-sm);
+  color: var(--color-body);
+  line-height: 1.6;
+}
+
+.pfeffi-status-card {
+  text-align: center;
+  color: var(--color-label);
+  font-size: var(--text-sm);
+}
+
+/* ─── Action ─── */
+.pfeffi-action-card {
+  text-align: center;
+  padding: var(--space-6) var(--space-5);
+}
+
+.pfeffi-loading {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+}
+
+.pfeffi-lost-text {
+  font-size: var(--text-base);
+  color: var(--color-body);
+  margin-bottom: var(--space-2);
+}
+
+.pfeffi-error-text {
+  font-size: var(--text-base);
+  color: var(--color-emergency);
+  margin-bottom: var(--space-2);
+}
+
+.pfeffi-cooldown {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--color-label);
+  letter-spacing: 0.05em;
+}
+
+.pfeffi-try-btn {
+  font-size: var(--text-md);
+  padding: var(--space-3) var(--space-8);
+}
+
+/* ─── Win Screen ─── */
+@keyframes pfeffi-glow {
+  0%, 100% { text-shadow: 0 0 10px var(--color-accent); }
+  50%      { text-shadow: 0 0 24px var(--color-accent), 0 0 48px var(--color-accent-glow); }
+}
+
+.pfeffi-win-card {
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 24px var(--color-accent-glow);
+}
+
+.pfeffi-win-headline {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--color-accent);
+  line-height: 1.3;
+  animation: pfeffi-glow 2s ease-in-out infinite;
+}
+
+.pfeffi-win-instruction {
+  font-size: var(--text-base);
+  color: var(--color-heading);
+  margin-top: var(--space-4);
+  font-weight: 600;
+}
+
+.pfeffi-win-divider {
+  height: 1px;
+  background: var(--color-accent-dim);
+  margin: var(--space-5) 0;
+}
+
+.pfeffi-live-clock {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  color: var(--color-body);
+  letter-spacing: 0.06em;
+}
+
+.pfeffi-win-ts {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+  margin-top: var(--space-2);
+  letter-spacing: 0.04em;
+}
+
+.pfeffi-win-expiry {
+  font-size: var(--text-xs);
+  color: var(--color-patrick);
+  margin-top: var(--space-3);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pfeffi-back-btn {
+  display: block;
+  margin: var(--space-6) auto 0;
+}
+
+/* ─── Einlösefrist abgelaufen ─── */
+.pfeffi-expired-card {
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+  border-color: var(--color-label);
+}
+
+.pfeffi-expired-headline {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--color-label);
+}
+
+.pfeffi-expired-text {
+  font-size: var(--text-sm);
+  color: var(--color-body);
+  margin-top: var(--space-4);
+  line-height: 1.6;
+}

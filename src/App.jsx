@@ -10,6 +10,7 @@ import LineupScreen  from './screens/LineupScreen'
 import MapScreen     from './screens/MapScreen'
 import FoodScreen    from './screens/FoodScreen'
 import InfoScreen    from './screens/InfoScreen'
+import GluecksPfeffiScreen from './screens/GluecksPfeffiScreen'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
               <Route path="map"    element={<MapScreen />} />
               <Route path="food"   element={<FoodScreen />} />
               <Route path="info"   element={<InfoScreen />} />
+              <Route path="pfeffi" element={<GluecksPfeffiScreen />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -128,6 +128,46 @@
   letter-spacing: 0.06em;
 }
 
+/* ── Glücks-Pfeffi Entry ── */
+.pfeffi-entry-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  border-color: var(--color-patrick);
+  box-shadow: 0 0 10px #C69BEB33;
+}
+
+.pfeffi-entry-icon {
+  font-size: 1.8rem;
+  filter: drop-shadow(0 0 6px #C69BEB66);
+}
+
+.pfeffi-entry-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pfeffi-entry-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: var(--color-patrick);
+}
+
+.pfeffi-entry-sub {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+}
+
+.pfeffi-entry-arrow {
+  font-size: 1.4rem;
+  color: var(--color-patrick);
+  flex-shrink: 0;
+}
+
 /* ── Weather ── */
 .weather-card {
   padding: var(--space-4) var(--space-5);

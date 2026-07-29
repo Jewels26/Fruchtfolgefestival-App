@@ -1,7 +1,10 @@
-import { useState } from 'react'
-import { IconFeldkueche, IconFestivalbar, IconSansibar, IconKassette } from './FoodIcons'
+import { useState, useEffect } from 'react'
+import { IconFeldkueche, IconFestivalbar, IconSansibar, IconWahrsagerzelt } from './FoodIcons'
+import { fetchEssen, ESSEN_POLL_INTERVAL, formatPrice } from '../utils/essen'
 import './FoodScreen.css'
 
+// Fallback-Items — sichtbar solange das Sheet noch lädt oder für den
+// jeweiligen Stand (noch) keine Zeilen enthält.
 const STANDS = [
   {
     id: 'food-stand',
@@ -51,28 +54,44 @@ const STANDS = [
       { name: 'Softdrinks', note: 'Zukauf an der Festivalbar nötig', tags: [] },
     ],
     note: 'Softdrinks müssen an der Festivalbar dazugekauft werden. Der Rest ist quasi kostenlos. 🤘',
+    // Sansibar läuft nicht über das Preis-Sheet — BYO-Konzept, keine Verkaufspreise.
+    sheetManaged: false,
   },
   {
-    id: 'kassette',
-    name: 'Kassette',
-    category: 'drinks',
-    location: 'Innenhof',
-    icon: 'kassette',
-    description: 'Die kleine Bar im Innenhof. Musik läuft, Getränke sind da, Atmosphäre sowieso.',
-    items: [
-      { name: 'Bier', tags: [] },
-      { name: 'Wein', tags: [] },
-      { name: 'Discoschorle', note: 'Wein + Limo', tags: [] },
-      { name: 'Softdrinks', tags: [] },
-    ],
+    id: 'wahrsagerzelt',
+    name: 'Wahrsagerzelt',
+    category: 'attraction',
+    location: 'Festivalground',
+    icon: 'wahrsagerzelt',
+    description: '',
+    items: [],
   },
 ]
+
+// ─── Sheet-Anbindung ───
+function useEssen() {
+  const [byStand, setByStand] = useState({})
+
+  useEffect(() => {
+    fetchEssen().then(setByStand)
+    const id = setInterval(() => fetchEssen().then(setByStand), ESSEN_POLL_INTERVAL)
+    return () => clearInterval(id)
+  }, [])
+
+  return byStand
+}
+
+function itemsForStand(stand, byStand) {
+  if (stand.sheetManaged === false) return stand.items
+  const sheetItems = byStand[stand.name]
+  return sheetItems && sheetItems.length > 0 ? sheetItems : stand.items
+}
 
 function StandIcon({ type }) {
   if (type === 'feldkueche')  return <IconFeldkueche size={48} />
   if (type === 'festivalbar') return <IconFestivalbar size={48} />
-  if (type === 'sansibar')    return <IconSansibar size={32} />
-  if (type === 'kassette')    return <IconKassette size={32} />
+  if (type === 'sansibar')       return <IconSansibar size={48} />
+  if (type === 'wahrsagerzelt')  return <IconWahrsagerzelt size={48} />
   return null
 }
 
@@ -83,7 +102,7 @@ function tagClass(tag) {
   return ''
 }
 
-function StandCard({ stand }) {
+function StandCard({ stand, items }) {
   const [open, setOpen] = useState(false)
   return (
     <div className={`card stand-card ${stand.highlight ? 'stand-card--highlight' : ''}`}>
@@ -98,22 +117,25 @@ function StandCard({ stand }) {
         <span className={`stand-toggle ${open ? 'stand-toggle--open' : ''}`}>›</span>
       </div>
 
-      <p className="stand-description">{stand.description}</p>
+      {stand.description && <p className="stand-description">{stand.description}</p>}
 
       {open && (
         <div className="stand-items fade-in">
           <div className="stand-divider" />
           <ul className="stand-item-list">
-            {stand.items.map((item, i) => (
-              <li key={i} className="stand-item">
+            {items.map((item, i) => (
+              <li key={item.id ?? i} className={`stand-item ${item.available === false ? 'stand-item--unavailable' : ''}`}>
                 <div className="stand-item-left">
                   <span className="stand-item-name">{item.name}</span>
                   {item.note && <span className="stand-item-note">{item.note}</span>}
                 </div>
-                <div className="stand-item-tags">
-                  {item.tags.map(tag => (
-                    <span key={tag} className={`badge ${tagClass(tag)}`}>{tag}</span>
-                  ))}
+                <div className="stand-item-right">
+                  {formatPrice(item.price) && <span className="stand-item-price">{formatPrice(item.price)}</span>}
+                  <div className="stand-item-tags">
+                    {item.tags.map(tag => (
+                      <span key={tag} className={`badge ${tagClass(tag)}`}>{tag}</span>
+                    ))}
+                  </div>
                 </div>
               </li>
             ))}
@@ -127,6 +149,8 @@ function StandCard({ stand }) {
 }
 
 export default function FoodScreen() {
+  const byStand = useEssen()
+
   return (
     <div className="screen food-screen fade-in">
       <h1 className="screen-title">FOOD & DRINKS</h1>
@@ -134,7 +158,7 @@ export default function FoodScreen() {
 
       <div className="stand-list">
         {STANDS.map(stand => (
-          <StandCard key={stand.id} stand={stand} />
+          <StandCard key={stand.id} stand={stand} items={itemsForStand(stand, byStand)} />
         ))}
       </div>
     </div>

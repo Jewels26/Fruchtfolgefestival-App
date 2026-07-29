@@ -10,7 +10,7 @@ export const LINEUP = {
       time: '16:30',
       genre: 'tbd.',
       origin: null,
-      photo: '/bands/Dessert_Oracle.PNG',
+      photo: '/bands/Dessert_Oracle.jpg',
     },
     {
       id: 'powasser-moskau78',
@@ -18,7 +18,7 @@ export const LINEUP = {
       time: '17:30',
       genre: 'Punk',
       origin: 'DE',
-      photo: null,
+      photo: '/bands/Powasser.jpg',
     },
     {
       id: 'akarinde',
@@ -61,7 +61,7 @@ export const LINEUP = {
       time: '13:30',
       genre: 'Thrashmetal',
       origin: 'DE',
-      photo: null,
+      photo: '/bands/Raeckler.jpeg',
     },
     {
       id: 'traesh',
@@ -77,7 +77,7 @@ export const LINEUP = {
       time: '15:30',
       genre: 'tbd.',
       origin: null,
-      photo: null,
+      photo: '/bands/Fromage_From_Arsch.jpeg',
     },
     {
       id: 'odysseus',

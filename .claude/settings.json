@@ -2,7 +2,52 @@
   "permissions": {
     "allow": [
       "Bash(node -e ' *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "WebFetch(domain:fruchtfolge.live)",
+      "Bash(curl -s -A \"Mozilla/5.0\" https://fruchtfolge.live/ -o /tmp/ffl.html)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -L -A Mozilla/5.0 https://fruchtfolge.live/ -o 'C:\\\\Users\\\\julia\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-julia-Desktop-Projekte-Fruchtfolgefestival-Fruchtfolge-Festival-App-fff-app\\\\0cddff0b-0f3c-483e-9650-c5924398d746\\\\scratchpad/ffl.html')",
+      "Bash(curl -s -L -H 'User-Agent: Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/124.0.0.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8' -H 'Accept-Language: de-DE,de;q=0.9,en;q=0.8' https://fruchtfolge.live/ -o 'C:\\\\Users\\\\julia\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-julia-Desktop-Projekte-Fruchtfolgefestival-Fruchtfolge-Festival-App-fff-app\\\\0cddff0b-0f3c-483e-9650-c5924398d746\\\\scratchpad/ffl.html')",
+      "Bash(curl -s -D - -o /dev/null -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/124.0.0.0 Safari/537.36\" -H \"Accept: text/html\" https://fruchtfolge.live/)",
+      "Bash(python3 -c ' *)",
+      "Bash(npm install *)",
+      "Bash(node -e \"try { require.resolve\\('sharp'\\); console.log\\('sharp available'\\); } catch\\(e\\) { console.log\\('no sharp'\\); }\")",
+      "Bash(npx pwa-assets-generator *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4173/Fruchtfolgefestival-App/)",
+      "Bash(curl -s http://localhost:4173/Fruchtfolgefestival-App/manifest.webmanifest)",
+      "Bash(curl -s -o /dev/null -w \"sw.js: %{http_code}\\\\n\" http://localhost:4173/Fruchtfolgefestival-App/sw.js)",
+      "Bash(curl -s -o /dev/null -w \"pwa-512: %{http_code}\\\\n\" http://localhost:4173/Fruchtfolgefestival-App/pwa-512x512.png)",
+      "Bash(curl -s -o /dev/null -w \"maskable: %{http_code}\\\\n\" http://localhost:4173/Fruchtfolgefestival-App/maskable-icon-512x512.png)",
+      "Bash(node -e \"try { require.resolve\\('sharp'\\); console.log\\('sharp found'\\); } catch\\(e\\) { console.log\\('no sharp: ' + e.message\\); }\")",
+      "Bash(curl -s -o /dev/null -w \"dev server: %{http_code}\\\\n\" http://localhost:5173/Fruchtfolgefestival-App/)",
+      "Bash(node -e *)",
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)",
+      "Bash(rm -f \"Icon Feldkueche crop\"* crop_*.png 2>/dev/null; ls public 2>/dev/null | grep crop_; ls | grep crop_)",
+      "Bash(npx eslint *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:5183/Fruchtfolgefestival-App/\")",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(node -e \"console.log\\(require.resolve\\('playwright'\\)\\)\")",
+      "Bash(npx --no-install playwright --version)",
+      "Bash(mkdir -p /tmp/pfeffi_shots)",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --window-size=390,844 --screenshot=\"/tmp/pfeffi_shots/home.png\" \"http://localhost:5183/Fruchtfolgefestival-App/\")",
+      "Read(//c/Users/julia/AppData/Local/Temp/pfeffi_shots/**)",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --window-size=390,844 --screenshot=\"/tmp/pfeffi_shots/pfeffi.png\" \"http://localhost:5183/Fruchtfolgefestival-App/pfeffi\")",
+      "Bash(npm ls *)",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --window-size=390,844 --screenshot=\"/tmp/pfeffi_shots/pfeffi_idle.png\" \"http://localhost:5183/Fruchtfolgefestival-App/pfeffi\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Microsoft/Edge/Application/msedge.exe\" --headless=new --disable-gpu --no-sandbox --remote-debugging-port=9223 --user-data-dir=\"/tmp/edge_pfeffi_profile\" \"about:blank\")",
+      "Bash(curl -s http://localhost:9223/json/version)",
+      "Bash(node \"C:\\\\Users\\\\julia\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-julia-Desktop-Projekte-Fruchtfolgefestival-Fruchtfolge-Festival-App-fff-app\\\\56662169-0e45-4816-9839-2bf5cdfe6a57\\\\scratchpad\\\\cdp_click.mjs\" \"http://localhost:5183/Fruchtfolgefestival-App/pfeffi\" \".pfeffi-try-btn\" \"/tmp/pfeffi_shots/after_click.png\")",
+      "Bash(taskkill //F //IM msedge.exe)",
+      "Bash(lsof -ti:5183 -sTCP:LISTEN)",
+      "Bash(xargs -r kill)",
+      "Bash(netstat -ano)",
+      "Bash(tasklist)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\julia\\Desktop\\Projekte\\Fruchtfolgefestival\\Fruchtfolge Festival App\\fff-app\\public",
+      "c:\\Users\\julia\\Desktop\\Projekte\\Fruchtfolgefestival\\Fruchtfolge Festival App\\Docs\\Docs"
     ]
   }
 }

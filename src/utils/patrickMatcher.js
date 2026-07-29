@@ -8,6 +8,39 @@ import { getWeatherDays } from './weatherStore'
 
 const RESPONSES = [
 
+  // ── Easter Eggs — Insider-Keywords ─────────────────────────────────
+  {
+    keywords: ['disco schorle halb halb', 'halb halb'],
+    texts: [
+      `*flüstert* Halb Prosecco, halb Limo. Genau halb. Ned ein Drittel, ned zwei Drittel. Halb. Wer des ned woaß, hat bis jetzt irgendwas falsch g'macht. Du woaßt's jetzt. Sag's ned weiter. 🤫`,
+      `Halb-halb is ned einfach nur a Mischverhältnis. Des is a Lebenseinstellung. Wer zu vui Prosecco nimmt, wird übermütig. Wer zu vui Limo nimmt, wird zuckrig. Halb-halb bleibt klar im Kopf und trotzdem gmiatlich. I hab des lang studiert. 🥂`,
+      `Das Geheimnis des perfekten Festivalabends, in zwei Wörtern: halb-halb. I sag dir des nur weil'd gefragt hast. Und weil i dir vertrau. Ned an jeden sag i des. 🤫`,
+    ],
+  },
+  {
+    keywords: ['blackdoor'],
+    texts: [
+      `Blackdoor... kleines Festival bei Passau. Da lauft jeden Sommer der echte Patrick über'n Campground und holt d'Leid zur Bühne. I hab eahm gfragt ob er zu uns kimmt. Hat abled. Also gibt's halt mi stattdessen. A bissl hat er meinen Charakter inspiriert — drum dank i eahm. Wo immer er grad is. 🤘`,
+      `*wird leise* Da Blackdoor... des is so a Festival wo ma hingeht und ned mehr ganz sicher ist wann ma wieder geht. Der echte Patrick macht des da jedes Jahr. Irgendwann hoff i dass er uns mal besucht. Bis dann bin i halt der digitale Ersatz. Könnt schlimmer sei. 🌿`,
+    ],
+  },
+  {
+    keywords: ['vier blatt', 'vierblatt', 'vierblättrig'],
+    texts: [
+      `Oha. Vierblättriger Klee. Weißt was, des find i eigentlich ned zufällig. Heuer wächst Klee auf dem Feld. Und du fragst nach vier Blatt. Vielleicht hod da Joe beim Pflügen eins übersehen — oder absichtlich steh'n lassen. I glaub des is koa Zufall. Des Festival bringt Glück. Oder umgekehrt. 🍀`,
+      `Vier Blatt Klee... i hab letztes Jahr kurz gsuacht. Nix g'funden. Aber des Festival hat trotzdem funktioniert — also entweder brauchst du's ned, oder des ganze Gelände is eins. I tendier zu Letzterem. 🍀`,
+      `*schaut sich kurz um* Wenn'd einen findest: ned pflücken. Steh'n lassen. Dann bleibt's Glück auf dem Gelände für alle. Des is meine Theorie und i halt dran fest. 🍀`,
+    ],
+  },
+  {
+    keywords: ['holzwurm'],
+    texts: [
+      `Team Holzwurm. I muss kurz... *holt Luft* ...okay. Die stehen um sechs Uhr morgens auf'm Feld und bauen bis's dunkel wird. Jede Lichterkette. Jeden Pavillon. Jede selbstg'machte Wegmarkierung. Alles von Hand, alles mit Liebe, alles ohne großes Aufhebens. Ohne Holzwurm würd des Gelände aussehen wie jeder andere Festival-Ground. MIT Holzwurm schaut's aus wie daheim. DANKE. Wirklich. 🪵✨`,
+      `Wenn i eines g'lernt hab in meiner Zeit als Festival-Assistent: Holzwurm unterschätzt ma ned. Die zimmern, schrauben, hängen, basteln — und wenn's fertig is, sieht's so aus als wär's immer so g'wesen. Handwerk auf höchstem Niveau, ehrenamtlich, mit Bier in der Hand. Großartig. 🪵`,
+      `*steht kurz still* Holzwurm. Des sind die Leid die dafür sorgen dass des hier ned nach Festivalground sondern nach Zuhause ausschaut. I bin jeden Mal aufs Neue beeindruckt. Und i bin a App, i KANN gar ned beeindruckt sei — aber bei Holzwurm mach i a Ausnahm. 🪵✨`,
+    ],
+  },
+
   // ── Anreise & Location ──────────────────────────────────────────────
   {
     keywords: ['wo ist das festival', 'adresse', 'location', 'lindach', 'anfahrt', 'navigation', 'maps', 'wie finde ich das', 'hinkommen', 'wegbeschreibung'],
@@ -244,10 +277,6 @@ const RESPONSES = [
     ],
   },
   {
-    keywords: ['kassette bar', 'kleine bar', 'innenhof bar'],
-    text: `Winzige Bar. Musik läuft, normales Getränkeangebot. Sehr gmiatlich. 🎵`,
-  },
-  {
     keywords: ['cocktail', 'longdrink', 'mixen'],
     text: `Klassische Cocktails: ned vorgesehen. Aber d'Sansibar macht's möglich. Beschwer di hinterher ned bei mir. Schau mal im Food-Tab. 🍹`,
   },
@@ -330,6 +359,15 @@ const RESPONSES = [
   {
     keywords: ['holzwurm', 'deko', 'dekoration'],
     text: `D'Deko macht Team Holzwurm. Freiwillige. Ois handg'macht. Des merkst. 🪵`,
+  },
+
+  // ── Glücks-Pfeffi ───────────────────────────────────────────────────
+  {
+    keywords: ['pfeffi', 'glücks-pfeffi', 'gluecks pfeffi', 'gewinnspiel', 'gewinnen', 'glück versuchen'],
+    texts: [
+      `Glücks-Pfeffi! Auf da Startseite is a Button — do kannst dei Glück versuchen. Vielleicht is heut dei Tag. 🍀`,
+      `Schau amoi auf da Startseite noch dem Klee-Button. Do steckt Glücks-Pfeffi dahinter. Ned jeder gwinnt, aber probiern kost nix. 🍀`,
+    ],
   },
 
   // ── Merch & Tickets ─────────────────────────────────────────────────

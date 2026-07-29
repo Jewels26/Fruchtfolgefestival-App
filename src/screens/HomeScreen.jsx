@@ -1,16 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { asset } from '../utils/assetPath'
 import { usePatrick } from '../context/PatrickContext'
 import { useWeather } from '../utils/weatherStore'
+import { FESTIVAL_CONFIG } from '../utils/festivalConfig'
 import './HomeScreen.css'
-
-// ─── KONFIGURATION ───
-const FESTIVAL_CONFIG = {
-  year: 2026,
-  est: 2025,
-  gatesOpen:   new Date(2026, 8, 28, 14, 0, 0),
-  festivalEnd: new Date(2026, 8, 30, 11, 0, 0),
-}
 
 // ─── WEATHER ───
 const MOCK_WEATHER = {
@@ -92,6 +86,19 @@ function WeatherCard({ w, dayLabel }) {
   )
 }
 
+function PfeffiEntryCard({ onClick }) {
+  return (
+    <div className="card pfeffi-entry-card" onClick={onClick}>
+      <span className="pfeffi-entry-icon">🍀</span>
+      <span className="pfeffi-entry-text">
+        <span className="pfeffi-entry-title">GLÜCKS-PFEFFI</span>
+        <span className="pfeffi-entry-sub">Jetzt dein Glück versuchen</span>
+      </span>
+      <span className="pfeffi-entry-arrow">›</span>
+    </div>
+  )
+}
+
 function AnnouncementCard({ item }) {
   return (
     <div className="card announcement-card">
@@ -103,6 +110,7 @@ function AnnouncementCard({ item }) {
 
 // ─── MAIN SCREEN ───
 export default function HomeScreen() {
+  const navigate    = useNavigate()
   const state       = getFestivalState()
   const t           = useCountdown(FESTIVAL_CONFIG.gatesOpen)
   const weatherDays = useWeather()
@@ -135,6 +143,9 @@ export default function HomeScreen() {
           <p className="state-secondary">DANKE FÜR ALLES 🌾</p>
         </div>
       )}
+
+      {/* ── Glücks-Pfeffi Einstieg ── */}
+      <PfeffiEntryCard onClick={() => navigate('/pfeffi')} />
 
       {/* ── Wetter ── */}
       {weatherDays?.length
