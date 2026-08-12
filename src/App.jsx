@@ -16,7 +16,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <PatrickProvider>
-        <BrowserRouter basename="/Fruchtfolgefestival-App">
+        <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
           <Routes>
             <Route element={<AppShell />}>
               <Route index        element={<HomeScreen />} />

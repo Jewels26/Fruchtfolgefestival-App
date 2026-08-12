@@ -4,7 +4,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Fruchtfolgefestival-App/',  // genau so wie dein Repo heißt auf GitHub
+  // Standard: Root — passt für Netlify & Co. Für GitHub Pages überschreibt
+  // der "deploy"-Skript-Aufruf das per --base=/Fruchtfolgefestival-App/.
+  base: '/',
   plugins: [
     react(),
     VitePWA({

@@ -7,9 +7,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:ghpages": "vite build --base=/Fruchtfolgefestival-App/",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "npm run build:ghpages && gh-pages -d dist"
   },
   "dependencies": {
     "react": "^19.2.4",
