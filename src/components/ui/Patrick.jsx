@@ -45,20 +45,68 @@ const PLAY_BUTTON_MESSAGES = (name) => [
   `I bin a Festival-App, kein Musikplayer! Geh hin, ${name} wartet ned ewig.`,
 ]
 
+// Zeitfenster helfen: Uhrzeit-Ranges, die über Mitternacht wrappen (z.B. 21–2 Uhr),
+// und der Samstag-Vormittag zwischen Nachtruhe-Ende (8 Uhr) und Einlass (12 Uhr).
+function inHourRange(now, start, end) {
+  const h = now.getHours()
+  return start <= end ? (h >= start && h < end) : (h >= start || h < end)
+}
+
+function inFoodWindow(now) {
+  const day = now.getDay() // 5 = Freitag, 6 = Samstag
+  if (day === 5) return inHourRange(now, 16, 22)
+  if (day === 6) return inHourRange(now, 12, 22)
+  return false
+}
+
+function isSatMorning(now) {
+  return now.getDay() === 6 && inHourRange(now, 8, 12)
+}
+
 const STATUS_MESSAGES = [
-  'schaut grad bei der Bühne vorbei',
-  'trinkt grad an Maisacher',
-  'redet grad mit\'m Joe',
-  'lauft grad übern Campground',
-  'schaut wos grad Flunkyball spieln',
-  'macht grad kurz a Pause',
-  'hängt grad am Lagerfeuer',
-  'schaut ob\'s Disco Schorle no gibt',
-  'lost grad ins Set eine',
-  'labt sich grad an Chili Cheese Fries',
-  'schaut ob da Perzi scho grillt',
-  'redet grad mit der Thea',
+  { text: 'schaut grad bei der Bühne vorbei' },
+  { text: 'trinkt grad an Maisacher' },
+  { text: 'redet grad mit\'m Joe' },
+  { text: 'lauft grad übern Campingplatz' },
+  { text: 'schaut wos grad Flunkyball spieln' },
+  { text: 'macht grad kurz a Pause' },
+  { text: 'hängt grad am Lagerfeuer', when: now => inHourRange(now, 21, 2) },
+  { text: 'schaut ob\'s Disco Schorle no gibt' },
+  { text: 'holt sich grad Pommes', when: inFoodWindow },
+  { text: 'schaut ob da Perzi scho grillt' },
+  { text: 'redet grad mit der Thea' },
+  // 2–8 Uhr: exklusives Fenster, in dem NUR diese zwei Stati wählbar san.
+  // "singt..." ploppt bloß mit 10 % Chance auf (weight 1 vs. 9).
+  { text: 'schlaft grad', when: now => inHourRange(now, 2, 8), exclusive: true, weight: 9 },
+  { text: 'singt grad des Lied vom Kleopatra-Löwen', when: now => inHourRange(now, 2, 8), exclusive: true, weight: 1 },
+  // Samstag-Vormittag, zwischen Nachtruhe-Ende und Einlass
+  { text: 'frühstückt grad', when: isSatMorning },
+  { text: 'wird grad langsam wach', when: isSatMorning },
+  { text: 'putzt si grad d\'Zähn', when: isSatMorning },
+  { text: 'macht si grad frisch', when: isSatMorning },
+  { text: 'chillt grad a bissl', when: isSatMorning },
 ]
+
+function weightedPick(list) {
+  const total = list.reduce((sum, s) => sum + (s.weight ?? 1), 0)
+  let r = Math.random() * total
+  for (const s of list) {
+    r -= s.weight ?? 1
+    if (r < 0) return s
+  }
+  return list[list.length - 1]
+}
+
+function pickStatus(prevText) {
+  const now = new Date()
+  const active = STATUS_MESSAGES.filter(s => !s.when || s.when(now))
+  // Exklusive Stati (z.B. Schlafen) verdrängen die generischen, solang sie aktiv san.
+  const exclusive = active.filter(s => s.exclusive)
+  const basePool = exclusive.length ? exclusive : active
+  const pool = basePool.filter(s => s.text !== prevText)
+  const list = pool.length ? pool : basePool
+  return weightedPick(list).text
+}
 
 const FALLBACK_MESSAGES = [
   "Hm, des woaß i jetzt a ned so genau... Probier's mal mit was anderem! 😅",
@@ -119,6 +167,34 @@ function usePatrickAlerts(triggerPatrick) {
   }, [dismissed, triggerPatrick])
 }
 
+// ─── Feldküche-Reminder: 1 Std. vor Schluss (22 Uhr) ───
+const FELDKUECHE_CLOSE = Object.values(FESTIVAL_DATES).map(date => new Date(`${date}T22:00:00`))
+
+function useFeldkuecheAlert(triggerPatrick) {
+  const [dismissed, setDismissed] = useState([])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date()
+      for (const closeTime of FELDKUECHE_CLOSE) {
+        const key = closeTime.toISOString()
+        if (dismissed.includes(key)) continue
+
+        const diff = (closeTime - now) / 1000 / 60
+        const inWindow = diff <= 60.5 && diff >= 59.5
+
+        if (inWindow) {
+          setDismissed(d => [...d, key])
+          triggerPatrick('Letzte Chance auf a warme Mahlzeit: d\'Feldküche macht in ana Stund zu, um 22 Uhr. Wer no wos essen mog, sollt jetzt lossgeh. 🌭')
+          break
+        }
+      }
+    }, 30000)
+
+    return () => clearInterval(interval)
+  }, [dismissed, triggerPatrick])
+}
+
 const WELCOME = {
   role: 'patrick',
   text: 'Servus! I bin der Patrick. Frag mich alles übers Festival — Zeiten, Orte, Essen, Regeln... 🤘',
@@ -138,32 +214,28 @@ export default function Patrick() {
   // from "intermediate chunk / typing" (scroll to bottom as usual).
   const pendingChunksRef = useRef(0)
 
-  const [status, setStatus] = useState(
-    () => STATUS_MESSAGES[Math.floor(Math.random() * STATUS_MESSAGES.length)]
-  )
+  const [status, setStatus] = useState(() => pickStatus())
   const [statusVisible, setStatusVisible] = useState(true)
 
-  // Wechselt den Status-Text alle 3–6 Minuten mit Fade
+  // Wechselt den Status-Text alle ~10–12 Minuten mit Fade
   useEffect(() => {
     let t1, t2
     function cycle() {
       t1 = setTimeout(() => {
         setStatusVisible(false)
         t2 = setTimeout(() => {
-          setStatus(prev => {
-            const others = STATUS_MESSAGES.filter(s => s !== prev)
-            return others[Math.floor(Math.random() * others.length)]
-          })
+          setStatus(prev => pickStatus(prev))
           setStatusVisible(true)
           cycle()
         }, 400)
-      }, 180_000 + Math.random() * 180_000)
+      }, 600_000 + Math.random() * 120_000)
     }
     cycle()
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
   usePatrickAlerts(triggerPatrick)
+  useFeldkuecheAlert(triggerPatrick)
 
   // Proaktive Nachrichten (Sheet-Trigger, Band-Alerts) → Chatverlauf
   useEffect(() => {

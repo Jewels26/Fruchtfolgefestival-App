@@ -65,9 +65,11 @@ function groupByStand(rows) {
         tags: new Set(),
         available,
         stand,
+        note: null,
       })
     }
     const group = groups.get(key)
+    if (row.zusatz?.trim()) group.note = row.zusatz.trim()
     for (const tag of (row.tags || '').split(',')) {
       const t = tag.trim().toUpperCase()
       if (!t) continue
@@ -89,6 +91,7 @@ function groupByStand(rows) {
       price: group.price,
       available: group.available,
       tags: TAG_ORDER.filter(t => group.tags.has(t)),
+      note: group.note,
     }
     ;(byStand[group.stand] ||= []).push(item)
   }
@@ -106,6 +109,36 @@ export function formatPrice(price) {
   if (price == null) return null
   if (typeof price === 'string') return price
   return price.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'
+}
+
+// ─── Getränke (Festivalbar) — eigener Tab, kein "Stand" nötig, da nur ein Stand ───
+const GETRAENKE_SHEET_NAME = 'Getraenke'
+const GETRAENKE_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(GETRAENKE_SHEET_NAME)}`
+
+export const GETRAENKE_POLL_INTERVAL = 2 * 60 * 1000 // 2 Minuten
+
+/**
+ * Lädt die Getränkeliste der Festivalbar aus dem Sheet-Tab "Getraenke".
+ * Rückgabe: [{ id, name, price, tags, available, note }]
+ * Bei Fehler: leere Liste (Fallback-Daten in FoodScreen bleiben sichtbar).
+ */
+export async function fetchGetraenke() {
+  try {
+    const res = await fetch(GETRAENKE_CSV_URL, { cache: 'no-store' })
+    if (!res.ok) throw new Error(`Sheet fetch failed: ${res.status}`)
+    const text = await res.text()
+    return parseCSV(text).map(row => ({
+      id: row.id,
+      name: row.name.trim(),
+      price: parsePrice(row.preis),
+      available: row['verfügbarkeit']?.trim().toLowerCase() !== 'aus',
+      tags: (row.tags || '').split(',').map(t => t.trim().toUpperCase()).filter(Boolean),
+      note: row.zusatz?.trim() || null,
+    }))
+  } catch (err) {
+    console.warn('[getraenke] Fetch fehlgeschlagen:', err)
+    return []
+  }
 }
 
 function parseCSV(text) {

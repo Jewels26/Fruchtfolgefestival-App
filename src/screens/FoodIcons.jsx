@@ -21,10 +21,14 @@ export function IconFestivalbar({ size = 48 }) {
   return <IconImg file="Icon Festivalbar.png" alt="Festivalbar" size={size} />
 }
 
-export function IconSansibar({ size = 48 }) {
-  return <IconImg file="Icon Sansibar.png" alt="Sansibar" size={size} />
+export function IconZanzibar({ size = 48 }) {
+  return <IconImg file="Icon Zanzibar.png" alt="Zanzibar" size={size} />
 }
 
 export function IconWahrsagerzelt({ size = 48 }) {
   return <IconImg file="Icon Wahrsagerzelt.png" alt="Wahrsagerzelt" size={size} />
+}
+
+export function IconMerch({ size = 48 }) {
+  return <IconImg file="Icon Merch.png" alt="Merch" size={size} />
 }

@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom'
 import './BottomNav.css'
 
 const NAV_ITEMS = [
-  { path: '/',       label: 'HOME',   icon: <HomeIcon /> },
+  { path: '/',       label: 'START',  icon: <HomeIcon /> },
   { path: '/lineup', label: 'LINEUP', icon: <LineupIcon /> },
-  { path: '/map',    label: 'MAP',    icon: <MapIcon /> },
-  { path: '/food',   label: 'FOOD',   icon: <FoodIcon /> },
+  { path: '/map',    label: 'KARTE',  icon: <MapIcon /> },
+  { path: '/food',   label: 'STÄNDE', icon: <FoodIcon /> },
   { path: '/info',   label: 'INFO',   icon: <InfoIcon /> },
 ]
 

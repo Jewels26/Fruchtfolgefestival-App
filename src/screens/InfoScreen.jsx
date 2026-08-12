@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { fetchFundsachen, FUNDSACHEN_POLL_INTERVAL } from '../utils/fundsachen'
+import { FESTIVAL_ABC, entrySearchText } from '../data/festivalABC'
+import { renderRichText } from '../utils/richText'
 import './InfoScreen.css'
 
 function useFundsachen() {
@@ -21,13 +24,39 @@ function EmergencyCard() {
     <div className="card emergency-card">
       <div className="emergency-header">
         <span className="emergency-icon">💀</span>
-        <span className="emergency-label">EMERGENCY</span>
+        <span className="emergency-label">NOTFALL</span>
       </div>
-      <a href="tel:+4900000000000" className="emergency-number">
-        +49 0000<br />000 000
-      </a>
-      <span className="emergency-sub">24/7 FESTIVAL SAFETY</span>
-      <p className="emergency-note">Platzhalter — echte Nummer von Organisatoren eintragen</p>
+      <a href="tel:112" className="emergency-number">112</a>
+      <span className="emergency-sub">IM ERNSTFALL</span>
+    </div>
+  )
+}
+
+// Verlinkt zur Karte und lässt dort die passende Nummer aufleuchten.
+function MapLink({ area, num, label = 'Auf der Karte anzeigen' }) {
+  const navigate = useNavigate()
+  return (
+    <button
+      className="info-map-link"
+      onClick={() => navigate(`/map?area=${area}&highlight=${num}`)}
+    >
+      📍 {label}
+    </button>
+  )
+}
+
+function MedicalRow() {
+  return (
+    <div className="info-row card">
+      <span className="info-row-icon">🩺</span>
+      <div className="info-row-text">
+        <span className="info-row-title">ERSTE HILFE</span>
+        <span className="info-row-body">
+          Erste-Hilfe-Koffer findest du an der Kasse beim Einlass. Falls grad kein Teammitglied erkennbar ist, unsere medizinische Ersthelferin Linda anrufen:{' '}
+          <a href="tel:+491791385851" className="info-row-phone">0179 1385 851</a>
+        </span>
+        <MapLink area="festivalground" num={8} />
+      </div>
     </div>
   )
 }
@@ -50,28 +79,36 @@ function InfoRow({ icon, title, text, href }) {
 function OpeningHours() {
   return (
     <div className="card info-section-card">
-      <h3 className="info-section-title">RITUAL TIMES</h3>
+      <h3 className="info-section-title">FESTIVAL ZEITEN</h3>
       <div className="opening-hours">
         <div className="opening-day">
-          <span className="opening-day-label">FRI 28.8.</span>
+          <span className="opening-day-label">FR 28.8.</span>
           <div className="opening-times">
             <div className="opening-time-row">
-              <span className="opening-time-name">Campground Access</span>
+              <span className="opening-time-name">Einlass Campingplatz</span>
               <span className="opening-time-val">14:00</span>
             </div>
             <div className="opening-time-row">
-              <span className="opening-time-name">Doors Festivalground</span>
+              <span className="opening-time-name">Einlass Festivalgelände</span>
               <span className="opening-time-val">16:00</span>
+            </div>
+            <div className="opening-time-row">
+              <span className="opening-time-name">Feldküche</span>
+              <span className="opening-time-val">16:00–22:00</span>
             </div>
           </div>
         </div>
         <div className="opening-divider" />
         <div className="opening-day">
-          <span className="opening-day-label">SAT 29.8.</span>
+          <span className="opening-day-label">SA 29.8.</span>
           <div className="opening-times">
             <div className="opening-time-row">
-              <span className="opening-time-name">Doors Festivalground</span>
-              <span className="opening-time-val">13:00</span>
+              <span className="opening-time-name">Einlass Festivalgelände</span>
+              <span className="opening-time-val">12:00</span>
+            </div>
+            <div className="opening-time-row">
+              <span className="opening-time-name">Feldküche</span>
+              <span className="opening-time-val">12:00–22:00</span>
             </div>
           </div>
         </div>
@@ -80,37 +117,114 @@ function OpeningHours() {
   )
 }
 
-function TheCode() {
-  const [expanded, setExpanded] = useState(false)
+function ABCEntry({ entry, isOpen, onToggle }) {
+  return (
+    <div className={`abc-entry ${isOpen ? 'abc-entry--open' : ''}`}>
+      <button className="abc-entry-header" onClick={onToggle}>
+        <span className="abc-entry-title">{entry.letter} wie {entry.title}</span>
+        <span className={`abc-entry-arrow ${isOpen ? 'abc-entry-arrow--open' : ''}`}>›</span>
+      </button>
+      {isOpen && (
+        <div className="abc-entry-body fade-in">
+          {entry.blocks.map((block, i) => {
+            if (block.type === 'ul') {
+              return (
+                <ul key={i} className="abc-list">
+                  {block.items.map((item, j) => <li key={j}>{renderRichText(item)}</li>)}
+                </ul>
+              )
+            }
+            if (block.type === 'table') {
+              return (
+                <div key={i} className="abc-price-table">
+                  {block.rows.map((row, j) => (
+                    <div key={j} className="abc-price-row">
+                      <span>{row.name}</span>
+                      <span className="abc-price-val">{row.price}</span>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+            return <p key={i} className="abc-p">{renderRichText(block.text)}</p>
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
 
-  const shortText = `So wie ein Acker nur dann wirklich aufblüht, wenn verschiedene Feldfrüchte in natürlicher Folge wachsen dürfen, braucht auch Musik Vielfalt, damit sie uns berührt und verbindet.`
+function FestivalABC() {
+  const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const [openEntryId, setOpenEntryId] = useState(null)
 
-  const fullText = `So wie ein Acker nur dann wirklich aufblüht, wenn verschiedene Feldfrüchte in natürlicher Folge wachsen dürfen, braucht auch Musik Vielfalt, damit sie uns berührt und verbindet. Aber am Ende sind es nicht nur die Töne, die bunt sein sollen – es sind die Menschen.
+  const letters = useMemo(
+    () => [...new Set(FESTIVAL_ABC.map(e => e.letter))],
+    []
+  )
 
-Genau deshalb ist das Fruchtfolgefestival viel mehr als ein Musikereignis. Es ist ein Ort, an dem Unterschiedlichkeit gefeiert wird und an dem wir gemeinsam zeigen: Vielfalt macht uns stark.
+  const q = query.trim().toLowerCase()
+  const filtered = q
+    ? FESTIVAL_ABC.filter(e => entrySearchText(e).includes(q))
+    : FESTIVAL_ABC
 
-Bei uns stehen Menschen im Mittelpunkt – mit all ihren Geschichten, Identitäten, Hoffnungen, Eigenheiten und Träumen. Wir glauben daran, dass Kultur nur dann lebendig ist, wenn alle Platz darin haben. Egal, wo du herkommst. Wen du liebst. Wie du aussiehst. Wie du dich fühlst. Oder wie du dein Leben lebst.
-
-Wir wollen, dass sich jeder auf unseren Flächen willkommen und sicher fühlt. Dass Fremde zu Freund*innen werden. Dass Musik Grenzen aufhebt, anstatt neue zu ziehen.
-
-Gleichzeitig ziehen wir eine klare Linie: Diskriminierung hat bei uns keinen Platz – in keiner Form. Wir stehen auf, wenn andere abwerten. Wir halten zusammen, wenn andere ausgrenzen.
-
-Und wir sagen es laut und deutlich: Rechtsextremismus hat bei uns nichts verloren. Wir glauben an eine offene, demokratische Gesellschaft, in der Freiheit, Vielfalt und Würde für alle gelten.
-
-Denn wie auf dem Feld gilt auch für uns: Nur dort, wo Vielfalt wachsen darf, entsteht Zukunft. Und genau diese Zukunft wollen wir beim Fruchtfolgefestival gemeinsam gestalten – bunt, laut, herzlich und frei. 🌾`
+  function jumpTo(letter) {
+    const el = document.getElementById(`abc-letter-${letter}`)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   return (
-    <div className="card info-section-card">
-      <h3 className="info-section-title">THE CODE</h3>
-      <p className="the-code-text">
-        {expanded ? fullText : shortText}
-      </p>
-      <button
-        className="the-code-toggle"
-        onClick={() => setExpanded(e => !e)}
-      >
-        {expanded ? '↑ Weniger lesen' : '↓ Mehr lesen'}
+    <div className="card info-section-card abc-card">
+      <button className="abc-header" onClick={() => setOpen(o => !o)}>
+        <h3 className="info-section-title abc-title">FESTIVAL ABC</h3>
+        <span className={`abc-toggle ${open ? 'abc-toggle--open' : ''}`}>›</span>
       </button>
+
+      {!open && (
+        <p className="abc-teaser">
+          Alles von A bis Z — Anreise, Bändchen, Cannabis, Notfall, Zanzibar & mehr.
+        </p>
+      )}
+
+      {open && (
+        <div className="abc-body fade-in">
+          <input
+            type="text"
+            className="abc-search"
+            placeholder="Suchen … z. B. Bargeld, Camping, Notfall"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
+
+          {!q && (
+            <div className="abc-letterbar">
+              {letters.map(l => (
+                <button key={l} className="abc-letter-btn" onClick={() => jumpTo(l)}>{l}</button>
+              ))}
+            </div>
+          )}
+
+          <div className="abc-entries">
+            {filtered.length === 0 && (
+              <p className="abc-empty">Nix gefunden. Frag doch Patrick. 🤖</p>
+            )}
+            {filtered.map((entry, i) => {
+              const isFirstOfLetter = filtered[i - 1]?.letter !== entry.letter
+              return (
+                <div key={entry.id} id={!q && isFirstOfLetter ? `abc-letter-${entry.letter}` : undefined}>
+                  {!q && isFirstOfLetter && <div className="abc-letter-heading">{entry.letter}</div>}
+                  <ABCEntry
+                    entry={entry}
+                    isOpen={Boolean(q) || openEntryId === entry.id}
+                    onToggle={() => setOpenEntryId(id => (id === entry.id ? null : entry.id))}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -120,10 +234,11 @@ function LostAndFound() {
 
   return (
     <div className="card info-section-card">
-      <h3 className="info-section-title">LOST & FOUND</h3>
+      <h3 className="info-section-title">FUNDSACHEN</h3>
       <p className="lost-found-hint">
-        Gefundene Gegenstände können an der <strong>Bar</strong> oder am <strong>Einlass</strong> abgeholt werden.
+        Gefundene Gegenstände können am <strong>Einlass</strong> abgeholt werden.
       </p>
+      <MapLink area="festivalground" num={2} />
       {items.length === 0 ? (
         <p className="lost-found-empty">Noch keine Fundgegenstände gemeldet.</p>
       ) : (
@@ -141,18 +256,28 @@ function LostAndFound() {
 }
 
 function DonationCard() {
+  const [copied, setCopied] = useState(false)
+  const iban = 'DE83 7005 3070 0032 8796 03'
+
+  function handleCopy() {
+    navigator.clipboard.writeText(iban.replace(/\s/g, '')).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
   return (
     <div className="card donation-card">
       <div className="donation-header">
         <span className="donation-icon">🌾</span>
-        <h3 className="donation-title">SUPPORT THE HARVEST</h3>
+        <h3 className="donation-title">SUPPORT THE FRUCHTFOLGE</h3>
       </div>
       <p className="donation-text">
-        Das Festival lebt von eurer Energie — und eurer Unterstützung. Jeder Beitrag hilft uns, auch nächstes Jahr wieder die Tore zu öffnen.
+        Wenn es dir gefallen hat und du uns für die nächste Fruchtfolge unterstützen willst, kannst du gerne eine Kleinigkeit spenden.
       </p>
-      <button className="donation-btn" disabled>
-        Spenden / Trinkgeld
-        <span className="donation-coming-soon">COMING SOON</span>
+      <button className="donation-btn" onClick={handleCopy}>
+        <span className="donation-iban">{iban}</span>
+        <span className="donation-copy-label">{copied ? 'Kopiert ✓' : 'Kopieren'}</span>
       </button>
     </div>
   )
@@ -176,16 +301,7 @@ export default function InfoScreen() {
         text="Jetzt Tickets sichern für FFF 2026"
         href="https://eventfrog.de/de/p/festivals/pop-rock/fruchtfolgefestival-2026-7428465056327708123.html"
       />
-      <InfoRow
-        icon="🩺"
-        title="MEDICAL"
-        text="Erste-Hilfe-Stationen auf dem Gelände"
-      />
-      <InfoRow
-        icon="🚿"
-        title="HYGIENE"
-        text="Kompost-Toiletten & Duschen"
-      />
+      <MedicalRow />
       <InfoRow
         icon="💬"
         title="FEEDBACK"
@@ -196,8 +312,8 @@ export default function InfoScreen() {
       {/* Öffnungszeiten */}
       <OpeningHours />
 
-      {/* The Code */}
-      <TheCode />
+      {/* Festival ABC */}
+      <FestivalABC />
 
       {/* Lost & Found */}
       <LostAndFound />

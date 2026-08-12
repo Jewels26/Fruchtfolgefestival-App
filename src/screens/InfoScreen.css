@@ -50,12 +50,6 @@
   margin-bottom: var(--space-2);
 }
 
-.emergency-note {
-  font-size: var(--text-xs);
-  color: var(--color-label);
-  font-style: italic;
-  margin-top: var(--space-2);
-}
 
 /* ─── Info Rows ─── */
 .info-row-link {
@@ -105,6 +99,13 @@
 .info-row-body {
   font-size: var(--text-sm);
   color: var(--color-body);
+}
+
+.info-row-phone {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: underline;
+  white-space: nowrap;
 }
 
 .info-row-arrow {
@@ -172,29 +173,223 @@
   background: var(--color-accent-dim);
 }
 
-/* ─── The Code ─── */
-.the-code-text {
+/* ─── Festival ABC ─── */
+.abc-card {
+  cursor: default;
+}
+
+.abc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.abc-title {
+  margin-bottom: 0;
+}
+
+.abc-toggle {
+  font-size: 1.4rem;
+  color: var(--color-accent);
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.abc-toggle--open {
+  transform: rotate(90deg);
+}
+
+.abc-teaser {
   font-size: var(--text-sm);
   color: var(--color-body);
-  line-height: 1.7;
-  white-space: pre-line;
+  margin-top: var(--space-2);
+}
+
+.abc-body {
+  margin-top: var(--space-4);
+}
+
+.abc-search {
+  width: 100%;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-accent-dim);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
   margin-bottom: var(--space-3);
 }
 
-.the-code-toggle {
-  background: none;
-  border: none;
-  color: var(--color-accent);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  padding: 0;
-  transition: opacity var(--transition-fast);
+.abc-search:focus {
+  outline: none;
+  border-color: var(--color-accent);
 }
 
-.the-code-toggle:hover {
-  opacity: 0.7;
+.abc-search::placeholder {
+  color: var(--color-label);
+}
+
+.abc-letterbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+
+.abc-letter-btn {
+  width: 28px;
+  height: 28px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-accent-dim);
+  border-radius: var(--radius-sm);
+  color: var(--color-heading);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.abc-letter-btn:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.abc-letter-heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  opacity: 0.6;
+  margin: var(--space-4) 0 var(--space-2);
+  scroll-margin-top: var(--space-4);
+}
+
+.abc-entries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.abc-empty {
+  font-size: var(--text-sm);
+  color: var(--color-label);
+  padding: var(--space-3) 0;
+}
+
+.abc-entry {
+  border: 1px solid var(--color-accent-dim);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.abc-entry--open {
+  border-color: var(--color-accent);
+}
+
+.abc-entry-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  background: none;
+  border: none;
+  padding: var(--space-3);
+  cursor: pointer;
+  text-align: left;
+}
+
+.abc-entry-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  letter-spacing: 0.04em;
+  color: var(--color-heading);
+}
+
+.abc-entry-arrow {
+  font-size: 1.1rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+  line-height: 1;
+}
+
+.abc-entry-arrow--open {
+  transform: rotate(90deg);
+}
+
+.abc-entry-body {
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.abc-p {
+  font-size: var(--text-sm);
+  color: var(--color-body);
+  line-height: 1.6;
+}
+
+.abc-p + .abc-p,
+.abc-p + .abc-list,
+.abc-list + .abc-p {
+  margin-top: var(--space-2);
+}
+
+.abc-p a,
+.abc-list a {
+  color: var(--color-accent);
+}
+
+.abc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.abc-list li {
+  font-size: var(--text-sm);
+  color: var(--color-body);
+  line-height: 1.6;
+  padding-left: var(--space-3);
+  position: relative;
+}
+
+.abc-list li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+.abc-price-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.abc-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.abc-price-row span:first-child {
+  font-size: var(--text-sm);
+  color: var(--color-body);
+}
+
+.abc-price-val {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  color: var(--color-accent);
 }
 
 /* ─── Lost & Found ─── */
@@ -208,6 +403,24 @@
 .lost-found-hint strong {
   color: var(--color-accent);
   font-weight: 600;
+}
+
+.info-map-link {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.info-map-link:hover {
+  color: var(--color-white);
 }
 
 .lost-found-empty {
@@ -281,27 +494,38 @@
 .donation-btn {
   width: 100%;
   padding: var(--space-3) var(--space-4);
-  background: #1a1a1a;
+  background: var(--color-surface-raised);
   border: 1px solid var(--color-label);
   border-radius: var(--radius-md);
-  color: var(--color-label);
+  color: var(--color-body);
   font-family: var(--font-heading);
   font-size: 1rem;
-  letter-spacing: 0.08em;
-  cursor: not-allowed;
+  letter-spacing: 0.02em;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: var(--space-3);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.donation-coming-soon {
+.donation-btn:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.donation-iban {
+  font-size: 0.9rem;
+}
+
+.donation-copy-label {
   font-size: var(--text-xs);
   font-family: var(--font-body);
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--color-tertiary);
-  background: #2e0d1a;
+  color: var(--color-accent);
+  background: #0d2e1a;
   padding: 2px 6px;
   border-radius: var(--radius-sm);
+  flex-shrink: 0;
 }

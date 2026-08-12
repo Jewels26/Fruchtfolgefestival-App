@@ -56,11 +56,11 @@ export default function NowPlayingBar() {
       <div className="now-playing-inner">
         <span className="pulse-dot" />
         <div className="now-playing-text">
-          <span className="now-playing-label">NOW PLAYING</span>
+          <span className="now-playing-label">LÄUFT GERADE</span>
           <span className="now-playing-band">{nowPlaying.name}</span>
         </div>
         <div className="now-playing-meta">
-          <span className="now-playing-stage">MAIN STAGE</span>
+          <span className="now-playing-stage">HAUPTBÜHNE</span>
           <span className="now-playing-time">{nowPlaying.time}</span>
         </div>
         <button className="now-playing-play" aria-label="Details" onClick={handlePlayClick}>

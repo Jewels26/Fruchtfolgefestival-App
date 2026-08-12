@@ -9,7 +9,7 @@ Die offizielle Begleiter-App für das **Fruchtfolgefestival** — ein kleines, e
 - **Home** — Countdown bis zum Einlass, aktueller Festival-Status (bevorstehend / läuft / vorbei), Live-Wetter für die Festivaltage und Ankündigungen der Veranstalter.
 - **Lineup** — Bandübersicht nach Festivaltag, mit Fotos, Genre, Herkunft und Spielzeiten. Favoriten lassen sich per Herz markieren (lokal gespeichert). Ein „Late Night Special“-Slot bleibt bis zuletzt geheim.
 - **Map** — Geländeplan mit Legende (Bühne, Essen, Toiletten, Erste Hilfe); aktuell als Platzhalter bis der finale CAD-Export vorliegt.
-- **Food & Drinks** — Alle Stände (Feldküche, Festivalbar, Sansibar, Kassette) inklusive Speisekarte, veganen/vegetarischen Kennzeichnungen und Beschreibungen.
+- **Food & Drinks** — Alle Stände (Feldküche, Festivalbar, Zanzibar, Kassette) inklusive Speisekarte, veganen/vegetarischen Kennzeichnungen und Beschreibungen.
 - **Info** — Notfallnummer, Öffnungszeiten, Ticket- und Feedback-Links, Verhaltenskodex des Festivals, ein Lost & Found sowie ein Spenden-Hinweis.
 - **Patrick** 🤖 — ein Chatbot-Maskottchen im niederbayerischen Dialekt, das Fragen zu Anreise, Bands, Essen, Wetter, Camping, Sicherheit und Festival-Insidern über ein keyword-basiertes Antwortsystem beantwortet. Er meldet sich außerdem automatisch kurz vor Bandauftritten und bei neuen Ankündigungen.
 

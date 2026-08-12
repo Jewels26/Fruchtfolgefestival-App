@@ -204,25 +204,3 @@
   border-color: #4a1a2a;
   animation: glow-flicker 2s ease-in-out infinite;
 }
-
-/* ─── Favoriten Button ─── */
-.fav-btn {
-  background: none;
-  border: none;
-  font-size: 1.4rem;
-  cursor: pointer;
-  color: var(--color-label);
-  transition: color var(--transition-fast), transform var(--transition-fast);
-  padding: 0 var(--space-1);
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.fav-btn--active {
-  color: var(--color-patrick);
-  filter: drop-shadow(0 0 4px var(--color-patrick));
-}
-
-.fav-btn:hover {
-  transform: scale(1.2);
-}

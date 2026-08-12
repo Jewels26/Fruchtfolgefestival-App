@@ -25,7 +25,7 @@ export default function Header() {
           <button
             className="theme-toggle"
             onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            aria-label={theme === 'dark' ? 'Heller Modus' : 'Dunkler Modus'}
           >
             {theme === 'dark' ? '☀' : '☾'}
           </button>

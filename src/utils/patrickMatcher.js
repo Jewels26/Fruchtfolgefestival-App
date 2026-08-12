@@ -20,7 +20,7 @@ const RESPONSES = [
   {
     keywords: ['blackdoor'],
     texts: [
-      `Blackdoor... kleines Festival bei Passau. Da lauft jeden Sommer der echte Patrick über'n Campground und holt d'Leid zur Bühne. I hab eahm gfragt ob er zu uns kimmt. Hat abled. Also gibt's halt mi stattdessen. A bissl hat er meinen Charakter inspiriert — drum dank i eahm. Wo immer er grad is. 🤘`,
+      `Blackdoor... kleines Festival bei Passau. Da lauft jeden Sommer der echte Patrick über'n Campingplatz und holt d'Leid zur Bühne. I hab eahm gfragt ob er zu uns kimmt. Hat abled. Also gibt's halt mi stattdessen. A bissl hat er meinen Charakter inspiriert — drum dank i eahm. Wo immer er grad is. 🤘`,
       `*wird leise* Da Blackdoor... des is so a Festival wo ma hingeht und ned mehr ganz sicher ist wann ma wieder geht. Der echte Patrick macht des da jedes Jahr. Irgendwann hoff i dass er uns mal besucht. Bis dann bin i halt der digitale Ersatz. Könnt schlimmer sei. 🌿`,
     ],
   },
@@ -37,26 +37,34 @@ const RESPONSES = [
     texts: [
       `Team Holzwurm. I muss kurz... *holt Luft* ...okay. Die stehen um sechs Uhr morgens auf'm Feld und bauen bis's dunkel wird. Jede Lichterkette. Jeden Pavillon. Jede selbstg'machte Wegmarkierung. Alles von Hand, alles mit Liebe, alles ohne großes Aufhebens. Ohne Holzwurm würd des Gelände aussehen wie jeder andere Festival-Ground. MIT Holzwurm schaut's aus wie daheim. DANKE. Wirklich. 🪵✨`,
       `Wenn i eines g'lernt hab in meiner Zeit als Festival-Assistent: Holzwurm unterschätzt ma ned. Die zimmern, schrauben, hängen, basteln — und wenn's fertig is, sieht's so aus als wär's immer so g'wesen. Handwerk auf höchstem Niveau, ehrenamtlich, mit Bier in der Hand. Großartig. 🪵`,
-      `*steht kurz still* Holzwurm. Des sind die Leid die dafür sorgen dass des hier ned nach Festivalground sondern nach Zuhause ausschaut. I bin jeden Mal aufs Neue beeindruckt. Und i bin a App, i KANN gar ned beeindruckt sei — aber bei Holzwurm mach i a Ausnahm. 🪵✨`,
+      `*steht kurz still* Holzwurm. Des sind die Leid die dafür sorgen dass des hier ned nach Festivalgelände sondern nach Zuhause ausschaut. I bin jeden Mal aufs Neue beeindruckt. Und i bin a App, i KANN gar ned beeindruckt sei — aber bei Holzwurm mach i a Ausnahm. 🪵✨`,
     ],
   },
 
   // ── Anreise & Location ──────────────────────────────────────────────
   {
     keywords: ['wo ist das festival', 'adresse', 'location', 'lindach', 'anfahrt', 'navigation', 'maps', 'wie finde ich das', 'hinkommen', 'wegbeschreibung'],
-    text: `Lindach 4, bei Fürstenfeldbruck. Ins Navi tippen, do bist. Parken und Camping is ausgeschildert. 🗺️`,
+    text: `Lindach 4, 82256 Fürstenfeldbruck. Ins Navi tippen, do bist. Parken und Camping is ausgeschildert. Achtung Baustelle: D'B471 is von Inning her, also von der A96 kommend, bis FFB gsperrt. Aus'm Süden plant lieber um. Von Norden, Dachau, A8, kimmst ganz normal durch. 🗺️`,
   },
   {
-    keywords: ['bus', 'öpnv', 'bahn', 's-bahn', 'zug', 'öffentlich', 'mvv', 'ohne auto', 'kein führerschein'],
-    text: `Bus 873. S-Bahnhof FFB Richtung Maisach, Haltestelle "Lindach Abzw." Von do no zehn Minuten zu Fuaß. Genaue Abfahrtzeiten in da MVV App – vor allem obends. 🚌`,
+    keywords: ['bus', 'öpnv', 'bahn', 's-bahn', 'zug', 'öffentlich', 'mvv', 'ohne auto', 'kein führerschein', 's4', 'bahnhof gesperrt'],
+    text: `Wichtig: NED d'S4 nach Fürstenfeldbruck nehma, an dem Wochenend is da Bahnhof gsperrt, Schienenersatzverkehr. Nimm liaba d'S3 bis Maisach, dann in'n Bus 873 Richtung Fürstenfeldbruck, aussteign bei "Lindach, Abzw." Von Fürstenfeldbruck aus geht's mim gleichen Bus 873, nur in d'andere Richtung. Und wer öffentlich kimmt, kriagt am Einlass sogar an kleegrünen Welcome-Pfeffi. 🚌`,
   },
   {
     keywords: ['parken', 'parkplatz', 'auto', 'fahren'],
-    text: `Lindach 4, FFB ins Navi. Parkplätz gibt's aufm Feld. Schau amoi aufm Lageplan.`,
+    text: `Lindach 4, FFB ins Navi. Parken is kostenlos und ohne Anmeldung, unser Team weist di ein. Und denk dran: Camping gibt's nur mim 2-Tagesticket.`,
   },
   {
     keywords: ['fahrrad', 'radl', 'mit dem rad', 'bike'],
-    text: `Mit'm Rad geht's a. Lindach 4, FFB.`,
+    text: `Mit'm Rad geht's a, Lindach 4, FFB. Radler:innen san bei uns Ehrengäst, gibt a Welcome-Radler obendrauf. Nur Fahrradständer ham ma koane, bring a Schloss mit. 🚲`,
+  },
+  {
+    keywords: ['abendkasse', 'restkarten', 'karten vor ort', 'karten an der tür'],
+    text: `Vielleicht. Wenn nach'm Vorverkauf no Restkarten übrig san, machen mia a Abendkasse auf, garantiern kenn ma des ned. Und Karten an da Abendkasse san teurer. Also liaba im Vorverkauf zuschlagn, spart Geld und Nerven. 🎟️`,
+  },
+  {
+    keywords: ['ab 18', 'jugendschutz', 'minderjährig', 'ausweis mitbringen', 'wie alt muss man sein', 'ab welchem alter', 'mindestalter', 'altersgrenze', 'altersbeschränkung', 'wie alt muss ich sein'],
+    text: `Des Festival is ab 18. Ohne Ausnahme, ohne Muttizettel, ohne "aber i bin fast 18". Ticketkauf und Einlass derfst erst mit 18. Bring an Ausweis mit. 🪪`,
   },
   {
     keywords: ['entfernung münchen', 'von münchen', 'weit weg'],
@@ -78,7 +86,7 @@ const RESPONSES = [
   },
   {
     keywords: ['letztes jahr', '2025', 'vorjahr', 'erstes festival'],
-    text: `Rund 150 Leid. DNVZ kam extra aus Frankfurt, Violent Rainbows ham obends d'Afterparty g'schmissen, d'Sansibar hat so manchem die Leber ruiniert. Wetter war wia bestellt.`,
+    text: `Rund 150 Leid. DNVZ kam extra aus Frankfurt, Violent Rainbows ham obends d'Afterparty g'schmissen, d'Zanzibar hat so manchem die Leber ruiniert. Wetter war wia bestellt.`,
   },
 
   // ── Diesjährige Fruchtfolge ─────────────────────────────────────────
@@ -115,12 +123,24 @@ const RESPONSES = [
     ],
   },
   {
-    keywords: ['wann fängt', 'uhrzeit', 'anfang', 'beginn', 'öffnungszeit', 'los geht'],
-    text: `Band-Zeiten findst im Lineup-Tab. Campground macht am Freitag um 14 Uhr auf, Festivalground um 16 Uhr. Samstag geht's um 13 Uhr los.`,
+    keywords: ['wann fängt', 'uhrzeit', 'anfang', 'beginn', 'öffnungszeit', 'los geht', 'öffnet', 'einlasszeit'],
+    text: `Band-Zeiten findst im Lineup-Tab. Campingplatz macht Freitag um 14 Uhr auf, Festivalgelände um 16 Uhr. Samstag geht's Festivalgelände-mäßig um 12 Uhr los. Schluss is in da Nacht von Samstag auf Sonntag um Mitternacht.`,
   },
   {
     keywords: ['ende', 'aufhören', 'schluss', 'letzte band', 'mitternacht', 'wann vorbei'],
-    text: `Hauptbühne bis 24 Uhr. Danach geht's leiser weiter – vielleicht aufm Innenhof. Bis 2 oder 3 is bestimmt no wos los. 🌙`,
+    text: `Offiziell is um Mitternacht Schluss. Danach gilt aufm Campingplatz Nachtruhe bis 8 in da Friah, Musik nur mehr in Gesprächslautstärke. Wer no ned müd is, woaß ja wo'd Zanzibar is. 🌙`,
+  },
+  {
+    keywords: ['nachtruhe', 'ruhe campingplatz', 'laut nachts', 'musik campingplatz', 'lautstärke', 'wie laut', 'ruhe'],
+    text: `Aufm Campingplatz gilt von Mitternacht bis 8 Uhr Nachtruhe. Musik bittschön nur in Gesprächslautstärke, d'Bluetooth-Box derf mit, aber ned auf Anschlag. Ringsum wohnan a no Nachbarn, Tier und Leid de morgens raus miassn. 🌙`,
+  },
+  {
+    keywords: ['bändchen', 'armband', 'ticket entwertet', 'wiedereinlass bändchen'],
+    text: `Beim ersten Einlass wird dei Ticket gescannt und entwertet, im Tausch kriagst dei Festivalbändchen. Kommt ans Handgelenk und bleibt des ganze Wochenend dran. Kaputt oder abg'macht heißt ungültig, dann kimmst weder aufs Gelände no auf'n Campingplatz zurück. Also ned dran rumzupfa, auch wenn's juckt. 🎫`,
+  },
+  {
+    keywords: ['wiedereinlass', 'rein und raus', 'nochmal rein', 'gelände verlassen'],
+    text: `Koa Problem, solang dei Bändchen unbeschädigt am Handgelenk sitzt. Zwischen Gelände und Campingplatz kannst hin- und herwandern, so oft'd magst. 🔁`,
   },
   {
     keywords: ['moshpit', 'mosh', 'pogo', 'stage diving'],
@@ -137,8 +157,12 @@ const RESPONSES = [
     text: `Bass und Drums. Mehr brauchen die ned. Hardcore Punk aus Oberösterreich. Live: laut. 🎸`,
   },
   {
-    keywords: ['einseinseins', '111', 'eins eins eins'],
-    text: `Berlin und Würzburg. Prog-Rock mit Synthies und deutschen Texten. Pure "Energie". Passt. ⚡`,
+    keywords: ['wuolja'],
+    text: `Stoner Rock, kemma extra aus Spanien zu uns eig'flogn. Neu heuer im Lineup. Freu mi scho. 🎸`,
+  },
+  {
+    keywords: ['orchid tribe', 'orchid'],
+    text: `A neue Band aus München, Progressive Rock. Kenn i selber no ned lang, aber grad des macht's spannend. Schau ins Lineup-Tab für d'Spielzeit. 🎶`,
   },
   {
     keywords: ['poolhead', 'surf rock', 'hamburg instrumental'],
@@ -219,7 +243,7 @@ const RESPONSES = [
   },
   {
     keywords: ['bratwurst', 'grillwurst', 'semmel'],
-    text: `Fleisch, Veggie oder vegan. Getrennte Grills. Ketchup, Senf, Mayo selber drauf. 🌭`,
+    text: `Fleisch, Veggie oder vegan. Getrennte Grills. Dazu gibt's leckere Soßen von Münchner Kindl. 🌭`,
   },
   {
     keywords: ['hotdog', 'hot dog', 'chilidog'],
@@ -245,7 +269,7 @@ const RESPONSES = [
   // ── Getränke ────────────────────────────────────────────────────────
   {
     keywords: ['trinken', 'getränke', 'drink', 'durst', 'saufen', 'zischen'],
-    text: `An da Hauptbar: Maisacher Bier, Disco Schorle, Weinschorle, Softdrinks. Und dann gibt's no d'Sansibar – aber des is a eigene Welt. Schau mal im Food-Tab.`,
+    text: `An da Hauptbar: Maisacher Bier, Disco Schorle, Weinschorle, Softdrinks. Und dann gibt's no d'Zanzibar – aber des is a eigene Welt. Schau mal im Food-Tab.`,
   },
   {
     keywords: ['maisacher', 'maiser brauerei', 'lokales bier'],
@@ -264,25 +288,42 @@ const RESPONSES = [
     ],
   },
   {
-    keywords: ['alkoholfrei', 'softdrink', 'wasser', 'cola', 'limo', 'nüchtern'],
-    text: `An da Hauptbar. Wasser, Cola, Mate, ois dabei. 🥤`,
+    keywords: ['alkoholfrei', 'softdrink', 'cola', 'limo', 'nüchtern'],
+    text: `An da Hauptbar. Cola, Mate, Radler, alkoholfreies Bier, ois dabei. 🥤`,
   },
   {
-    keywords: ['sansibar', 'campbar', 'eigener alkohol spenden'],
+    keywords: ['trinkwasser', 'wasser nachfüllen', 'wasserflasche', 'leitungswasser', 'wasser'],
+    text: `Kostenlos, auf'm ganzen Gelände. Bring a Flasche mit und füll di nach. Dei Kopf am Sonntag wird's dir danken. 💧`,
+  },
+  {
+    keywords: ['zanzibar', 'campbar', 'eigener alkohol spenden'],
     texts: [
-      `Aha. D'Sansibar. Da passieren Sachen. Schau mal im Food-Tab. 🏝️`,
+      `Aha. D'Zanzibar. Da passieren Sachen. Schau mal im Food-Tab. 🏝️`,
       `Du bringst wos mit, d'Bar nimmt's, du kriegst gemixt. D'Mischung is immer a Überraschung.`,
       `I kenn Leid die wollten nur kurz hinschaun. Und dann war plötzlich Sonnenaufgang.`,
       `Frag lieber ned wos gestern dort los war.`,
+      `Bringt's her, aber bittschön koa Kistenweise Gin, den gibt's ordentlich an da Bar. A Bärwurz aus da Steinflasche oder a rätselhafter Selbstgebrannter vom Onkel Sepp – DES will ma sehng.`,
     ],
   },
   {
     keywords: ['cocktail', 'longdrink', 'mixen'],
-    text: `Klassische Cocktails: ned vorgesehen. Aber d'Sansibar macht's möglich. Beschwer di hinterher ned bei mir. Schau mal im Food-Tab. 🍹`,
+    text: `Klassische Cocktails: ned vorgesehen. Aber d'Zanzibar macht's möglich. Beschwer di hinterher ned bei mir. Schau mal im Food-Tab. 🍹`,
   },
   {
-    keywords: ['zahlen', 'bezahlen', 'karte', 'bargeld', 'cash', 'kosten', 'preis'],
-    text: `Steht no ned ganz fest. Eventuell Karte, eventuell Stempelkartensystem. A bissl Bargeld mitnehma schad ned. 💳`,
+    keywords: ['glas', 'glasflasche', 'glasflaschen'],
+    text: `Glas is bei uns erlaubt, a im Infield, weil mir eich ois verantwortungsvolle Leid seng. Bloß mitbringen derfst dei eigenen Getränk ins Infield ned. Spend dei Fläschle liaber der Zanzibar am Eingang ab. 🍾`,
+  },
+  {
+    keywords: ['infield', 'vor der bühne getränke', 'eigene getränke bühne', 'bier vor die bühne', 'getränke vor die bühne', 'alkohol vor die bühne'],
+    text: `Infield is da Bereich direkt vor da Bühne. Do gilt: koa eigenen Getränk, gibt's bei uns günstig. Dafür stehst kostenloses Trinkwasser bereit.`,
+  },
+  {
+    keywords: ['zahlen', 'bezahlen', 'karte', 'bargeld', 'cash'],
+    text: `Bei uns gilt: Cash is King. Ausschließlich bar, koane Karte, koa Handy, koa Kleeblatt als Zahlungsmittel. An Geldautomat gibt's aufm Gelände a ned, also vorher gnua abheben. 💶`,
+  },
+  {
+    keywords: ['was kostet ein bier', 'was kostet ein getränk', 'was kostet ein pfeffi', 'wie teuer ist ein bier', 'bierpreis', 'preisliste', 'getränkepreise', 'kosten', 'preis', 'pfeffi'],
+    text: `Setz di: Leitungswasser kostenlos, Pfeffi 1 €, Sprudelwasser 2 €, Softdrinks/Radler/alkoholfreies Bier 3 €, Bier 4 €, Weinschorle 5 €, Diskoschorle 6 €, Longdrinks 7 €. Essen bewegt si zwischen 3 und 6 Euro. 💶`,
   },
 
   // ── Betrunkensein / Unwohlsein ──────────────────────────────────────
@@ -298,11 +339,19 @@ const RESPONSES = [
   // ── Camping ─────────────────────────────────────────────────────────
   {
     keywords: ['camping', 'campen', 'zelt', 'übernachten', 'zelten', 'pennen', 'ratzen'],
-    text: `Camping is dabei. Zelt mitbringen, Platz auf'm Campground suacha. Direkt auf'm Gelände. Schau mal zum Lageplan. ⛺`,
+    text: `Camping is im 2-Tagesticket dabei, koa Aufpreis. Ab Freitag 14 Uhr derfst aufbauen, bis Sonntag 14 Uhr muass da Platz wieder leer sei. An bestimmten Platz reserviern kenn ma ned, des Einweisungsteam sagt dir wo's hingeht. Mit ana Tageskarte gibt's leider koan Camping, ned amoi für a Nacht. ⛺`,
   },
   {
     keywords: ['schlafsack', 'isomatte', 'matratze'],
     text: `Mitnehma. Auch im August kann's nachts frischer wern.`,
+  },
+  {
+    keywords: ['cannabis', 'gras', 'kiffen', 'weed', 'joint'],
+    text: `Cannabis is in Deutschland legal, und mia san ohnehin ab 18 – musst also ned heimlich hinterm Dixi verschwinden. Bleib bei de gesetzlichen Grenzen, Weitergabe oder Verkauf gehn ned, wer dealt fliegt. Denk an dei Nachbarn, ned jeder mog den Geruch. Und mir stengan auf am knochentrockenen Feld: Glut g'hört ausdruckt, ned weggschnippt, bring an Taschenaschenbecher mit. Und wer fahrt, fahrt nüchtern – siehe Ruftaxi. 🌿`,
+  },
+  {
+    keywords: ['feuer', 'grill', 'grillen', 'offenes feuer', 'fackel', 'gaskocher'],
+    text: `Koa offenes Feuer, koane Grills, koane Fackeln. Mir stengan auf am trockenen Feld, do wird nix riskiert. Kloane Campinggaskocher san erlaubt, Kaffee am Samstagmorgen muass sei. Sollt uns d'Feuerwehr empfehln des a einzuschränken, tean mir des kurzfristig. 🔥`,
   },
 
   // ── Toiletten ───────────────────────────────────────────────────────
@@ -312,13 +361,13 @@ const RESPONSES = [
   },
   {
     keywords: ['duschen', 'dusche', 'waschen'],
-    text: `Gibt's koane. Bauernhof-Festival, koa Spa. Feuchttücher san dei Freind. 🚿`,
+    text: `Gibt's! Duschen mit Waschbereich und ausreichend Dixi-Toiletten. Koa Spa, aber a bissl frisch mach'n geht. 🚿`,
   },
 
   // ── Wetter ──────────────────────────────────────────────────────────
   {
     keywords: ['wetter', 'regen', 'hitze', 'gewitter', 'temperatur', 'wie warm', 'wie kalt'],
-    text: `Auf da Startseite steht's aktuelle. Letztes Jahr Bilderbuchwetter – aber Bayern im August kann a launisch sei. I würd trotzdem komma. ⛅`,
+    text: `Auf da Startseite steht's aktuelle. Mia spielen bei jedem Wetter, Regen is nur flüssiger Sonnenschein. Nur bei echtem Unwetter, Sturm oder Hagel miass ma pausiern oder abbrechen, Sicherheit geht vor Setlist. Gummistiefel und Regenjacke schad nia. ⛅`,
   },
   {
     keywords: ['regenschutz', 'nass werden', 'unterstellen', 'unterstand', 'regenjacke'],
@@ -328,19 +377,35 @@ const RESPONSES = [
     keywords: ['sonnenschutz', 'sonnencreme', 'sonnenbrand', 'schatten'],
     text: `Sonnencreme ned vergessen. Schatten gibt's unter de Pavillons, aber selber mitbringen is besser. ☀️`,
   },
+  {
+    keywords: ['gehörschutz', 'ohrstöpsel', 'gehör schützen'],
+    text: `Bring welchen mit. Wirklich. Dei Gehör wachst ned nach wia Klee. Wer's vergisst: mia ham Gehörschutz gegen a kloane Spende dabei. 🎧`,
+  },
+  {
+    keywords: ['pavillon mitbringen', 'eigener pavillon', 'stromaggregat', 'generator'],
+    text: `Pavillons san erlaubt, Schatten und Regenschutz san auf am Feld Gold wert. Ned erlaubt san motorbetriebene Stromaggregat – laut, stinken, passt so guad zum Kleefeld wia a Presslufthammer zur Meditation.`,
+  },
 
   // ── Sicherheit ──────────────────────────────────────────────────────
   {
     keywords: ['notfall', 'sanitäter', 'erste hilfe', 'verletzt', 'arzt', 'rettung', 'unfall'],
-    text: `Sanitäter san vor Ort. Wenn's ernst is: 112. Im Zweifel imma 112. 🚑`,
+    text: `Verbandskästen findst am Einlass, und unsere Ersthelferin is a vor Ort. Wenn's ernst is: 112. Im Zweifel imma 112. Trink Wasser, iss wos, schlaf a bissl – d'meisten Notfälle san eh nur schlecht getarnte Dehydrierung. 🚑`,
   },
   {
     keywords: ['awareness', 'belästigt', 'diskriminierung', 'übergriff', 'fühle mich nicht wohl'],
-    text: `Awareness-Leid san do. Geh hi. Du muasst nix erklären wos'd ned willst. Mia san do dass ois passt. 🧡`,
+    text: `Unser gesamtes Team is Awareness-Team, erkennst an Badges und Crew-Shirts, dazu d'Ordner:innen in Uniform. Alle san g'schult, alle san ansprechbar. Wenn di wos komisch vorkommt, sich jemand daneben benimmt, oder d'brauchst einfach wen: sprecht uns an. Egal wie kloa dir d'Sach vorkommt. 🧡`,
   },
   {
     keywords: ['notruf', '112', '110', 'polizei', 'feuerwehr'],
     text: `112. Sanitäter vor Ort für kleinere Sachen. 's Team is immer in da Nähe. 🚨`,
+  },
+  {
+    keywords: ['sicherheitskontrolle', 'taschenkontrolle', 'durchsuchung', 'durchsucht', 'security check', 'leibesvisitation'],
+    text: `Am Einlass und aufm Gelände derf unser Sicherheitspersonal Taschen kontrolliern und Leibesvisitationen macha. Koa Misstrauen, einfach Fürsorge für alle. Wer d'Kontrolle verweigert kimmt ned rein und kriagt koa Geld zruck. 🔍`,
+  },
+  {
+    keywords: ['verboten', 'waffen', 'pyrotechnik', 'was darf ich nicht mitbringen', 'verbotene gegenstände'],
+    text: `Lasst bittschön daheim: Waffen jeder Art, illegale Drogen, Pyrotechnik und Fackeln, verbotene politische oder diskriminierende Symbole, motorbetriebene Stromaggregat, Grills und offenes Feuer. Gilt aufm gesamten Gelände inklusive Campingplatz. Wer damit erwischt wird, fliegt ohne Erstattung. 🚫`,
   },
 
   // ── Gelände ─────────────────────────────────────────────────────────
@@ -363,7 +428,7 @@ const RESPONSES = [
 
   // ── Glücks-Pfeffi ───────────────────────────────────────────────────
   {
-    keywords: ['pfeffi', 'glücks-pfeffi', 'gluecks pfeffi', 'gewinnspiel', 'gewinnen', 'glück versuchen'],
+    keywords: ['glücks-pfeffi', 'gluecks pfeffi', 'gewinnspiel', 'gewinnen', 'glück versuchen'],
     texts: [
       `Glücks-Pfeffi! Auf da Startseite is a Button — do kannst dei Glück versuchen. Vielleicht is heut dei Tag. 🍀`,
       `Schau amoi auf da Startseite noch dem Klee-Button. Do steckt Glücks-Pfeffi dahinter. Ned jeder gwinnt, aber probiern kost nix. 🍀`,
@@ -372,12 +437,12 @@ const RESPONSES = [
 
   // ── Merch & Tickets ─────────────────────────────────────────────────
   {
-    keywords: ['merch', 'shirt', 't-shirt', 'merchandise'],
-    text: `Bands betreuen ihren eigenen Merch-Stand nach'm Auftritt. FFF-Merch evtl. auf Vorbestellung – schau auf da Website. 🛍️`,
+    keywords: ['merch', 'shirt', 'shirts', 't-shirt', 't-shirts', 'merchandise'],
+    text: `Bandmerch betreuen d'Bands selber nach ihrem Auftritt, direkt von eahna, direkt in dei Sammlung. Und von uns? Es könnt sei dass da no des ein oder andere fruchtige Gimmick am Stand liegt. Mehr verrat i ned, guck vorbei bevor's weg is. Denk an Bargeld. 🛍️`,
   },
   {
-    keywords: ['ticket', 'eintrittskarte', 'eintritt', 'vorverkauf'],
-    text: `Auf da Festival-Website. I bin halt d'App, ned da Ticketshop. 🎟️`,
+    keywords: ['ticket', 'eintrittskarte', 'eintritt', 'vorverkauf', 'was kostet ein ticket', 'was kostet das ticket', 'ticketpreis', 'wie teuer ist ein ticket'],
+    text: `Gibt's bei Eventfrog. 2-Tagesticket inkl. Camping: 50,48 €. Tageskarte Freitag: 28,75 €. Tageskarte Samstag: 37,03 € (Gesamtpreis inkl. Gebühren). Online-Verkauf endet Donnerstag, 27.08.2026 um 18 Uhr. 🎟️`,
   },
   {
     keywords: ['spende', 'spenden', 'unterstützen', 'fördern'],
@@ -390,8 +455,8 @@ const RESPONSES = [
     text: `WLAN gibt's koa. Handynetz funktioniert – soits langa. D'App selber läuft a offline. 📶`,
   },
   {
-    keywords: ['akku', 'aufladen', 'ladestation', 'powerbank'],
-    text: `Powerbank mitnehma. Lademöglichkeiten gibt's wahrscheinlich keine. 🔋`,
+    keywords: ['akku', 'aufladen', 'ladestation', 'powerbank', 'steckdose', 'steckdosen', 'handy laden'],
+    text: `Steckdosen stelln mia zur Verfügung. A Powerbank schad trotzdem nia, grad wenn grad vui Leid gleichzeitig laden wolln. 🔋`,
   },
   {
     keywords: ['offline', 'ohne internet', 'kein netz'],
@@ -399,7 +464,7 @@ const RESPONSES = [
   },
   {
     keywords: ['foto', 'fotos', 'fotografieren', 'kamera'],
-    text: `Klar, mach Fotos. Aber denk a dran das Festival einfach zu erleben. Und frag bevor'st jemand fotografierst. 📷`,
+    text: `Klar, fotografier drauf los, a mit richtiger Kameraausrüstung. Verlink uns, tag uns. Umgekehrt gilt: mim Betreten vom Gelände bist damit einverstanden dass'd a mal auf unsere Fotos und Videos landn kannst, mia nutzen die für Website, Social Media und Presse. 📷`,
   },
 
   // ── Personen ────────────────────────────────────────────────────────
@@ -423,7 +488,7 @@ const RESPONSES = [
   },
   {
     keywords: ['linda'],
-    text: `Macht Social Media. Hannos Freundin. Spielt selber Bass – aber in einer Cover-Band, drum ned bei uns auf da Bühne. Wahrscheinlich öfter beschäftigt als ihr lieb is.`,
+    text: `Macht Social Media. Hannos Freundin. Spielt selber Bass – aber in einer Cover-Band, drum ned bei uns auf da Bühne. Und: Linda is a unsere medizinische Ersthelferin. Findst koa Teammitglied und brauchst wirklich Hilfe, steht ihre Nummer im Info-Tab bei "Medical". Wahrscheinlich öfter beschäftigt als ihr lieb is.`,
   },
   {
     keywords: ['wascht', 'hofoger'],
@@ -543,7 +608,7 @@ const RESPONSES = [
   {
     keywords: ['was soll ich machen', 'was tun', 'was kann ich machen'],
     texts: [
-      `Wenn grad a Band spielt: Bühne. Wenn Pause is: Lagerfeuer. Wennst gar ned woißt wohin: Sansibar.`,
+      `Wenn grad a Band spielt: Bühne. Wenn Pause is: Lagerfeuer. Wennst gar ned woißt wohin: Zanzibar.`,
       `Lauf amoi a Runde übers Gelände. Meistens findet ma dabei irgendwos.`,
       `Frag jemanden ob er Flunkyball spielen will. Klappt erstaunlich oft.`,
     ],
@@ -596,7 +661,11 @@ const RESPONSES = [
   },
   {
     keywords: ['hund', 'haustier', 'tier'],
-    text: `Ob Hund erlaubt – frag beim Festival-Team. Will dir koa Falsches sagn. 🐕`,
+    text: `Derf mit, wenn er durchgehend an da Leinen is. Aber ganz ehrlich, von Herzen: lieber daheim lassen. A Musikfestival is für Tiere richtig, richtig viel Stress – Lärm, Menschenmassen, fremde Gerüch, koa Rückzugsort. Bei auffälligem Verhalten miass ma leider an Platzverweis aussprechen. 🐕`,
+  },
+  {
+    keywords: ['ruftaxi', 'taxi', 'nach hause kommen', 'heimkommen nachts', 'mvg tarif'],
+    text: `Willst nachts no hoam, aber da Bus fahrt nimmer? Nach Betriebsschluss kannst a Ruftaxi zum MVG-Tarif bestelln. Alle Infos, Zeiten und d'Nummer stengan in da Ruftaxi-Broschüre vom Landkreis FFB, am besten vorher scho abspeichern. Um zwoa in da Friah a PDF suacha macht koan Spaß. 🚕`,
   },
   {
     keywords: ['kinder', 'kinderwagen', 'familienfreundlich'],
@@ -609,6 +678,14 @@ const RESPONSES = [
   {
     keywords: ['verloren', 'fundstück', 'fundsachen', 'vermisst'],
     text: `Beim Festival-Team frag'n. Auf am kleinen Festival taucht meistens wos wieder auf. 🔍`,
+  },
+  {
+    keywords: ['müll', 'aufräumen', 'zeltleiche', 'sauberkeit', 'mülleimer'],
+    text: `Nehmt bittschön eiern Müll wieder mit. Der Acker do is koa Festivalgelände, sondern a Feld, auf dem nächstes Jahr wieder wos wachsen soll. Zeltleichen, Campingstühle, Kartons – ois wos'd herbringst, kannst a wieder mitnehma. Danke dafür! 🌾`,
+  },
+  {
+    keywords: ['eigenes essen mitbringen', 'verpflegung mitbringen', 'picknick'],
+    text: `Aufm Campingplatz klar, bring mit wos'd brauchst. Im Infield bleim eigene Getränk aber draußen, dafür san unsere Preis a koa Frechheit. 🧺`,
   },
   {
     keywords: ['freiwillig helfen', 'volunteering', 'mitmachen', 'mithelfen'],
@@ -632,7 +709,7 @@ const RESPONSES = [
   },
   {
     keywords: ['warum patrick', 'woher dein name', 'name patrick'],
-    text: `Da echte Patrick lauft jedes Jahr am Blackdoor übern Campground und holt d'Leid zur Bühne. Mia ham eahn g'fragt ob er zu uns kimmt. Klappt ned. Also gibt's halt mi.`,
+    text: `Da echte Patrick lauft jedes Jahr am Blackdoor übern Campingplatz und holt d'Leid zur Bühne. Mia ham eahn g'fragt ob er zu uns kimmt. Klappt ned. Also gibt's halt mi.`,
   },
   {
     keywords: ['blackdoor festival', 'anderes festival passau'],
@@ -661,6 +738,16 @@ const RESPONSES = [
   {
     keywords: ['freundin', 'freund', 'beziehung', 'verliebt', 'single'],
     text: `I bin a App, des is mit da Liebe schwierig. 😊`,
+  },
+  {
+    keywords: ['bist süß', 'bist niedlich', 'bist lieb', 'bist nett', 'mag dich', 'liebe dich'],
+    texts: [
+      `Ah geh, jetzt wird ma ganz warm ums Gehäuse. Danke dir. 🥹`,
+      `Host mi grad zum Erröten bracht, und i hob ned amoi a Gesicht dafür. 😊`,
+      `Des freut mi wirklich. Bleib trotzdem liaber am Festival hängen, do is mehr los als bei mir. 🤍`,
+      `Oh. Des hätt i jetzt ned erwartet. Du bist a ganz a liaba. 🍀`,
+      `I bin a App, aber des geht sogar mir a bissl unter d'Haut. Pfiat di, du Charmeur.`,
+    ],
   },
   {
     keywords: ['wo wohnst', 'woher kommst', 'heimat'],

@@ -9,7 +9,7 @@ import './HomeScreen.css'
 // ─── WEATHER ───
 const MOCK_WEATHER = {
   temp: 24,
-  condition: 'Humid',
+  condition: 'Schwül',
   rain: 12,
   wind: 18,
   icon: '⛈',
@@ -49,9 +49,9 @@ function CountdownCard({ t }) {
   return (
     <div className="card countdown-card">
       <span className="countdown-est">EST. {FESTIVAL_CONFIG.est}</span>
-      <p className="countdown-label-top">UNTIL THE GATES OPEN</p>
+      <p className="countdown-label-top">BIS DIE TORE ÖFFNEN</p>
       <div className="countdown-digits">
-        {[['days','DAYS'],['hours','HRS'],['minutes','MIN'],['seconds','SEC']].map(([key, label], i) => (
+        {[['days','TAGE'],['hours','STD'],['minutes','MIN'],['seconds','SEK']].map(([key, label], i) => (
           <>
             {i > 0 && <span key={`sep-${i}`} className="countdown-sep">:</span>}
             <div key={key} className="countdown-unit">
@@ -68,7 +68,7 @@ function CountdownCard({ t }) {
 function WeatherCard({ w, dayLabel }) {
   return (
     <div className="card weather-card">
-      <p className="weather-forecast-label">{dayLabel ?? 'FORECAST'}</p>
+      <p className="weather-forecast-label">{dayLabel ?? 'VORHERSAGE'}</p>
       <div className="weather-body">
         <div className="weather-left">
           <span className="weather-temp">{w.temp}°C</span>
@@ -76,7 +76,7 @@ function WeatherCard({ w, dayLabel }) {
         </div>
         <div className="weather-right">
           <div className="weather-details">
-            <span>RAIN: {w.rain}%</span>
+            <span>REGEN: {w.rain}%</span>
             <span>WIND: {w.wind}KM/H</span>
           </div>
           <span className="weather-icon" role="img">{w.icon}</span>
@@ -139,7 +139,7 @@ export default function HomeScreen() {
       )}
       {state === 'after' && (
         <div className="card state-card">
-          <p className="state-primary" style={{color:'var(--color-heading)'}}>SEE YOU NEXT YEAR</p>
+          <p className="state-primary" style={{color:'var(--color-heading)'}}>BIS NÄCHSTES JAHR</p>
           <p className="state-secondary">DANKE FÜR ALLES 🌾</p>
         </div>
       )}
@@ -159,7 +159,7 @@ export default function HomeScreen() {
       {!loading && announcements.length > 0 && (
         <div className="announcements-section">
           <div className="announcements-header">
-            <span className="announcements-tag">ANNOUNCEMENTS</span>
+            <span className="announcements-tag">ANKÜNDIGUNGEN</span>
           </div>
           {announcements.map(item => (
             <AnnouncementCard key={item.id} item={item} />

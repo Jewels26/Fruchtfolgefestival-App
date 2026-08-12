@@ -4,31 +4,15 @@ import { LINEUP, DAYS } from '../data/lineup'
 import { asset } from '../utils/assetPath'
 import './LineupScreen.css'
 
-// ─── FAVORITES HOOK (localStorage) ───
-function useFavorites() {
-  const [favs, setFavs] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('fff-favs') || '[]') }
-    catch { return [] }
-  })
-  const toggle = (id) => {
-    setFavs(prev => {
-      const next = prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
-      localStorage.setItem('fff-favs', JSON.stringify(next))
-      return next
-    })
-  }
-  return [favs, toggle]
-}
-
 // ─── HERO CARD ───
-function ArtistCard({ band, isFav, onToggleFav }) {
+function ArtistCard({ band }) {
   return (
     <div id={band.id} className={`artist-card card ${band.secret ? 'artist-card--secret' : ''}`}>
 
       {/* Foto-Bereich */}
       <div className="artist-photo">
         {band.photo ? (
-          <img src={asset(band.photo)} alt={band.name} className="artist-photo-img" />
+          <img src={asset(band.photo)} alt={band.name} className="artist-photo-img" loading="lazy" decoding="async" />
         ) : (
           <div className="artist-photo-placeholder">
             {band.secret
@@ -55,35 +39,24 @@ function ArtistCard({ band, isFav, onToggleFav }) {
           <div className="artist-meta">
             <div className="artist-details">
               {band.lateNight && (
-                <span className="late-night-label">LATE NIGHT SPECIAL · </span>
+                <span className="late-night-label">LATE NIGHT SPECIAL</span>
               )}
               <div className="artist-badges">
                 {band.genre && band.genre !== 'tbd.' && (
                   <span className="badge">{band.genre}</span>
                 )}
                 {band.genre === 'tbd.' && (
-                  <span className="badge badge--tbd">tbd.</span>
+                  <span className="badge badge--tbd">offen.</span>
                 )}
                 {band.origin && (
                   <span className="badge badge--origin">{band.origin}</span>
                 )}
                 {band.secret && (
-                  <span className="badge badge--secret">SURPRISE</span>
+                  <span className="badge badge--secret">ÜBERRASCHUNG</span>
                 )}
               </div>
             </div>
           </div>
-
-          {/* Favoriten-Herz */}
-          {!band.secret && (
-            <button
-              className={`fav-btn ${isFav ? 'fav-btn--active' : ''}`}
-              onClick={() => onToggleFav(band.id)}
-              aria-label={isFav ? 'Von Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
-            >
-              {isFav ? '♥' : '♡'}
-            </button>
-          )}
         </div>
       </div>
 
@@ -100,7 +73,6 @@ export default function LineupScreen() {
   const [activeDay, setActiveDay] = useState(
     LINEUP[dayParam] ? dayParam : 'FRI'
   )
-  const [favs, toggleFav] = useFavorites()
   const bands = LINEUP[activeDay]
 
   useEffect(() => {
@@ -132,12 +104,7 @@ export default function LineupScreen() {
       {/* Band Cards */}
       <div className="artist-list">
         {bands.map(band => (
-          <ArtistCard
-            key={band.id}
-            band={band}
-            isFav={favs.includes(band.id)}
-            onToggleFav={toggleFav}
-          />
+          <ArtistCard key={band.id} band={band} />
         ))}
       </div>
 

@@ -37,7 +37,7 @@ fetch(
     if (!times?.length) return
     cache = times.map((date, i) => ({
       date,
-      label: date === '2026-08-28' ? 'FRI 28.8.' : 'SAT 29.8.',
+      label: date === '2026-08-28' ? 'FR 28.8.' : 'SA 29.8.',
       dayName: date === '2026-08-28' ? 'Freitag' : 'Samstag',
       temp: Math.round(data.daily.temperature_2m_max[i]),
       rain: data.daily.precipitation_probability_max[i] ?? 0,
