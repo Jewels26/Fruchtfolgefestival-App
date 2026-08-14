@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { LINEUP } from '../../data/lineup'
 import { usePatrick } from '../../context/PatrickContext'
 import { getRandomPlayMessage } from '../ui/Patrick'
+import { FESTIVAL_CONFIG, getNow } from '../../utils/festivalConfig'
 import './NowPlayingBar.css'
 
 const FESTIVAL_DATES = { FRI: '2026-08-28', SAT: '2026-08-29' }
@@ -20,17 +21,14 @@ function getAllBands() {
 }
 
 function getNowPlaying() {
-  const now = new Date()
+  const now = getNow()
   const bands = getAllBands()
   return bands.find(b => now >= b.start && now < b.end) || null
 }
 
 function isFestivalActive() {
-  const now = new Date()
-  const year = now.getFullYear()
-  const start = new Date(year, 7, 28, 8, 0)
-  const end   = new Date(year, 7, 30, 23, 59)
-  return now >= start && now <= end
+  const now = getNow()
+  return now >= FESTIVAL_CONFIG.gatesOpen && now <= FESTIVAL_CONFIG.festivalEnd
 }
 
 export default function NowPlayingBar() {

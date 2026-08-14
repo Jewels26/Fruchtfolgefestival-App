@@ -3,6 +3,7 @@ import { LINEUP } from '../../data/lineup'
 import { asset } from '../../utils/assetPath'
 import { usePatrick } from '../../context/PatrickContext'
 import { matchPatrick, SUGGESTED_QUESTIONS } from '../../utils/patrickMatcher'
+import { getNow } from '../../utils/festivalConfig'
 import './Patrick.css'
 
 // ─── Alle Bands flach mit echtem Datum ───
@@ -98,7 +99,7 @@ function weightedPick(list) {
 }
 
 function pickStatus(prevText) {
-  const now = new Date()
+  const now = getNow()
   const active = STATUS_MESSAGES.filter(s => !s.when || s.when(now))
   // Exklusive Stati (z.B. Schlafen) verdrängen die generischen, solang sie aktiv san.
   const exclusive = active.filter(s => s.exclusive)
@@ -140,7 +141,7 @@ function usePatrickAlerts(triggerPatrick) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const now = new Date()
+      const now = getNow()
       const bands = getAllBands()
 
       for (const band of bands) {
@@ -175,7 +176,7 @@ function useFeldkuecheAlert(triggerPatrick) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const now = new Date()
+      const now = getNow()
       for (const closeTime of FELDKUECHE_CLOSE) {
         const key = closeTime.toISOString()
         if (dismissed.includes(key)) continue

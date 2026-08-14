@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { asset } from '../utils/assetPath'
 import { usePatrick } from '../context/PatrickContext'
 import { useWeather } from '../utils/weatherStore'
-import { FESTIVAL_CONFIG } from '../utils/festivalConfig'
+import { FESTIVAL_CONFIG, getNow } from '../utils/festivalConfig'
 import './HomeScreen.css'
 
 // ─── WEATHER ───
@@ -18,7 +18,7 @@ const MOCK_WEATHER = {
 // ─── COUNTDOWN HOOK ───
 function useCountdown(target) {
   const calc = () => {
-    const diff = target - Date.now()
+    const diff = target - getNow().getTime()
     if (diff <= 0) return null
     return {
       days:    Math.floor(diff / 86400000),
@@ -36,7 +36,7 @@ function useCountdown(target) {
 }
 
 function getFestivalState() {
-  const now = Date.now()
+  const now = getNow().getTime()
   if (now < FESTIVAL_CONFIG.gatesOpen)    return 'before'
   if (now <= FESTIVAL_CONFIG.festivalEnd) return 'during'
   return 'after'

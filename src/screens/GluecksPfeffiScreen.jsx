@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { drawPfeffi, getStoredWin, getCooldownRemaining, warmupPfeffi, isWinExpired, PFEFFI_REDEMPTION_WINDOW_MS } from '../utils/pfeffi'
-import { FESTIVAL_CONFIG } from '../utils/festivalConfig'
+import { FESTIVAL_CONFIG, getNow } from '../utils/festivalConfig'
 import './GluecksPfeffiScreen.css'
 
 function useClock() {
-  const [now, setNow] = useState(() => new Date())
+  const [now, setNow] = useState(getNow)
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000)
+    const id = setInterval(() => setNow(getNow()), 1000)
     return () => clearInterval(id)
   }, [])
   return now
