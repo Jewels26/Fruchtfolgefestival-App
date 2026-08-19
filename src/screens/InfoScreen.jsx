@@ -51,11 +51,11 @@ function MedicalRow() {
       <span className="info-row-icon">🩺</span>
       <div className="info-row-text">
         <span className="info-row-title">ERSTE HILFE</span>
+        <MapLink area="festivalground" num={5} />
         <span className="info-row-body">
           Erste-Hilfe-Koffer findest du an der Kasse beim Einlass. Falls grad kein Teammitglied erkennbar ist, unsere medizinische Ersthelferin Linda anrufen:{' '}
           <a href="tel:+491791385851" className="info-row-phone">0179 1385 851</a>
         </span>
-        <MapLink area="festivalground" num={8} />
       </div>
     </div>
   )
@@ -93,6 +93,10 @@ function OpeningHours() {
               <span className="opening-time-val">16:00</span>
             </div>
             <div className="opening-time-row">
+              <span className="opening-time-name">Ende</span>
+              <span className="opening-time-val">00:00</span>
+            </div>
+            <div className="opening-time-row">
               <span className="opening-time-name">Feldküche</span>
               <span className="opening-time-val">16:00–22:00</span>
             </div>
@@ -105,6 +109,10 @@ function OpeningHours() {
             <div className="opening-time-row">
               <span className="opening-time-name">Einlass Festivalgelände</span>
               <span className="opening-time-val">12:00</span>
+            </div>
+            <div className="opening-time-row">
+              <span className="opening-time-name">Ende</span>
+              <span className="opening-time-val">00:00</span>
             </div>
             <div className="opening-time-row">
               <span className="opening-time-name">Feldküche</span>
@@ -234,11 +242,11 @@ function LostAndFound() {
 
   return (
     <div className="card info-section-card">
-      <h3 className="info-section-title">FUNDSACHEN</h3>
+      <h3 className="info-section-title info-section-title--tight">FUNDSACHEN</h3>
+      <MapLink area="festivalground" num={10} />
       <p className="lost-found-hint">
         Gefundene Gegenstände können am <strong>Einlass</strong> abgeholt werden.
       </p>
-      <MapLink area="festivalground" num={2} />
       {items.length === 0 ? (
         <p className="lost-found-empty">Noch keine Fundgegenstände gemeldet.</p>
       ) : (
@@ -246,7 +254,7 @@ function LostAndFound() {
           {items.map(item => (
             <li key={item.id} className="lost-found-item">
               <span className="lost-found-item-name">{item.gegenstand}</span>
-              <span className="lost-found-item-meta">{item.gefunden} · {item.abholort}</span>
+              <span className="lost-found-item-meta">{item.gefunden}</span>
             </li>
           ))}
         </ul>

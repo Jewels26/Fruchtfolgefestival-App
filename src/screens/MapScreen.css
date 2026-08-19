@@ -39,12 +39,88 @@
   overflow: hidden;
   margin-bottom: var(--space-4);
   background: #0a140a;
+  cursor: zoom-in;
 }
 
 .map-image {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.map-zoom-hint {
+  position: absolute;
+  bottom: var(--space-2);
+  right: var(--space-2);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.55);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* ─── Vollbild-Kartenansicht mit Zoom ─── */
+.map-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(5, 10, 5, 0.96);
+  display: flex;
+  flex-direction: column;
+}
+
+.map-lightbox-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-card);
+  border: var(--border-card);
+  color: var(--color-heading);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.map-lightbox-viewport {
+  flex: 1;
+  overflow: hidden;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: var(--space-6) var(--space-4);
+  user-select: none;
+}
+
+.map-lightbox-content {
+  position: relative;
+  width: 100%;
+  transform-origin: center center;
+}
+
+.map-lightbox-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+.map-lightbox-hint {
+  text-align: center;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--color-label);
 }
 
 /* ─── Nummern-Marker auf der Karte ───
@@ -114,10 +190,14 @@
   flex-shrink: 0;
 }
 
-.map-legend-dot--stage  { background: #48D850; box-shadow: 0 0 4px #48D85066; }
-.map-legend-dot--food   { background: #C07030; box-shadow: 0 0 4px #C0703066; }
-.map-legend-dot--drinks { background: #33A3A6; box-shadow: 0 0 4px #33A3A666; }
-.map-legend-dot--toilet { background: #C070E8; box-shadow: 0 0 4px #C070E866; }
+.map-legend-dot--exit {
+  width: 16px;
+  height: 10px;
+  border-radius: 0;
+  background: #3A773C;
+  box-shadow: 0 0 4px #3A773C66;
+  clip-path: polygon(0% 30%, 55% 30%, 55% 0%, 100% 50%, 55% 100%, 55% 70%, 0% 70%);
+}
 
 /* ─── Nummern-Legende (POIs ohne eigene Farbe im Render) ─── */
 .map-poi-legend {

@@ -15,13 +15,27 @@ const MERCH_STAND = {
   location: 'Festivalgelände',
   icon: 'merch',
   description: 'Fruchtfolge zum Anziehen — direkt am Stand, solange der Vorrat reicht.',
-  mapMarker: { area: 'festivalground', num: 9 },
+  mapMarker: { area: 'festivalground', num: 12 },
 }
 
 const MERCH_PRODUCTS = [
   { key: 'shirt', name: 'Shirt', photo: 'Merch_Shirt.jpg' },
   { key: 'hoodie', name: 'Hoodie', photo: 'Merch_Hoodie.jpg' },
 ]
+
+// Eigener Stand-Eintrag statt Teil von STANDS, damit er ganz ans Ende der
+// Liste kann (nach dem Merch-Stand) — siehe FoodScreen() unten.
+const ZAUBERERZELT_STAND = {
+  id: 'wahrsagerzelt',
+  name: 'Zaubererzelt',
+  category: 'attraction',
+  location: 'Festivalgelände',
+  icon: 'wahrsagerzelt',
+  mapMarker: { area: 'festivalground', num: 13 },
+  description: 'Für alle Nerds und Neugierigen — hier gibt\'s Abenteuer und Charakterentwicklung.',
+  highlight: true,
+  items: [],
+}
 
 // Fallback-Items — sichtbar solange das Sheet noch lädt oder für den
 // jeweiligen Stand (noch) keine Zeilen enthält.
@@ -32,7 +46,7 @@ const STANDS = [
     category: 'food',
     location: 'Festivalgelände',
     icon: 'feldkueche',
-    mapMarker: { area: 'festivalground', num: 11 },
+    mapMarker: { area: 'festivalground', num: 4 },
     hours: 'Fr 16–22 Uhr · Sa 12–22 Uhr',
     description: 'Frisch vom Grill und aus der Fritteuse — für alle was dabei.',
     items: [
@@ -53,7 +67,7 @@ const STANDS = [
     category: 'drinks',
     location: 'Festivalgelände',
     icon: 'festivalbar',
-    mapMarker: { area: 'festivalground', num: 10 },
+    mapMarker: { area: 'festivalground', num: 3 },
     sheetTab: 'getraenke',
     description: 'Kalt, laut, gesellig — die Hauptbar des Festivals.',
     items: [
@@ -76,29 +90,19 @@ const STANDS = [
     id: 'zanzibar',
     name: 'Zanzibar',
     category: 'drinks',
-    location: 'Campingplatz',
+    location: 'Festivalgelände',
     icon: 'zanzibar',
-    mapMarker: { area: 'campground', num: 3 },
+    mapMarker: { area: 'festivalground', num: 11 },
     description: 'Bring deine übrigen Schnapsflaschen von daheim mit und spende sie unserer Zanzibar — ausgeschenkt wird gegen eine frei gewählte Spende, was reinkommt bleibt im Festival.',
     highlight: true,
     items: [
-      { name: 'Eigener Alkohol', note: 'Übrige Schnapsflaschen von Zuhause spenden', tags: [] },
+      { name: 'Eigener Alkohol', note: 'Übrige Schnapsflaschen von Zuhause spenden. Abgabe der Flaschen am Einlass', tags: [] },
       { name: 'Barkeeper-Magie', note: '1–2 Barkeeper mixen aus dem was da ist', tags: [] },
       { name: 'Softdrinks', note: 'Zukauf an der Festivalbar nötig', tags: [] },
     ],
     note: 'Softdrinks müssen an der Festivalbar dazugekauft werden. Für den Rest gilt: ihr entscheidet, was es euch wert ist. 🤘',
     // Zanzibar läuft nicht über das Preis-Sheet — BYO-Konzept, keine Verkaufspreise.
     sheetManaged: false,
-  },
-  {
-    id: 'wahrsagerzelt',
-    name: 'Wahrsagerzelt',
-    category: 'attraction',
-    location: 'Festivalgelände',
-    icon: 'wahrsagerzelt',
-    mapMarker: { area: 'festivalground', num: 1 },
-    description: '',
-    items: [],
   },
 ]
 
@@ -336,6 +340,7 @@ export default function FoodScreen() {
           <StandCard key={stand.id} stand={stand} items={itemsForStand(stand, byStand, getraenkeItems)} />
         ))}
         <MerchCard merchSizes={merchSizes} />
+        <StandCard stand={ZAUBERERZELT_STAND} items={ZAUBERERZELT_STAND.items} />
       </div>
     </div>
   )

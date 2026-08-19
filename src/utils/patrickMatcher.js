@@ -124,11 +124,11 @@ const RESPONSES = [
   },
   {
     keywords: ['wann fängt', 'uhrzeit', 'anfang', 'beginn', 'öffnungszeit', 'los geht', 'öffnet', 'einlasszeit'],
-    text: `Band-Zeiten findst im Lineup-Tab. Campingplatz macht Freitag um 14 Uhr auf, Festivalgelände um 16 Uhr. Samstag geht's Festivalgelände-mäßig um 12 Uhr los. Schluss is in da Nacht von Samstag auf Sonntag um Mitternacht.`,
+    text: `Band-Zeiten findst im Lineup-Tab. Campingplatz macht Freitag um 14 Uhr auf, Festivalgelände um 16 Uhr. Samstag geht's Festivalgelände-mäßig um 12 Uhr los. Schluss is an beiden Tagen um Mitternacht – Lärmschutz, mia wolln nächstes Jahr wiederkomma.`,
   },
   {
     keywords: ['ende', 'aufhören', 'schluss', 'letzte band', 'mitternacht', 'wann vorbei'],
-    text: `Offiziell is um Mitternacht Schluss. Danach gilt aufm Campingplatz Nachtruhe bis 8 in da Friah, Musik nur mehr in Gesprächslautstärke. Wer no ned müd is, woaß ja wo'd Zanzibar is. 🌙`,
+    text: `Offiziell is an beiden Tagen um Mitternacht Schluss – ja, a am Freitag. Danach gilt aufm Campingplatz Nachtruhe bis 8 in da Friah, Musik nur mehr in Gesprächslautstärke. Wer no ned müd is, woaß ja wo'd Zanzibar is. 🌙`,
   },
   {
     keywords: ['nachtruhe', 'ruhe campingplatz', 'laut nachts', 'musik campingplatz', 'lautstärke', 'wie laut', 'ruhe'],
@@ -238,6 +238,18 @@ const RESPONSES = [
     ],
   },
   {
+    keywords: [
+      'wie lange gibt es essen', 'wie lange gibts essen', 'wie lange essen', 'wie lang essen',
+      'ab wann gibt es essen', 'ab wann gibts essen', 'ab wann essen',
+      'bis wann gibt es essen', 'bis wann gibts essen', 'bis wann essen',
+      'wann gibt es essen', 'wann gibts essen', 'wann essen',
+      'feldküche öffnungszeiten', 'öffnungszeiten feldküche', 'feldküche geöffnet',
+      'feldküche zeiten', 'wie lange feldküche',
+      'wann macht die feldküche auf', 'wann schließt die feldküche',
+    ],
+    text: `D'Feldküche hat auf: Freitag 16 bis 22 Uhr, Samstag 12 bis 22 Uhr. Danach bleibt da Magen leer, oder greift zu Pfeffi und Zanzibar. 🍽️`,
+  },
+  {
     keywords: ['vegan', 'vegetarisch', 'veggie', 'pflanzlich'],
     text: `Geht. Bratwurst gibt's a vegan und veggie, Falafel sowieso. Pommes, Mais, Obst eh klar.`,
   },
@@ -315,11 +327,11 @@ const RESPONSES = [
   },
   {
     keywords: ['infield', 'vor der bühne getränke', 'eigene getränke bühne', 'bier vor die bühne', 'getränke vor die bühne', 'alkohol vor die bühne'],
-    text: `Infield is da Bereich direkt vor da Bühne. Do gilt: koa eigenen Getränk, gibt's bei uns günstig. Dafür stehst kostenloses Trinkwasser bereit.`,
+    text: `Infield is da Bereich direkt vor da Bühne. Do gilt: koa eigenen Getränk, gibt's bei uns günstig. Taschen bis zur Größe von am kloan Rucksack derfst mitnehma, ois wos eher noch Umzugskarton ausschaut bleibt draußen. Unser Security schaut kurz rein, is reine Fürsorge. Dafür stehst kostenloses Trinkwasser bereit.`,
   },
   {
     keywords: ['zahlen', 'bezahlen', 'karte', 'bargeld', 'cash'],
-    text: `Bei uns gilt: Cash is King. Ausschließlich bar, koane Karte, koa Handy, koa Kleeblatt als Zahlungsmittel. An Geldautomat gibt's aufm Gelände a ned, also vorher gnua abheben. 💶`,
+    text: `Gibt's jetzt beides! An Einlass, Bar, Essensstand und Merch kannst mit Karte zahln. Bargeld is uns trotzdem liaber, wegen der Gebühren – des fehlt uns sonst beim Line-up. Nur d'Zanzibar läuft ausschließlich in Bargeld, do steht koa Kartenlesegerät. An Geldautomat gibt's aufm Gelände koan, also vorher gnua abheben. 💶`,
   },
   {
     keywords: ['was kostet ein bier', 'was kostet ein getränk', 'was kostet ein pfeffi', 'wie teuer ist ein bier', 'bierpreis', 'preisliste', 'getränkepreise', 'kosten', 'preis', 'pfeffi'],
@@ -392,8 +404,8 @@ const RESPONSES = [
     text: `Verbandskästen findst am Einlass, und unsere Ersthelferin is a vor Ort. Wenn's ernst is: 112. Im Zweifel imma 112. Trink Wasser, iss wos, schlaf a bissl – d'meisten Notfälle san eh nur schlecht getarnte Dehydrierung. 🚑`,
   },
   {
-    keywords: ['awareness', 'belästigt', 'diskriminierung', 'übergriff', 'fühle mich nicht wohl'],
-    text: `Unser gesamtes Team is Awareness-Team, erkennst an Badges und Crew-Shirts, dazu d'Ordner:innen in Uniform. Alle san g'schult, alle san ansprechbar. Wenn di wos komisch vorkommt, sich jemand daneben benimmt, oder d'brauchst einfach wen: sprecht uns an. Egal wie kloa dir d'Sach vorkommt. 🧡`,
+    keywords: ['awareness', 'belästigt', 'diskriminierung', 'übergriff', 'fühle mich nicht wohl', 'haarreif'],
+    text: `Unser gesamtes Team is Awareness-Team, erkennst an Badges und Crew-Shirts, dazu d'Ordner:innen in Uniform. Neu heuer: dedizierte Awareness-Leid, de ganzen Obend nix anders tean als auf eich zum aufpassn – erkennst an am eindeutigen Haarreif. Aber a ohne Haarreif: jede Person mit Crew-Shirt oder Badge kannst ansprechen. Alle san g'schult, alle san ansprechbar. Wenn di wos komisch vorkommt, sich jemand daneben benimmt, oder d'brauchst einfach wen: sprecht uns an. Egal wie kloa dir d'Sach vorkommt. 🧡`,
   },
   {
     keywords: ['notruf', '112', '110', 'polizei', 'feuerwehr'],
@@ -493,8 +505,9 @@ const RESPONSES = [
   {
     keywords: ['wascht', 'hofoger'],
     texts: [
-      `Wascht. A.k.a. da Hofoger. Gründungsmitglied.`,
+      `Wascht. A.k.a. da Hofoger, unser Festival Wizzerd. Gründungsmitglied.`,
       `Singt nachts auf Festivals des Asterix-Löwen-Lied mit voller Überzeugung. Frag mi ned warum.`,
+      `Offiziell: Festival Wizzerd. Was des genau heißt, woaß vermutlich nur er selber.`,
     ],
   },
   {
@@ -569,7 +582,7 @@ const RESPONSES = [
     text: `Wennst dem Maze a Martin Maske aufsetzt merkt niemand den Unterschied. Ned mal auf da Bühne. Wurde getestet.`,
   },
   {
-    keywords: ['asterix lied', 'löwen lied', 'wascht singt asterix'],
+    keywords: ['asterix lied', 'löwen lied', 'wascht singt asterix', 'wascht nachts', 'was macht wascht nachts'],
     text: `Spät nachts singt Wascht des Lied vom Löwen aus Asterix und Kleopatra. Mit voller Überzeugung. Frag ned warum. Frag wann.`,
   },
 

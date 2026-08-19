@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { LINEUP } from '../../data/lineup'
-import { usePatrick } from '../../context/PatrickContext'
-import { getRandomPlayMessage } from '../ui/Patrick'
+import { usePatrick } from '../../context/usePatrick'
+import { getRandomPlayMessage } from '../../utils/playMessages'
 import { FESTIVAL_CONFIG, getNow } from '../../utils/festivalConfig'
 import './NowPlayingBar.css'
 
@@ -9,12 +9,12 @@ const FESTIVAL_DATES = { FRI: '2026-08-28', SAT: '2026-08-29' }
 
 function getAllBands() {
   return Object.entries(LINEUP).flatMap(([day, bands]) =>
-    bands.map((b, i) => {
+    bands.map(b => {
       const start = new Date(`${FESTIVAL_DATES[day]}T${b.time}:00`)
-      const next = bands[i + 1]
-      const end = next
-        ? new Date(`${FESTIVAL_DATES[day]}T${next.time}:00`)
-        : new Date(start.getTime() + 90 * 60 * 1000)
+      let end = new Date(`${FESTIVAL_DATES[day]}T${b.endTime}:00`)
+      // Mad Mother (Samstag) endet erst nach Mitternacht — endTime "00:00" liegt
+      // dann kalendarisch vor dem Start, muss also auf den nächsten Tag rollen.
+      if (end <= start) end = new Date(end.getTime() + 24 * 60 * 60 * 1000)
       return { ...b, day, start, end }
     })
   )

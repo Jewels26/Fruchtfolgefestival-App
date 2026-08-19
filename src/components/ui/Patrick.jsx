@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { LINEUP } from '../../data/lineup'
 import { asset } from '../../utils/assetPath'
-import { usePatrick } from '../../context/PatrickContext'
+import { usePatrick } from '../../context/usePatrick'
 import { matchPatrick, SUGGESTED_QUESTIONS } from '../../utils/patrickMatcher'
 import { getNow } from '../../utils/festivalConfig'
+import { loadSeenSet, saveSeenSet } from '../../utils/persistedSet'
 import './Patrick.css'
 
 // ─── Alle Bands flach mit echtem Datum ───
@@ -21,16 +22,19 @@ function getAllBands() {
 }
 
 // ─── Sprüche pro Trigger ───
+// 15/5 bekommen die tatsächliche Restzeit übergeben (nicht starr 15/5), weil die
+// Fensterprüfung inzwischen einen ganzen Zeitraum statt eines exakten Zeitpunkts
+// abdeckt (siehe bandAlertTier) — man kann also auch bei 12 oder 3 Minuten reinschauen.
 const MESSAGES = {
-  15: (name) => [
-    `⚡ Noch 15 Minuten bis ${name} — pack dein Bier zusammen und komm zur Bühne!`,
-    `🎸 ${name} startet in 15 Minuten. Jetzt ist ein guter Zeitpunkt, sich einen guten Platz zu sichern.`,
-    `🌿 15 Minuten noch! ${name} wartet auf euch. Ab zur Bühne!`,
+  15: (name, mins) => [
+    `⚡ Noch ${mins} Minuten bis ${name} — pack dein Bier zusammen und komm zur Bühne!`,
+    `🎸 ${name} startet in ${mins} Minuten. Jetzt ist ein guter Zeitpunkt, sich einen guten Platz zu sichern.`,
+    `🌿 ${mins} Minuten noch! ${name} wartet auf euch. Ab zur Bühne!`,
   ],
-  5: (name) => [
-    `🔥 Noch 5 Minuten bis ${name} losgeht — wo bist du?!`,
-    `⏰ ${name} in 5 Minuten! Letzte Chance für ein Bier vorher.`,
-    `🤘 5 Minuten! ${name} stimmt schon die Instrumente. Beeil dich!`,
+  5: (name, mins) => [
+    `🔥 Noch ${mins} Minuten bis ${name} losgeht — wo bist du?!`,
+    `⏰ ${name} in ${mins} Minuten! Letzte Chance für ein Bier vorher.`,
+    `🤘 ${mins} Minuten! ${name} stimmt schon die Instrumente. Beeil dich!`,
   ],
   0: (name) => [
     `🎶 ${name} legt JETZT los! Ab zur Bühne!`,
@@ -38,13 +42,6 @@ const MESSAGES = {
     `🎸 ${name} ist gestartet! Wer noch nicht da ist — schnell!`,
   ],
 }
-
-const PLAY_BUTTON_MESSAGES = (name) => [
-  `Haha, ich spiel da nix ab. 🎸 ${name} spielt LIVE auf der Bühne — da musst du schon hingehen!`,
-  `Des is koa Spotify. ${name} macht das gerade live für dich — ab zur Bühne!`,
-  `Streaming gibt's dahoam. Hier spielen echte Menschen! ${name} ist gerade drüben. 🤘`,
-  `I bin a Festival-App, kein Musikplayer! Geh hin, ${name} wartet ned ewig.`,
-]
 
 // Zeitfenster helfen: Uhrzeit-Ranges, die über Mitternacht wrappen (z.B. 21–2 Uhr),
 // und der Samstag-Vormittag zwischen Nachtruhe-Ende (8 Uhr) und Einlass (12 Uhr).
@@ -127,73 +124,106 @@ function splitIntoChunks(text) {
   return parts
 }
 
-function getRandomMessage(type, bandName) {
-  return getRandomFrom(MESSAGES[type](bandName))
-}
-
-function getRandomPlayMessage(bandName) {
-  return getRandomFrom(PLAY_BUTTON_MESSAGES(bandName))
+function getRandomMessage(type, bandName, mins) {
+  return getRandomFrom(MESSAGES[type](bandName, mins))
 }
 
 // ─── Band-Countdown-Alerts ───
-function usePatrickAlerts(triggerPatrick) {
-  const [dismissed, setDismissed] = useState([])
+// Statt eines exakten 60-Sekunden-Zeitpunkts deckt jede Stufe einen ganzen
+// Zeitraum ab: 15er-Fenster (15 bis 5 Min. vorher), 5er-Fenster (5 bis 0 Min.
+// vorher), 0er-Fenster (Start bis 5 Min. danach). So kommt die Erinnerung auch
+// an, wenn man die App erst mittendrin öffnet, statt nur in der einen
+// zufälligen Minute, in der der Timer zufällig tickt.
+function bandAlertTier(diffMinutes) {
+  if (diffMinutes <= 15.5 && diffMinutes > 5.5) return 15
+  if (diffMinutes <= 5.5 && diffMinutes > -0.5) return 5
+  if (diffMinutes <= 0.5 && diffMinutes >= -5) return 0
+  return null
+}
 
+const BAND_ALERTS_STORAGE_KEY = 'band-alerts'
+
+function usePatrickAlerts(triggerPatrick) {
   useEffect(() => {
-    const interval = setInterval(() => {
+    const seen = loadSeenSet(BAND_ALERTS_STORAGE_KEY)
+
+    function check() {
       const now = getNow()
       const bands = getAllBands()
 
       for (const band of bands) {
-        for (const minutes of [15, 5, 0]) {
-          const triggerKey = `${band.id}-${minutes}`
-          if (dismissed.includes(triggerKey)) continue
+        const diff = (band.date - now) / 1000 / 60
+        const tier = bandAlertTier(diff)
+        if (tier === null) continue
 
-          const diff = (band.date - now) / 1000 / 60
-          const inWindow = diff <= minutes + 0.5 && diff >= minutes - 0.5
+        const key = `${band.id}-${tier}`
+        if (seen.has(key)) continue
 
-          if (inWindow) {
-            const earlierKeys = [15, 5, 0]
-              .filter(m => m > minutes)
-              .map(m => `${band.id}-${m}`)
-            setDismissed(d => [...new Set([...d, ...earlierKeys, triggerKey])])
-            triggerPatrick(getRandomMessage(minutes, band.name))
-            break
-          }
+        // Verpasste frühere Stufen (z.B. 15er, wenn man erst im 5er-Fenster
+        // reinschaut) gelten als erledigt, damit sie nicht nachträglich noch anspringen.
+        for (const t of [15, 5, 0]) {
+          if (t > tier) seen.add(`${band.id}-${t}`)
         }
-      }
-    }, 30000)
+        seen.add(key)
+        saveSeenSet(BAND_ALERTS_STORAGE_KEY, seen)
 
-    return () => clearInterval(interval)
-  }, [dismissed, triggerPatrick])
+        const mins = Math.max(1, Math.round(diff))
+        triggerPatrick(getRandomMessage(tier, band.name, mins))
+        break
+      }
+    }
+
+    check()
+    const interval = setInterval(check, 30000)
+    const onVisible = () => { if (document.visibilityState === 'visible') check() }
+    document.addEventListener('visibilitychange', onVisible)
+
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [triggerPatrick])
 }
 
-// ─── Feldküche-Reminder: 1 Std. vor Schluss (22 Uhr) ───
+// ─── Feldküche-Reminder: Zeitfenster vor Schluss (22 Uhr) ───
 const FELDKUECHE_CLOSE = Object.values(FESTIVAL_DATES).map(date => new Date(`${date}T22:00:00`))
 
-function useFeldkuecheAlert(triggerPatrick) {
-  const [dismissed, setDismissed] = useState([])
+const FELDKUECHE_ALERT_STORAGE_KEY = 'feldkueche-alert'
 
+function useFeldkuecheAlert(triggerPatrick) {
   useEffect(() => {
-    const interval = setInterval(() => {
+    const seen = loadSeenSet(FELDKUECHE_ALERT_STORAGE_KEY)
+
+    function check() {
       const now = getNow()
       for (const closeTime of FELDKUECHE_CLOSE) {
         const key = closeTime.toISOString()
-        if (dismissed.includes(key)) continue
+        if (seen.has(key)) continue
 
         const diff = (closeTime - now) / 1000 / 60
-        const inWindow = diff <= 60.5 && diff >= 59.5
+        const inWindow = diff <= 90.5 && diff >= 15
 
         if (inWindow) {
-          setDismissed(d => [...d, key])
-          triggerPatrick('Letzte Chance auf a warme Mahlzeit: d\'Feldküche macht in ana Stund zu, um 22 Uhr. Wer no wos essen mog, sollt jetzt lossgeh. 🌭')
+          seen.add(key)
+          saveSeenSet(FELDKUECHE_ALERT_STORAGE_KEY, seen)
+          const mins = Math.max(1, Math.round(diff))
+          const timeText = mins >= 55 ? 'in ana Stund' : `in ca. ${mins} Minuten`
+          triggerPatrick(`Letzte Chance auf a warme Mahlzeit: d'Feldküche macht ${timeText} zu, um 22 Uhr. Wer no wos essen mog, sollt jetzt lossgeh. 🌭`)
           break
         }
       }
-    }, 30000)
+    }
 
-    return () => clearInterval(interval)
-  }, [dismissed, triggerPatrick])
+    check()
+    const interval = setInterval(check, 30000)
+    const onVisible = () => { if (document.visibilityState === 'visible') check() }
+    document.addEventListener('visibilitychange', onVisible)
+
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [triggerPatrick])
 }
 
 const WELCOME = {
@@ -254,7 +284,7 @@ export default function Patrick() {
       setHasAlert(false)
       clearNotification()
     }
-  }, [open])
+  }, [open, clearNotification])
 
   // Scroll-Logik:
   // • Während Patrick tippt oder noch Chunks kommen → ans Ende scrollen (Typing-Indikator sichtbar)
@@ -389,5 +419,3 @@ export default function Patrick() {
     </>
   )
 }
-
-export { getRandomPlayMessage }

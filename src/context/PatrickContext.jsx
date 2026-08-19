@@ -1,7 +1,9 @@
-import { createContext, useContext, useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { fetchAnnouncements, POLL_INTERVAL } from '../utils/announcements'
+import { loadSeenSet, saveSeenSet } from '../utils/persistedSet'
+import { PatrickContext } from './patrickContextCore'
 
-const PatrickContext = createContext()
+const ANNOUNCEMENTS_STORAGE_KEY = 'announcements'
 
 export function PatrickProvider({ children }) {
   const [open, setOpen] = useState(false)
@@ -9,7 +11,7 @@ export function PatrickProvider({ children }) {
   const [notification, setNotification] = useState(null)
   const [announcements, setAnnouncements] = useState([])
   const [announcementsLoading, setAnnouncementsLoading] = useState(true)
-  const seenPatrickIds = useRef(new Set())
+  const seenPatrickIds = useRef(loadSeenSet(ANNOUNCEMENTS_STORAGE_KEY))
 
   function triggerPatrick(message) {
     setExternalMessage(message)
@@ -35,6 +37,7 @@ export function PatrickProvider({ children }) {
       for (const ann of data) {
         if (ann.patrick && !seenPatrickIds.current.has(ann.id)) {
           seenPatrickIds.current.add(ann.id)
+          saveSeenSet(ANNOUNCEMENTS_STORAGE_KEY, seenPatrickIds.current)
           triggerPatrick(ann.patrick)
         }
       }
@@ -54,5 +57,3 @@ export function PatrickProvider({ children }) {
     </PatrickContext.Provider>
   )
 }
-
-export const usePatrick = () => useContext(PatrickContext)

@@ -1,8 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { drawPfeffi, getStoredWin, getCooldownRemaining, warmupPfeffi, isWinExpired, PFEFFI_REDEMPTION_WINDOW_MS } from '../utils/pfeffi'
+import { drawPfeffi, getStoredWin, getCooldownRemaining, warmupPfeffi, isWinExpired, getRedemptionDeadline, isUrgentRedemption, isDelayedRedemption, PFEFFI_LAST_DRAW } from '../utils/pfeffi'
 import { FESTIVAL_CONFIG, getNow } from '../utils/festivalConfig'
+import { usePatrick } from '../context/usePatrick'
 import './GluecksPfeffiScreen.css'
+
+// ─── Easter Egg: Samstagvormittag (ab 7 Uhr — davor zählt noch als Nacht), vor Bar-Öffnung, und schon am Pfeffi-Würfeln ───
+const SATURDAY_MORNING_COMMENTS = [
+  `Aha, Zahnbürschtl vergessn? 🪥`,
+  `Vor 12 scho ans Pfeffi denken? Respekt fürn Ehrgeiz, aber d'Bar schlaft no. 😴`,
+  `Host as Frühstück ausfoin lassn, oder wieso pressiert's mit'm Pfeffi scho so früh? 🥐`,
+  `Die Sonn is grad erst aufgangen und du bist scho am Würfeln. I mog des. 🌅`,
+]
+
+function isSaturdayMorning(now) {
+  return now.getDay() === 6 && now.getHours() >= 7 && now.getHours() < 12
+}
 
 function useClock() {
   const [now, setNow] = useState(getNow)
@@ -23,14 +36,22 @@ function formatWinTimestamp(iso) {
   })
 }
 
+// Cooldown ist immer < 30 Min. (kein Stundenanteil), aber die Einlöse-Restzeit
+// kann bei einem Gewinn während einer Schließzeit auf mehrere Stunden anwachsen
+// (siehe isDelayedRedemption) — deshalb Stunden mit anzeigen, wenn nötig.
 function formatCooldown(ms) {
   const totalSec = Math.ceil(ms / 1000)
-  return `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`
+  const h = Math.floor(totalSec / 3600)
+  const m = Math.floor((totalSec % 3600) / 60)
+  const s = totalSec % 60
+  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  return `${m}:${String(s).padStart(2, '0')}`
 }
 
 export default function GluecksPfeffiScreen() {
   const navigate = useNavigate()
   const now = useClock()
+  const { triggerPatrick } = usePatrick()
   const [win, setWin] = useState(getStoredWin)
   const [trying, setTrying] = useState(false)
   const [justLost, setJustLost] = useState(false)
@@ -50,8 +71,14 @@ export default function GluecksPfeffiScreen() {
 
   const festivalNotStarted = now < FESTIVAL_CONFIG.gatesOpen
   const festivalOver = now > FESTIVAL_CONFIG.festivalEnd
+  // Samstagnacht macht die Bar endgültig zu (keine Wiedereröffnung mehr) —
+  // ab PFEFFI_LAST_DRAW lohnt sich ein neuer Wurf nicht mehr sicher.
+  const drawingClosedForNight = !festivalOver && now >= PFEFFI_LAST_DRAW
 
   async function handleTry() {
+    if (isSaturdayMorning(now)) {
+      triggerPatrick(SATURDAY_MORNING_COMMENTS[Math.floor(Math.random() * SATURDAY_MORNING_COMMENTS.length)])
+    }
     setTrying(true)
     setJustLost(false)
     setJustError(false)
@@ -82,12 +109,16 @@ export default function GluecksPfeffiScreen() {
   }
 
   if (win?.won) {
-    const msLeft = new Date(win.ts).getTime() + PFEFFI_REDEMPTION_WINDOW_MS - now.getTime()
+    const msLeft = getRedemptionDeadline(win.ts).getTime() - now.getTime()
+    const urgent = isUrgentRedemption(win.ts)
+    const delayed = isDelayedRedemption(win.ts)
     return (
       <div className="screen pfeffi-screen fade-in">
         <div className="card pfeffi-win-card">
           <p className="pfeffi-win-headline">🎉 GLÜCKS-PFEFFI GEWONNEN! 🎉</p>
           <p className="pfeffi-win-instruction">Zeig dieses Display an der Bar — dein Pfeffi wartet dort auf di.</p>
+          {urgent && <p className="pfeffi-win-urgent">Jetzt aber no schnell einlösen — d'Bar macht gleich zua! ⏱️</p>}
+          {delayed && <p className="pfeffi-win-note">D'Bar hat grad zua — deine Einlösefrist startet erst, sobald sie wieder aufmacht.</p>}
           <div className="pfeffi-win-divider" />
           <p className="pfeffi-live-clock">{formatClock(now)}</p>
           <p className="pfeffi-win-ts">Gewonnen am {formatWinTimestamp(win.ts)}</p>
@@ -122,7 +153,13 @@ export default function GluecksPfeffiScreen() {
         </div>
       )}
 
-      {!festivalNotStarted && !festivalOver && (
+      {drawingClosedForNight && (
+        <div className="card pfeffi-status-card">
+          <p>Fürs Glücks-Pfeffi is heid Nacht Schluss — d'Bar macht gleich endgültig zua. War a schöns Fest! 🍀</p>
+        </div>
+      )}
+
+      {!festivalNotStarted && !festivalOver && !drawingClosedForNight && (
         <div className="card pfeffi-action-card">
           {trying && <p className="pfeffi-loading">Würfel rolln... 🎲</p>}
 

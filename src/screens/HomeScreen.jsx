@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { asset } from '../utils/assetPath'
-import { usePatrick } from '../context/PatrickContext'
+import { usePatrick } from '../context/usePatrick'
 import { useWeather } from '../utils/weatherStore'
 import { FESTIVAL_CONFIG, getNow } from '../utils/festivalConfig'
 import './HomeScreen.css'
@@ -17,7 +17,7 @@ const MOCK_WEATHER = {
 
 // ─── COUNTDOWN HOOK ───
 function useCountdown(target) {
-  const calc = () => {
+  const calc = useCallback(() => {
     const diff = target - getNow().getTime()
     if (diff <= 0) return null
     return {
@@ -26,12 +26,12 @@ function useCountdown(target) {
       minutes: Math.floor((diff / 60000) % 60),
       seconds: Math.floor((diff / 1000) % 60),
     }
-  }
+  }, [target])
   const [t, setT] = useState(calc)
   useEffect(() => {
     const id = setInterval(() => setT(calc()), 1000)
     return () => clearInterval(id)
-  }, [])
+  }, [calc])
   return t
 }
 

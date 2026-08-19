@@ -80,6 +80,20 @@
   font-weight: 600;
 }
 
+.pfeffi-win-urgent {
+  font-size: var(--text-sm);
+  color: var(--color-emergency);
+  margin-top: var(--space-3);
+  font-weight: 700;
+}
+
+.pfeffi-win-note {
+  font-size: var(--text-xs);
+  color: var(--color-label);
+  margin-top: var(--space-3);
+  line-height: 1.5;
+}
+
 .pfeffi-win-divider {
   height: 1px;
   background: var(--color-accent-dim);

@@ -1,4 +1,4 @@
-import { useTheme } from '../../context/ThemeContext'
+import { useTheme } from '../../context/useTheme'
 import { asset } from '../../utils/assetPath'
 import './Header.css'
 

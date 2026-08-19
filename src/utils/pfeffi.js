@@ -13,6 +13,92 @@ export const PFEFFI_COOLDOWN_MS = 30 * 60 * 1000 // 30 Minuten — muss zu apps-
 // vorgezeigt wird.
 export const PFEFFI_REDEMPTION_WINDOW_MS = 30 * 60 * 1000
 
+// Letzter möglicher Zeitpunkt zum Würfeln: Samstagnacht macht die Bar
+// endgültig zu (keine Wiedereröffnung wie zwischen Freitag und Samstag) —
+// ab hier reicht die Zeit nicht mehr sicher für Würfeln + Weg zur Bar.
+export const PFEFFI_LAST_DRAW = new Date(2026, 7, 29, 23, 50, 0)
+
+// Bar-Öffnungszeiten — muss zu "FESTIVAL ZEITEN" in InfoScreen.jsx passen
+// (Einlass Festivalgelände bis Ende/00:00, an beiden Tagen). Tageswoche statt
+// Kalenderdatum, damit der Testmodus (echter Testlauf 2 Wochen vorher, aber
+// gleicher Wochentag) automatisch mitfunktioniert, ohne den Testmodus-Offset
+// hier extra kennen zu müssen — win.ts kommt vom Server als echte Uhrzeit,
+// und die liegt im Testlauf ebenfalls auf einem Freitag/Samstag.
+function isBarOpenAt(date) {
+  const day = date.getDay() // 5 = Freitag, 6 = Samstag
+  const hour = date.getHours()
+  if (day === 5) return hour >= 16
+  if (day === 6) return hour >= 12
+  return false
+}
+
+// Mitternacht nach `date` — der Schlusszeitpunkt der laufenden Bar-Sitzung.
+function sessionCloseAt(date) {
+  const close = new Date(date)
+  close.setDate(close.getDate() + 1)
+  close.setHours(0, 0, 0, 0)
+  return close
+}
+
+// Nächster Bar-Öffnungszeitpunkt ab `date` (nur relevant, wenn die Bar bei
+// `date` noch zu hat — Freitag vor 16 Uhr oder Samstag vor 12 Uhr). Gibt
+// `null` zurück, wenn es keine weitere Öffnung mehr gibt (nach Samstagnacht).
+function nextBarOpen(date) {
+  const day = date.getDay()
+  const hour = date.getHours()
+  const openHour = day === 5 && hour < 16 ? 16 : day === 6 && hour < 12 ? 12 : null
+  if (openHour === null) return null
+  const opened = new Date(date)
+  opened.setHours(openHour, 0, 0, 0)
+  return opened
+}
+
+/**
+ * Frist, bis zu der ein Gewinn eingelöst werden kann. Zwei Fälle:
+ * - Gewinn gezogen während die Bar offen hat, aber das 30-Minuten-Fenster
+ *   reicht über den Bar-Schluss hinaus (kurz vor Mitternacht, Freitag wie
+ *   Samstag): Frist endet hart mit dem Schluss, keine Verlängerung auf den
+ *   nächsten Tag — siehe isUrgentRedemption für den zugehörigen UI-Hinweis.
+ * - Gewinn gezogen während einer Schließzeit (z.B. Samstagnacht/-vormittag
+ *   vor 12 Uhr, wenn die Bar noch nicht wieder auf hat): Frist beginnt erst
+ *   mit der nächsten Öffnung — siehe isDelayedRedemption. Gibt es keine
+ *   nächste Öffnung mehr (nach Samstagnacht ist endgültig Schluss), ist die
+ *   Frist sofort um.
+ */
+export function getRedemptionDeadline(ts) {
+  const won = new Date(ts)
+
+  if (isBarOpenAt(won)) {
+    const naive = new Date(won.getTime() + PFEFFI_REDEMPTION_WINDOW_MS)
+    return isBarOpenAt(naive) ? naive : sessionCloseAt(won)
+  }
+
+  const reopen = nextBarOpen(won)
+  return reopen ? new Date(reopen.getTime() + PFEFFI_REDEMPTION_WINDOW_MS) : won
+}
+
+/**
+ * True, wenn das Zeitfenster über den Bar-Schluss hinausreicht und die Frist
+ * deshalb kürzer als die normalen 30 Minuten ausfällt — Signal für die UI,
+ * statt der normalen Restzeit-Anzeige auf Eile hinzuweisen ("jetzt aber
+ * schnell einlösen").
+ */
+export function isUrgentRedemption(ts) {
+  const won = new Date(ts)
+  if (!isBarOpenAt(won)) return false
+  const naive = new Date(won.getTime() + PFEFFI_REDEMPTION_WINDOW_MS)
+  return !isBarOpenAt(naive)
+}
+
+/**
+ * True, wenn der Gewinn während einer Schließzeit gezogen wurde und die
+ * Frist deshalb erst mit der nächsten Bar-Öffnung zu laufen beginnt —
+ * Signal für einen Hinweis auf dem Gewinn-Ticket.
+ */
+export function isDelayedRedemption(ts) {
+  return !isBarOpenAt(new Date(ts))
+}
+
 // Apps Script Web Apps haben einen bekannten "Cold Start" — die erste Anfrage
 // nach einer Ruhephase kann mehrere Sekunden dauern. Nach REQUEST_TIMEOUT_MS
 // brechen wir ab, statt die App unbegrenzt warten zu lassen.
@@ -21,10 +107,10 @@ const REQUEST_TIMEOUT_MS = 10000
 const STORAGE_WIN_KEY = 'pfeffi_win'
 const STORAGE_LAST_TRY_KEY = 'pfeffi_last_try'
 
-/** Ist ein gespeicherter Gewinn älter als das Einlöse-Zeitfenster? */
+/** Ist ein gespeicherter Gewinn über seine Einlösefrist hinaus? */
 export function isWinExpired(win) {
   if (!win?.won || !win.ts) return false
-  return Date.now() - new Date(win.ts).getTime() > PFEFFI_REDEMPTION_WINDOW_MS
+  return Date.now() > getRedemptionDeadline(win.ts).getTime()
 }
 
 /** Liest einen bereits gespeicherten Gewinn aus localStorage (oder null). */

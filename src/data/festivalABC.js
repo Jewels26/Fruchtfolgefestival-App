@@ -4,6 +4,16 @@
 
 export const FESTIVAL_ABC = [
   {
+    id: 'app',
+    letter: 'A',
+    title: 'App',
+    blocks: [
+      { type: 'p', text: `**Sie ist fertig!** Unsere Festival-App gibt's ab jetzt hier: [app.fruchtfolge.live](https://app.fruchtfolge.live)` },
+      { type: 'p', text: `Einfach draufgehen, herunterladen, installieren, fertig. Kein Appstore, kein Konto, keine Anmeldung mit Blutprobe.` },
+      { type: 'p', text: `Drin sind Timetable, Infos und alles, was ihr sonst über den Acker hinweg brüllen müsstet. Am schlauesten installiert ihr sie **vor** der Anreise, dann habt ihr sie schon, wenn ihr sie braucht.` },
+    ],
+  },
+  {
     id: 'anreise-auto',
     letter: 'A',
     title: 'Anreise mit dem Auto',
@@ -38,6 +48,8 @@ export const FESTIVAL_ABC = [
     title: 'Awareness',
     blocks: [
       { type: 'p', text: `Unser gesamtes Team ist Awareness-Team. **Alle Helfer:innen erkennt ihr an Badges und Crew-Shirts**, dazu kommen die offiziellen Ordner:innen in Uniform. Alle sind geschult, alle sind ansprechbar, und alle können jederzeit unsere Hauptansprechpartnerin dazuholen.` },
+      { type: 'p', text: `Neu und nicht zu übersehen: Wir haben dieses Jahr **dedizierte Awareness-Leute, die den ganzen Abend nichts anderes tun, als auf euch zu achten**. Erkennen könnt ihr sie an einem **eindeutigen Haarreif** – man kann sie schlicht nicht verwechseln. Wenn ihr Hilfe braucht, haltet einfach Ausschau nach dem Kopfschmuck.` },
+      { type: 'p', text: `Und es bleibt dabei: **Ihr könnt jede Person mit Crew-Shirt oder Badge ansprechen**, egal ob mit oder ohne Haarreif. Wir kümmern uns dann sofort darum.` },
       { type: 'p', text: `Wenn euch etwas komisch vorkommt, wenn sich jemand daneben benimmt, wenn ihr euch unwohl fühlt oder wenn ihr einfach jemanden braucht: **Sprecht uns an.** Egal wie klein euch die Sache vorkommt. Dafür sind wir da.` },
     ],
   },
@@ -62,10 +74,15 @@ export const FESTIVAL_ABC = [
   {
     id: 'bargeld',
     letter: 'B',
-    title: 'Bargeld',
+    title: 'Bargeld (und Karte!)',
     blocks: [
-      { type: 'p', text: `**Bei uns gilt: Cash is King.** Auf dem ganzen Gelände – Kasse, Getränke, Essen, Merch – wird **ausschließlich bar bezahlt**. Keine Karte, kein Handy, kein Kleeblatt als Zahlungsmittel.` },
-      { type: 'p', text: `Und: **Es gibt keinen Geldautomaten auf dem Gelände.** Bitte hebt vorher genug ab. Zwei Tage Durst kann man schlecht auf Pump haben.` },
+      { type: 'p', text: `Gute Nachricht für alle, die es beim Abheben vergessen haben: **Wir haben jetzt auch Kartenzahlung.** An der Kasse am Einlass, an der Bar, beim Essen und am Merch-Stand könnt ihr ganz normal mit Karte zahlen.` },
+      { type: 'p', text: `Eine kleine Bitte trotzdem: **Bargeld ist uns lieber.** Bei jeder Kartenzahlung gehen Gebühren ab, und die fehlen uns dann an anderer Stelle – beim Line-up, beim Klee, beim Pfeffi. Wer also ohnehin Scheine dabei hat: immer gern.` },
+      { type: 'p', text: `Zwei Dinge noch:` },
+      { type: 'ul', items: [
+        `**Es gibt keinen Geldautomaten auf dem Gelände.** Hebt lieber vorher ab.`,
+        `**Die Spenden an der Zanzibar gehen ausschließlich in Bargeld.** Dort steht kein Kartenlesegerät, dort steht Bärwurz. Also: ein paar Münzen einstecken (siehe **Z wie Zanzibar**).`,
+      ] },
     ],
   },
   {
@@ -114,8 +131,10 @@ export const FESTIVAL_ABC = [
       { type: 'ul', items: [
         `**Freitag:** Camping ab 14:00 Uhr, Festivalgelände ab 16:00 Uhr`,
         `**Samstag:** Festivalgelände ab 12:00 Uhr`,
-        `**Schluss:** In der Nacht von Samstag auf Sonntag um **00:00 Uhr**`,
+        `**Schluss:** an **beiden** Tagen jeweils um **00:00 Uhr**`,
       ] },
+      { type: 'p', text: `Ja, auch am Freitag ist um Mitternacht Feierabend auf der Bühne. Das ist keine Schikane, sondern der Lärmschutz – und der ist auf dem Land ein besonders lichtempfindliches Pflänzchen. Rundherum wohnen Menschen, die morgens die Kühe nicht auf „später" stellen können. Wir wollen nächstes Jahr wiederkommen, und dafür halten wir uns brav an die Uhr.` },
+      { type: 'p', text: `Die guten Nachrichten: Bis dahin geben wir alles. Und danach ist auf dem Campingplatz noch lange nicht Schluss – nur eben in **Gesprächslautstärke** (siehe **N wie Nachtruhe**).` },
       { type: 'p', text: `Am Einlass braucht ihr euer gültiges Ticket – digital auf dem Handy oder ausgedruckt, aber bitte **unentwertet und nicht zerknüllt**.` },
     ],
   },
@@ -208,6 +227,8 @@ export const FESTIVAL_ABC = [
       { type: 'p', text: `So nennen wir den eigentlichen Festivalbereich vor der Bühne. Dort gilt:` },
       { type: 'ul', items: [
         `**Keine eigenen Getränke** – die gibt's bei uns, und zwar günstig (siehe unten).`,
+        `**Taschen bis zur Größe eines kleinen Rucksacks** dürfen mit rein. Alles, was eher nach Umzugskarton aussieht, bleibt draußen.`,
+        `**Unser Security-Personal schaut in die Taschen rein** und sucht nach verbotenen Gegenständen (siehe **V wie Verbotene Gegenstände**). Das geht schnell, das tut nicht weh, und es ist einfach Fürsorge für alle. Wer vorher grob aufräumt, kommt schneller durch.`,
         `**Kostenloses Trinkwasser** steht bereit.`,
       ] },
     ],
@@ -235,7 +256,9 @@ export const FESTIVAL_ABC = [
     letter: 'K',
     title: 'Kartenzahlung',
     blocks: [
-      { type: 'p', text: `Gibt's nicht. Siehe **B wie Bargeld**. Wir erwähnen es zweimal, weil es erfahrungsgemäß zweimal gelesen werden muss.` },
+      { type: 'p', text: `**Gibt's jetzt!** An Einlass, Bar, Essensstand und Merch könnt ihr mit Karte zahlen.` },
+      { type: 'p', text: `Nur an der **Zanzibar** bleibt es beim Bargeld, dort läuft alles über frei gewählte Spenden.` },
+      { type: 'p', text: `Und ganz leise gesagt: **Über Bargeld freuen wir uns mehr**, weil dann keine Gebühren abgehen. Aber niemand muss deswegen hungrig oder durstig bleiben – siehe **B wie Bargeld (und Karte!)**.` },
     ],
   },
   {
