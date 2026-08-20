@@ -291,6 +291,16 @@ function DonationCard() {
   )
 }
 
+function LegalLinks() {
+  return (
+    <div className="legal-links">
+      <a href="https://fruchtfolge.live/impressum/" target="_blank" rel="noopener noreferrer">Impressum</a>
+      <span className="legal-links-sep">·</span>
+      <a href="https://fruchtfolge.live/datenschutzerklaerung/" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+    </div>
+  )
+}
+
 // ─── MAIN SCREEN ───
 export default function InfoScreen() {
   return (
@@ -328,6 +338,9 @@ export default function InfoScreen() {
 
       {/* Spenden */}
       <DonationCard />
+
+      {/* Rechtliches */}
+      <LegalLinks />
 
     </div>
   )
