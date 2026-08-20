@@ -90,7 +90,7 @@ export const LINEUP = {
     },
     {
       id: 'fromage-from-arsch',
-      name: 'Fromage from Arsch',
+      name: 'Fromage vom Arsch',
       time: '15:15',
       endTime: '16:00',
       genre: 'Punk',
