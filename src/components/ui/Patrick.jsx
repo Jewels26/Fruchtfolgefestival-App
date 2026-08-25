@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { LINEUP } from '../../data/lineup'
 import { asset } from '../../utils/assetPath'
 import { usePatrick } from '../../context/usePatrick'
-import { matchPatrick, SUGGESTED_QUESTIONS } from '../../utils/patrickMatcher'
+import { matchPatrick, pickSuggestedQuestions } from '../../utils/patrickMatcher'
 import { getNow } from '../../utils/festivalConfig'
 import { loadSeenSet, saveSeenSet } from '../../utils/persistedSet'
 import './Patrick.css'
@@ -236,6 +236,7 @@ export default function Patrick() {
   const { open, setOpen, externalMessage, clearExternalMessage, triggerPatrick, notification, clearNotification } = usePatrick()
   const [messages, setMessages] = useState([WELCOME])
   const [showSuggestions, setShowSuggestions] = useState(true)
+  const [suggestedQuestions, setSuggestedQuestions] = useState(() => pickSuggestedQuestions())
   const [input, setInput] = useState('')
   const [hasAlert, setHasAlert] = useState(false)
   const [typing, setTyping] = useState(false)
@@ -328,6 +329,7 @@ export default function Patrick() {
         if (i < chunks.length - 1) {
           setTimeout(() => setTyping(true), 120)
         } else if (!result) {
+          setSuggestedQuestions(pickSuggestedQuestions())
           setShowSuggestions(true)
         }
       }, t)
@@ -364,7 +366,7 @@ export default function Patrick() {
 
           {showSuggestions && (
             <div className="patrick-suggestions">
-              {SUGGESTED_QUESTIONS.map(q => (
+              {suggestedQuestions.map(q => (
                 <button key={q} className="patrick-suggestion-btn" onClick={() => send(q)}>
                   {q}
                 </button>

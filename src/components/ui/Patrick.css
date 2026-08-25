@@ -70,7 +70,10 @@
 
 .patrick-overlay {
   position: fixed;
-  bottom: calc(var(--nav-height) + var(--now-playing-height) + 72px);
+  /* 72px war niedriger als die Höhe von .patrick-btn-wrapper (Button + Status-Pill
+     + Gap), dadurch überlappte der schwebende Patrick-Button den Senden-Button
+     unten rechts im Chatfenster. */
+  bottom: calc(var(--nav-height) + var(--now-playing-height) + 120px);
   right: max(var(--space-4), calc(50vw - 210px + var(--space-4)));
   z-index: 200;
   width: min(320px, calc(100vw - 32px));

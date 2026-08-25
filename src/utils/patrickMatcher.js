@@ -1,5 +1,5 @@
-import { LINEUP } from '../data/lineup'
-import { getWeatherDays } from './weatherStore'
+import { LINEUP } from '../data/lineup.js'
+import { getWeatherDays } from './weatherStore.js'
 
 // ─── PATRICK MATCHER — Keyword-basiertes Antwort-System ───
 // text: '...'   → einzelne Antwort
@@ -73,11 +73,11 @@ const RESPONSES = [
 
   // ── Festival-Geschichte ─────────────────────────────────────────────
   {
-    keywords: ['geschichte', 'woher', 'entstanden', 'gegründet', 'anfang', 'ursprung'],
+    keywords: ['geschichte', 'woher', 'entstanden', 'gegründet', 'ursprung'],
     text: `2022 hod da Joe a Ersatzfestival auf seim Hof organisiert – weil's Puls Open Air ausg'fall'n war. Mia wolltn glei weitermachn. Joe meinte: "Kommt's in drei Jahren wieda, da is die Fruchtfolge rum." Mia san wiederkomma. 🌾`,
   },
   {
-    keywords: ['fruchtfolge bedeutung', 'warum heißt', 'woher der name'],
+    keywords: ['fruchtfolge bedeutung', 'warum heißt', 'wieso heißt', 'weshalb heißt', 'woher der name'],
     text: `Weil auf dem Hof Landwirtschaft betrieben wird. Und zur Landwirtschaft gehört eben a Fruchtfolge. Und weil ma wartn musstn bis die rum is – heißts Festival na so. 🌾`,
   },
   {
@@ -123,7 +123,7 @@ const RESPONSES = [
     ],
   },
   {
-    keywords: ['wann fängt', 'uhrzeit', 'anfang', 'beginn', 'öffnungszeit', 'los geht', 'öffnet', 'einlasszeit'],
+    keywords: ['wann fängt', 'uhrzeit', 'anfang', 'beginn', 'öffnungszeit', 'los geht', 'öffnet', 'einlasszeit', 'wann startet', 'wann geht', 'wann beginnt'],
     text: `Band-Zeiten findst im Lineup-Tab. Campingplatz macht Freitag um 14 Uhr auf, Festivalgelände um 16 Uhr. Samstag geht's Festivalgelände-mäßig um 12 Uhr los. Schluss is an beiden Tagen um Mitternacht – Lärmschutz, mia wolln nächstes Jahr wiederkomma.`,
   },
   {
@@ -280,7 +280,7 @@ const RESPONSES = [
 
   // ── Getränke ────────────────────────────────────────────────────────
   {
-    keywords: ['trinken', 'getränke', 'drink', 'durst', 'saufen', 'zischen'],
+    keywords: ['trinken', 'getränke', 'drink', 'durst', 'saufen', 'zischen', 'alkohol', 'alkohol erlaubt'],
     text: `An da Hauptbar: Maisacher Bier, Disco Schorle, Weinschorle, Softdrinks. Und dann gibt's no d'Zanzibar – aber des is a eigene Welt. Schau mal im Food-Tab.`,
   },
   {
@@ -330,7 +330,7 @@ const RESPONSES = [
     text: `Infield is da Bereich direkt vor da Bühne. Do gilt: koa eigenen Getränk, gibt's bei uns günstig. Taschen bis zur Größe von am kloan Rucksack derfst mitnehma, ois wos eher noch Umzugskarton ausschaut bleibt draußen. Unser Security schaut kurz rein, is reine Fürsorge. Dafür stehst kostenloses Trinkwasser bereit.`,
   },
   {
-    keywords: ['zahlen', 'bezahlen', 'karte', 'bargeld', 'cash'],
+    keywords: ['zahlen', 'bezahlen', 'mit karte', 'kartenzahlung', 'kreditkarte', 'ec karte', 'girocard', 'bargeld', 'cash'],
     text: `Gibt's jetzt beides! An Einlass, Bar, Essensstand und Merch kannst mit Karte zahln. Bargeld is uns trotzdem liaber, wegen der Gebühren – des fehlt uns sonst beim Line-up. Nur d'Zanzibar läuft ausschließlich in Bargeld, do steht koa Kartenlesegerät. An Geldautomat gibt's aufm Gelände koan, also vorher gnua abheben. 💶`,
   },
   {
@@ -350,7 +350,7 @@ const RESPONSES = [
 
   // ── Camping ─────────────────────────────────────────────────────────
   {
-    keywords: ['camping', 'campen', 'zelt', 'übernachten', 'zelten', 'pennen', 'ratzen'],
+    keywords: ['camping', 'campingplatz', 'campen', 'zelt', 'zeltplatz', 'übernachten', 'zelten', 'pennen', 'ratzen'],
     text: `Camping is im 2-Tagesticket dabei, koa Aufpreis. Ab Freitag 14 Uhr derfst aufbauen, bis Sonntag 14 Uhr muass da Platz wieder leer sei. An bestimmten Platz reserviern kenn ma ned, des Einweisungsteam sagt dir wo's hingeht. Mit ana Tageskarte gibt's leider koan Camping, ned amoi für a Nacht. ⛺`,
   },
   {
@@ -434,7 +434,7 @@ const RESPONSES = [
     text: `Pavillons und Sitzmöglichkeiten gibt's. Klappstuhl oder Deck'n selber mitbringen wennst's gmiatlich magst.`,
   },
   {
-    keywords: ['holzwurm', 'deko', 'dekoration'],
+    keywords: ['deko', 'dekoration'],
     text: `D'Deko macht Team Holzwurm. Freiwillige. Ois handg'macht. Des merkst. 🪵`,
   },
 
@@ -681,7 +681,7 @@ const RESPONSES = [
     text: `Willst nachts no hoam, aber da Bus fahrt nimmer? Nach Betriebsschluss kannst a Ruftaxi zum MVG-Tarif bestelln. Alle Infos, Zeiten und d'Nummer stengan in da Ruftaxi-Broschüre vom Landkreis FFB, am besten vorher scho abspeichern. Um zwoa in da Friah a PDF suacha macht koan Spaß. 🚕`,
   },
   {
-    keywords: ['kinder', 'kinderwagen', 'familienfreundlich'],
+    keywords: ['kinder', 'kinderwagen', 'familienfreundlich', 'kinderfreundlich'],
     text: `Tagsüber familiäre Atmosphäre. Obends a bissl lauter – Gehörschutz für kleine Ohren is koa schlechte Idee.`,
   },
   {
@@ -946,7 +946,7 @@ const RESPONSES = [
 function normalize(str) {
   return str
     .toLowerCase()
-    .replace(/['']/g, '')
+    .replace(/['’‘]/g, ' ')
     .replace(/ä/g, 'ae')
     .replace(/ö/g, 'oe')
     .replace(/ü/g, 'ue')
@@ -971,6 +971,25 @@ const NORMALIZED_RESPONSES = RESPONSES.map(r => ({
   text: r.text,
   texts: r.texts,
 }))
+
+// ─── Wiederholungssperre für Zufallsantworten ──────────────────────────────
+// Verhindert, dass dieselbe Variante zweimal direkt hintereinander kommt.
+// `store` ist entweder eine WeakMap (key = das Response-Objekt selbst, stabil
+// über den ganzen Session-Lifetime) oder eine Map (key = String, für Varianten
+// die bei jedem Aufruf neu als Array-Literal gebaut werden, z.B. Wetter/Band-Zeit).
+const lastPickByEntry = new WeakMap()
+const lastPickByKey = new Map()
+
+function pickNoRepeat(arr, key, store) {
+  if (arr.length <= 1) return arr[0]
+  const last = store.get(key)
+  const choices = last == null
+    ? arr.map((_, i) => i)
+    : arr.map((_, i) => i).filter(i => i !== last)
+  const idx = choices[Math.floor(Math.random() * choices.length)]
+  store.set(key, idx)
+  return arr[idx]
+}
 
 // ─── Lineup-aware Band-Zeit-Lookup ──────────────────────────────────────────
 
@@ -1018,7 +1037,7 @@ function matchBandTime(input) {
       `Wer da spielt, verrat i ned. Des ist Absicht. 😏`,
       `Des Late Night Special bleibt a Überraschung. Komm einfach und schau. 🌙`,
     ]
-    return { text: secretResponses[Math.floor(Math.random() * secretResponses.length)] }
+    return { text: pickNoRepeat(secretResponses, 'bandtime:secret', lastPickByKey) }
   }
 
   const day = DAY_LABEL[bestBand.day]
@@ -1027,54 +1046,55 @@ function matchBandTime(input) {
     `${bestBand.name} is am ${day} um ${bestBand.time} Uhr dran. Da wär i dabei! 🤘`,
     `Am ${day} um ${bestBand.time} Uhr — dann geht ${bestBand.name} los. Steh lieber a paar Minuten früher vor der Bühne!`,
   ]
-  return { text: timeResponses[Math.floor(Math.random() * timeResponses.length)] }
+  return { text: pickNoRepeat(timeResponses, 'bandtime:' + bestBand.name, lastPickByKey) }
 }
 
 // ─── Wetter-Antworten ────────────────────────────────────────────────────────
 
 const WEATHER_QUERY_WORDS = new Set([
-  'wetter', 'regen', 'hitze', 'gewitter', 'temperatur', 'warm', 'kalt',
-  'sonnig', 'bewoelkt', 'nebel', 'schauer', 'wind',
+  'wetter', 'regen', 'regnet', 'hitze', 'heiss', 'gewitter', 'temperatur', 'warm', 'kalt',
+  'sonnig', 'sonne', 'bewoelkt', 'wolken', 'nebel', 'schauer', 'wind',
 ])
 
-function pickW(arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
+function pickW(key, arr) {
+  return pickNoRepeat(arr, key, lastPickByKey)
 }
 
 function describeWeatherDay(d) {
   const { dayName, temp, rain, condition, icon } = d
+  const key = bucket => `weather:${dayName}:${bucket}`
 
-  if (condition === 'gewitter') return pickW([
+  if (condition === 'gewitter') return pickW(key('gewitter'), [
     `${dayName}: ${temp}°C und Gewitter im Anmarsch. ${icon} Wenn's blitzt kurz unterm Dach — danach wieder raus. Des Festival geht trotzdem weiter. 🤘`,
     `${dayName} könnt ruppig werden — ${temp}°C, Gewitter möglich (${rain}%). ${icon} Aber des is Bayern im August, ned überraschend.`,
   ])
 
-  if (rain >= 65) return pickW([
+  if (rain >= 65) return pickW(key('rain-high'), [
     `${dayName} wird feucht — ${temp}°C, ${condition} ${icon}, ${rain}% Regen. Regenjacke is ned optional, des is a Pflicht.`,
     `${dayName}: ${temp}°C, ${condition} ${icon}. ${rain}% Regenwahrscheinlichkeit — i würd des ned ignorieren. Pack a Jacke ei.`,
   ])
 
-  if (rain >= 35) return pickW([
+  if (rain >= 35) return pickW(key('rain-mid'), [
     `${dayName}: ${temp}°C, ${condition} ${icon} — ${rain}% Regen. A Jacke einpacken schad ned. Wennst's ned brauchst, umso besser.`,
     `${dayName} könnt a bissl nass werden — ${temp}°C, ${rain}% Regen. ${icon} Jacke rein, dann kannst'd vergessen.`,
   ])
 
-  if (temp >= 30) return pickW([
+  if (temp >= 30) return pickW(key('hot'), [
     `${dayName} brennt — ${temp}°C, ${condition}. ${icon} Sonnencreme is kein Vorschlag, des is a Befehl. Und Wasser. Viel Wasser.`,
     `${dayName}: heiße ${temp}°C, ${condition} ${icon}. Wasser trinken, Schatten suchen, Sonnencreme. In der Reihenfolge.`,
   ])
 
-  if (temp >= 24) return pickW([
+  if (temp >= 24) return pickW(key('warm'), [
     `${dayName} schaut hervorragend aus — ${temp}°C, ${condition}. ${icon} ${rain > 0 ? `${rain}% Regen — glaub i ned wirklich.` : 'Kein Regen in Sicht.'} Besser geht's kaum für a Freiluftfestival.`,
     `${dayName}: ${temp}°C, ${condition} ${icon}. ${rain > 0 ? `${rain}% Regen — eher symbolisch.` : 'Koa Regen.'} Schöner Festivaltag.`,
   ])
 
-  if (temp < 18) return pickW([
+  if (temp < 18) return pickW(key('cool'), [
     `${dayName}: ${temp}°C, ${condition} ${icon}. Bissl frisch für August — abends pack was Wärmeres ei, auf'm Feld zieht's.`,
     `${dayName} wird frisch — nur ${temp}°C, ${condition}. ${icon} A Pulli für später is koa schlechte Idee.`,
   ])
 
-  return pickW([
+  return pickW(key('default'), [
     `${dayName}: ${temp}°C, ${condition} ${icon}. ${rain > 0 ? `${rain}% Regen — ma schau.` : 'Kein Regen erwartet.'} Ned glamourös, aber bassd scho.`,
     `${dayName}: ${temp}°C, ${condition} ${icon}. ${rain > 0 ? `${rain}% Regenwahrscheinlichkeit — unkritisch.` : 'Schaut trocken aus.'} Passt.`,
   ])
@@ -1091,12 +1111,32 @@ function matchWeather(input) {
   return { text: days.map(describeWeatherDay).join(' ') }
 }
 
-export const SUGGESTED_QUESTIONS = [
+// Pool an Startfragen — bei jedem Anzeigen wird eine zufällige Auswahl davon
+// gezeigt (siehe pickSuggestedQuestions), damit nicht immer dieselben vier kommen.
+const SUGGESTED_QUESTIONS_POOL = [
   'Servus! Wer bist du?',
   "Was gibt's zu essen?",
   "Wann fängt's an?",
   'Gibt es Camping?',
+  'Wie finde ich das?',
+  'Was kostet ein Ticket?',
+  'Wie ist das Wetter?',
+  'Gibt es WLAN?',
+  'Wer spielt?',
+  'Ist Alkohol erlaubt?',
+  'Darf ich meinen Hund mitbringen?',
+  'Ist das Festival kinderfreundlich?',
 ]
+
+export function pickSuggestedQuestions(count = 4) {
+  const pool = [...SUGGESTED_QUESTIONS_POOL]
+  const picked = []
+  for (let i = 0; i < count && pool.length > 0; i++) {
+    const idx = Math.floor(Math.random() * pool.length)
+    picked.push(pool.splice(idx, 1)[0])
+  }
+  return picked
+}
 
 export function matchPatrick(input) {
   const bandTime = matchBandTime(input)
@@ -1124,7 +1164,7 @@ export function matchPatrick(input) {
 
   if (!bestEntry) return null
   if (bestEntry.texts && bestEntry.texts.length > 0) {
-    return { text: bestEntry.texts[Math.floor(Math.random() * bestEntry.texts.length)] }
+    return { text: pickNoRepeat(bestEntry.texts, bestEntry, lastPickByEntry) }
   }
   return { text: bestEntry.text }
 }

@@ -9,6 +9,7 @@
     "build": "vite build",
     "build:ghpages": "vite build --base=/Fruchtfolgefestival-App/",
     "lint": "eslint .",
+    "test:patrick": "node scripts/patrickMatcher.test.mjs",
     "preview": "vite preview",
     "deploy": "npm run build:ghpages && gh-pages -d dist"
   },
