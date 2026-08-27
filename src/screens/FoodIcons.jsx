@@ -26,7 +26,7 @@ export function IconZanzibar({ size = 48 }) {
 }
 
 export function IconWahrsagerzelt({ size = 48 }) {
-  return <IconImg file="Icon Wahrsagerzelt.png" alt="Zaubererzelt" size={size} />
+  return <IconImg file="Icon Wahrsagerzelt.png" alt="Zauberzelt" size={size} />
 }
 
 export function IconMerch({ size = 48 }) {

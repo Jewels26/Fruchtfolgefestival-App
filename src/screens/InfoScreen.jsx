@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchFundsachen, FUNDSACHEN_POLL_INTERVAL } from '../utils/fundsachen'
 import { FESTIVAL_ABC, entrySearchText } from '../data/festivalABC'
 import { renderRichText } from '../utils/richText'
@@ -162,10 +162,12 @@ function ABCEntry({ entry, isOpen, onToggle }) {
   )
 }
 
-function FestivalABC() {
-  const [open, setOpen] = useState(false)
+function FestivalABC({ deepLinkId }) {
+  // Deep-Link (z.B. /info?abc=pfand vom Stände-Tab): ABC-Karte und der
+  // passende Eintrag starten direkt aufgeklappt, dann wird zu ihm gescrollt.
+  const [open, setOpen] = useState(() => Boolean(deepLinkId))
   const [query, setQuery] = useState('')
-  const [openEntryId, setOpenEntryId] = useState(null)
+  const [openEntryId, setOpenEntryId] = useState(() => deepLinkId ?? null)
 
   const letters = useMemo(
     () => [...new Set(FESTIVAL_ABC.map(e => e.letter))],
@@ -181,6 +183,14 @@ function FestivalABC() {
     const el = document.getElementById(`abc-letter-${letter}`)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+  useEffect(() => {
+    if (!deepLinkId) return
+    const el = document.getElementById(`abc-entry-${deepLinkId}`)
+    if (el) requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    // Nur beim Einstieg über den Deep-Link scrollen, nicht bei jeder Re-Render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="card info-section-card abc-card">
@@ -220,8 +230,8 @@ function FestivalABC() {
             {filtered.map((entry, i) => {
               const isFirstOfLetter = filtered[i - 1]?.letter !== entry.letter
               return (
-                <div key={entry.id} id={!q && isFirstOfLetter ? `abc-letter-${entry.letter}` : undefined}>
-                  {!q && isFirstOfLetter && <div className="abc-letter-heading">{entry.letter}</div>}
+                <div key={entry.id} id={`abc-entry-${entry.id}`} className="abc-entry-anchor">
+                  {!q && isFirstOfLetter && <div className="abc-letter-heading" id={`abc-letter-${entry.letter}`}>{entry.letter}</div>}
                   <ABCEntry
                     entry={entry}
                     isOpen={Boolean(q) || openEntryId === entry.id}
@@ -303,6 +313,9 @@ function LegalLinks() {
 
 // ─── MAIN SCREEN ───
 export default function InfoScreen() {
+  const [searchParams] = useSearchParams()
+  const abcDeepLinkId = searchParams.get('abc')
+
   return (
     <div className="screen info-screen fade-in">
 
@@ -331,7 +344,7 @@ export default function InfoScreen() {
       <OpeningHours />
 
       {/* Festival ABC */}
-      <FestivalABC />
+      <FestivalABC deepLinkId={abcDeepLinkId} />
 
       {/* Lost & Found */}
       <LostAndFound />

@@ -123,7 +123,7 @@ const RESPONSES = [
     ],
   },
   {
-    keywords: ['wann fängt', 'uhrzeit', 'anfang', 'beginn', 'öffnungszeit', 'los geht', 'öffnet', 'einlasszeit', 'wann startet', 'wann geht', 'wann beginnt'],
+    keywords: ['wann fängt', 'uhrzeit', 'anfang', 'beginn', 'öffnungszeit', 'los geht', 'gehts los', 'öffnet', 'einlasszeit', 'wann startet', 'wann geht', 'wann beginnt'],
     text: `Band-Zeiten findst im Lineup-Tab. Campingplatz macht Freitag um 14 Uhr auf, Festivalgelände um 16 Uhr. Samstag geht's Festivalgelände-mäßig um 12 Uhr los. Schluss is an beiden Tagen um Mitternacht – Lärmschutz, mia wolln nächstes Jahr wiederkomma.`,
   },
   {

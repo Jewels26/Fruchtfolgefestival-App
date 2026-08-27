@@ -278,6 +278,7 @@ export const FESTIVAL_ABC = [
     blocks: [
       { type: 'p', text: `Bandmerch? Selbstverständlich. Direkt von den Künstler:innen, direkt in eure Sammlung.` },
       { type: 'p', text: `Und von uns? Sagen wir mal so: **Es könnte sein, dass da noch das eine oder andere fruchtige Gimmick am Stand liegt.** Mehr verraten wir nicht. Guckt einfach vorbei, bevor es weg ist. (Denkt an **B wie Bargeld**.)` },
+      { type: 'p', text: `Ganz kein Geheimnis: unser **Festivalbecher**. Den braucht ihr sowieso für Longdrink, Diskoschorle & Co. (siehe **P wie Pfand**) — schön ist er obendrein.` },
     ],
   },
   {
@@ -313,6 +314,17 @@ export const FESTIVAL_ABC = [
     blocks: [
       { type: 'p', text: `**Pavillons sind erlaubt**. Schatten und Regenschutz sind auf einem Feld Gold wert.` },
       { type: 'p', text: `**Nicht erlaubt:** motorbetriebene **Stromaggregate**. Die sind laut, stinken und passen ungefähr so gut zu einem Kleefeld wie ein Presslufthammer zur Meditation.` },
+    ],
+  },
+  {
+    id: 'pfand',
+    letter: 'P',
+    title: 'Pfand',
+    blocks: [
+      { type: 'p', text: `Wir haben **kein klassisches Pfandsystem.** Die meisten Getränke gibt's in Flaschen, für die Shots gibt's Pappbecher — beides ohne Pfand.` },
+      { type: 'p', text: `Eine Ausnahme: **Longdrink, Diskoschorle oder ein Drink an der Zanzibar gibt's nur im eigenen Mehrwegbecher.** Den bekommt ihr am **Merch-Stand** (siehe **M wie Merch**), oder ihr bringt euren Becher vom letzten Jahr bzw. einen eigenen mit — nur **kein Glas**.` },
+      { type: 'p', text: `Braucht der Becher zwischendurch eine Wäsche? Einfach an unserer Wasserstelle auswaschen (siehe **T wie Trinkwasser**).` },
+      { type: 'p', text: `**Wichtig beim Einlass:** Euer Becher muss beim Betreten des Festivalgeländes **leer** sein.` },
     ],
   },
   {

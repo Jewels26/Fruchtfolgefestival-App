@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { IconFeldkueche, IconFestivalbar, IconZanzibar, IconWahrsagerzelt, IconMerch } from './FoodIcons'
@@ -21,13 +21,22 @@ const MERCH_STAND = {
 const MERCH_PRODUCTS = [
   { key: 'shirt', name: 'Shirt', photo: 'Merch_Shirt.jpg' },
   { key: 'hoodie', name: 'Hoodie', photo: 'Merch_Hoodie.jpg' },
+  // Kein Größen-/Ausverkauft-Konzept wie bei Shirt/Hoodie — ein Becher ist ein Becher.
+  { key: 'becher', name: 'Festivalbecher', photo: 'Merch_Becher.jpg', noSizes: true, pfandNote: true },
 ]
+
+// Anker fürs Scrollen von der Festivalbar-/Zanzibar-Notiz direkt zum Becher-
+// Produkt (nicht nur zum Merch-Stand allgemein — siehe merchProductAnchorId).
+function merchProductAnchorId(key) {
+  return `merch-product-${key}`
+}
+const MERCH_BECHER_ANCHOR_ID = merchProductAnchorId('becher')
 
 // Eigener Stand-Eintrag statt Teil von STANDS, damit er ganz ans Ende der
 // Liste kann (nach dem Merch-Stand) — siehe FoodScreen() unten.
 const ZAUBERERZELT_STAND = {
   id: 'wahrsagerzelt',
-  name: 'Zaubererzelt',
+  name: 'Zauberzelt',
   category: 'attraction',
   location: 'Festivalgelände',
   icon: 'wahrsagerzelt',
@@ -70,6 +79,7 @@ const STANDS = [
     mapMarker: { area: 'festivalground', num: 3 },
     sheetTab: 'getraenke',
     description: 'Kalt, laut, gesellig — die Hauptbar des Festivals.',
+    cupNote: true,
     items: [
       { name: 'Leitungswasser', price: 0, tags: [] },
       { name: 'Pfeffi', price: 1, tags: [] },
@@ -101,6 +111,7 @@ const STANDS = [
       { name: 'Softdrinks', note: 'Zukauf an der Festivalbar nötig', tags: [] },
     ],
     note: 'Softdrinks müssen an der Festivalbar dazugekauft werden. Für den Rest gilt: ihr entscheidet, was es euch wert ist. 🤘',
+    cupNote: true,
     // Zanzibar läuft nicht über das Preis-Sheet — BYO-Konzept, keine Verkaufspreise.
     sheetManaged: false,
   },
@@ -143,7 +154,7 @@ function useGetraenke() {
 
 // ─── Merch Sheet-Anbindung ───
 function useMerch() {
-  const [bySize, setBySize] = useState({ hoodie: [], shirt: [] })
+  const [bySize, setBySize] = useState({ hoodie: [], shirt: [], becherPrice: null })
 
   useEffect(() => {
     fetchMerch().then(setBySize)
@@ -185,6 +196,21 @@ function StandLocation({ location, mapMarker }) {
   )
 }
 
+// Kurzer Hinweis auf den Becher-statt-Pfand-Ansatz, verlinkt zu den Details
+// (Festival ABC) und zum Merch-Stand. An Festivalbar und Zanzibar identisch,
+// deshalb als gemeinsame Komponente.
+function CupNote({ onGoToMerch }) {
+  const navigate = useNavigate()
+  return (
+    <p className="stand-note">
+      Für Longdrinks und Diskoschorle braucht ihr einen Becher (siehe{' '}
+      <button className="stand-note-link" onClick={() => navigate('/info?abc=pfand')}>P wie Pfand</button>
+      ) — kauft dazu gerne unseren{' '}
+      <button className="stand-note-link" onClick={onGoToMerch}>Merch-Becher</button>. 🥤
+    </p>
+  )
+}
+
 function tagClass(tag) {
   if (tag === 'VEGAN')   return 'badge--vegan'
   if (tag === 'VEGGIE')  return 'badge--veggie'
@@ -192,7 +218,7 @@ function tagClass(tag) {
   return ''
 }
 
-function StandCard({ stand, items }) {
+function StandCard({ stand, items, onGoToMerch }) {
   const [open, setOpen] = useState(false)
   return (
     <div className={`card stand-card ${stand.highlight ? 'stand-card--highlight' : ''}`}>
@@ -233,6 +259,7 @@ function StandCard({ stand, items }) {
           </ul>
           {stand.condiments && <p className="stand-condiments">+ {stand.condiments}</p>}
           {stand.note       && <p className="stand-note">{stand.note}</p>}
+          {stand.cupNote    && <CupNote onGoToMerch={onGoToMerch} />}
         </div>
       )}
     </div>
@@ -251,11 +278,12 @@ function Lightbox({ src, alt, onClose }) {
   )
 }
 
-function MerchProduct({ product, sizes, onOpenPhoto }) {
-  const price = sizes.find(s => s.price != null)?.price
+function MerchProduct({ product, sizes, singlePrice, onOpenPhoto }) {
+  const navigate = useNavigate()
+  const price = product.noSizes ? singlePrice : sizes.find(s => s.price != null)?.price
 
   return (
-    <div className="merch-product">
+    <div className="merch-product" id={merchProductAnchorId(product.key)}>
       <img
         src={asset(product.photo)}
         alt={product.name}
@@ -268,7 +296,9 @@ function MerchProduct({ product, sizes, onOpenPhoto }) {
         <span className="merch-product-name">{product.name}</span>
         {formatPrice(price) && <span className="merch-product-price">{formatPrice(price)}</span>}
       </div>
-      {sizes.length > 0 ? (
+      {product.noSizes ? (
+        price == null && <p className="merch-sizes-empty">Preis folgt in Kürze</p>
+      ) : sizes.length > 0 ? (
         <div className="merch-sizes">
           {sizes.map(s => (
             <span key={s.size} className={`merch-size-chip ${s.soldOut ? 'merch-size-chip--soldout' : ''}`}>
@@ -279,17 +309,24 @@ function MerchProduct({ product, sizes, onOpenPhoto }) {
       ) : (
         <p className="merch-sizes-empty">Größen &amp; Preise folgen in Kürze</p>
       )}
+      {product.pfandNote && (
+        <p className="merch-product-note">
+          Für Longdrinks, Diskoschorle & Zanzibar-Drinks (siehe{' '}
+          <button className="stand-note-link" onClick={() => navigate('/info?abc=pfand')}>P wie Pfand</button>)
+        </p>
+      )}
     </div>
   )
 }
 
-function MerchCard({ merchSizes }) {
-  const [open, setOpen] = useState(false)
+// open/onToggle kommen von FoodScreen statt aus lokalem State, damit der
+// CupNote-Link bei Bar/Zanzibar das Merch-Panel gezielt aufklappen kann.
+function MerchCard({ merchSizes, open, onToggle }) {
   const [lightbox, setLightbox] = useState(null)
 
   return (
     <div className="card stand-card">
-      <div className="stand-header" onClick={() => setOpen(o => !o)}>
+      <div className="stand-header" onClick={onToggle}>
         <div className="stand-icon-wrap">
           <StandIcon type={MERCH_STAND.icon} />
         </div>
@@ -311,6 +348,7 @@ function MerchCard({ merchSizes }) {
                 key={product.key}
                 product={product}
                 sizes={merchSizes[product.key] ?? []}
+                singlePrice={merchSizes.becherPrice}
                 onOpenPhoto={(src, alt) => setLightbox({ src, alt })}
               />
             ))}
@@ -330,6 +368,31 @@ export default function FoodScreen() {
   const getraenkeItems = useGetraenke()
   const merchSizes = useMerch()
 
+  const [merchOpen, setMerchOpen] = useState(false)
+  // Setzt merchOpen und merkt sich, dass danach noch gescrollt werden muss —
+  // das Scrollen selbst passiert erst im Effect unten, sobald das (jetzt
+  // aufgeklappte) Merch-Panel tatsächlich seine volle Höhe im DOM hat.
+  const pendingScrollToMerch = useRef(false)
+
+  function goToMerch() {
+    // Schon offen? Dann sofort scrollen — sonst ändert sich merchOpen nicht,
+    // und der Effect unten (der ans merchOpen-Update gekoppelt ist) feuert nie.
+    if (merchOpen) {
+      document.getElementById(MERCH_BECHER_ANCHOR_ID)?.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    pendingScrollToMerch.current = true
+    setMerchOpen(true)
+  }
+
+  useEffect(() => {
+    if (!merchOpen || !pendingScrollToMerch.current) return
+    pendingScrollToMerch.current = false
+    requestAnimationFrame(() => {
+      document.getElementById(MERCH_BECHER_ANCHOR_ID)?.scrollIntoView({ behavior: 'smooth' })
+    })
+  }, [merchOpen])
+
   return (
     <div className="screen food-screen fade-in">
       <h1 className="screen-title">STÄNDE</h1>
@@ -337,9 +400,14 @@ export default function FoodScreen() {
 
       <div className="stand-list">
         {STANDS.map(stand => (
-          <StandCard key={stand.id} stand={stand} items={itemsForStand(stand, byStand, getraenkeItems)} />
+          <StandCard
+            key={stand.id}
+            stand={stand}
+            items={itemsForStand(stand, byStand, getraenkeItems)}
+            onGoToMerch={goToMerch}
+          />
         ))}
-        <MerchCard merchSizes={merchSizes} />
+        <MerchCard merchSizes={merchSizes} open={merchOpen} onToggle={() => setMerchOpen(o => !o)} />
         <StandCard stand={ZAUBERERZELT_STAND} items={ZAUBERERZELT_STAND.items} />
       </div>
     </div>

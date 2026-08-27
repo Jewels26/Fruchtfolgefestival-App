@@ -274,7 +274,15 @@
   color: var(--color-accent);
   opacity: 0.6;
   margin: var(--space-4) 0 var(--space-2);
-  scroll-margin-top: var(--space-4);
+  /* Muss den fixen Header (60px) mit-einrechnen, sonst verschwindet die
+     Überschrift beim Scrollen genau dahinter. */
+  scroll-margin-top: calc(var(--header-height) + var(--space-3));
+}
+
+/* Ziel für den Deep-Link auf einzelne Einträge (z.B. /info?abc=pfand) —
+   selbes scroll-margin-top wie die Buchstaben-Überschrift, aus demselben Grund. */
+.abc-entry-anchor {
+  scroll-margin-top: calc(var(--header-height) + var(--space-3));
 }
 
 .abc-entries {

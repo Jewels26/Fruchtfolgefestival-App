@@ -127,7 +127,7 @@ async function main() {
   const namensbedeutung = findEntry(r => r.keywords.includes('wieso heißt'))
   const trinken = findEntry(r => r.keywords.includes('alkohol'))
 
-  for (const q of ["wann fängt's an?", "wann geht's los?", 'Wann startet das Festival?', 'wann ist der anfang']) {
+  for (const q of ["wann fängt's an?", "wann geht's los?", 'Wann gehts los?', 'Wann startet das Festival?', 'wann ist der anfang']) {
     const r = matchPatrick(q)
     check(`"${q}" -> Öffnungszeiten`, r?.text === oeffnungszeiten.text)
   }

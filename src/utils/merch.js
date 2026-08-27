@@ -4,6 +4,7 @@
 // eine Spalte "Ausverkauft", die Namen sind also nicht eindeutig):
 //   A Groessen Hoodie | B Preis Hoodie | C Ausverkauft
 //   D Groessen Shirt  | E Preis Shirt  | F Ausverkauft
+//   G Preis Becher (keine Größen/kein Ausverkauft-Status — ein Becher ist ein Becher)
 
 const SHEET_ID = '1lWX0SjkC4ABSQRJPEAcpqm9bGzGZaM9sbouZeTt5PNM'
 const SHEET_NAME = 'Merch'
@@ -14,8 +15,8 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
 /**
  * Lädt Größen/Preise/Ausverkauft-Status aus dem Google Sheet.
- * Rückgabe: { hoodie: [{ size, price, soldOut }], shirt: [{ size, price, soldOut }] }
- * Bei Fehler: leere Listen (App bricht nicht ab, Fallback-Daten bleiben sichtbar).
+ * Rückgabe: { hoodie: [{ size, price, soldOut }], shirt: [{ size, price, soldOut }], becherPrice }
+ * Bei Fehler: leere Listen/null (App bricht nicht ab, Fallback-Daten bleiben sichtbar).
  */
 export async function fetchMerch() {
   try {
@@ -25,16 +26,17 @@ export async function fetchMerch() {
     return parseMerch(parseRows(text))
   } catch (err) {
     console.warn('[merch] Fetch fehlgeschlagen:', err)
-    return { hoodie: [], shirt: [] }
+    return { hoodie: [], shirt: [], becherPrice: null }
   }
 }
 
 function parseMerch(rows) {
   const hoodie = []
   const shirt = []
+  let becherPrice = null
 
   for (const row of rows.slice(1)) {
-    const [hoodieSize, hoodiePrice, hoodieSoldOut, shirtSize, shirtPrice, shirtSoldOut] = row
+    const [hoodieSize, hoodiePrice, hoodieSoldOut, shirtSize, shirtPrice, shirtSoldOut, becher] = row
 
     if (hoodieSize?.trim()) {
       hoodie.push({
@@ -50,9 +52,13 @@ function parseMerch(rows) {
         soldOut: Boolean(shirtSoldOut?.trim()),
       })
     }
+    // Becher hat keine Größen/Zeilen wie Hoodie/Shirt — nur ein Preis irgendwo in Spalte G.
+    if (becherPrice == null && becher?.trim()) {
+      becherPrice = parsePrice(becher)
+    }
   }
 
-  return { hoodie, shirt }
+  return { hoodie, shirt, becherPrice }
 }
 
 function parsePrice(raw) {

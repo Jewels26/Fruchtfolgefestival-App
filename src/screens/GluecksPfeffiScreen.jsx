@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { drawPfeffi, getStoredWin, getCooldownRemaining, warmupPfeffi, isWinExpired, getRedemptionDeadline, isUrgentRedemption, isDelayedRedemption, PFEFFI_LAST_DRAW } from '../utils/pfeffi'
 import { FESTIVAL_CONFIG, getNow } from '../utils/festivalConfig'
 import { usePatrick } from '../context/usePatrick'
+import { isStandalone } from '../utils/standalone'
 import './GluecksPfeffiScreen.css'
 
 // ─── Easter Egg: Samstagvormittag (ab 7 Uhr — davor zählt noch als Nacht), vor Bar-Öffnung, und schon am Pfeffi-Würfeln ───
@@ -57,6 +58,10 @@ export default function GluecksPfeffiScreen() {
   const [justLost, setJustLost] = useState(false)
   const [justError, setJustError] = useState(false)
   const [cooldown, setCooldown] = useState(getCooldownRemaining)
+  // Glücks-Pfeffi gibt's nur in der installierten App, nicht im Browser-Tab —
+  // Install-Anreiz. Ein bereits gewonnenes Ticket bleibt aber unabhängig davon
+  // sichtbar/einlösbar, siehe win-Handling weiter unten.
+  const [standalone] = useState(isStandalone)
 
   useEffect(() => {
     const id = setInterval(() => setCooldown(getCooldownRemaining()), 1000)
@@ -65,9 +70,10 @@ export default function GluecksPfeffiScreen() {
 
   // Apps-Script-Instanz vorwärmen, solange der Besucher noch den Intro-Text
   // liest — reduziert die Cold-Start-Wartezeit beim eigentlichen Klick.
+  // Ohne Standalone-Modus kann eh nicht gewürfelt werden, also gar nicht erst anfragen.
   useEffect(() => {
-    warmupPfeffi()
-  }, [])
+    if (standalone) warmupPfeffi()
+  }, [standalone])
 
   const festivalNotStarted = now < FESTIVAL_CONFIG.gatesOpen
   const festivalOver = now > FESTIVAL_CONFIG.festivalEnd
@@ -141,25 +147,32 @@ export default function GluecksPfeffiScreen() {
         </p>
       </div>
 
-      {festivalNotStarted && (
+      {!standalone && (
+        <div className="card pfeffi-status-card">
+          <p>Des Glücks-Pfeffi gibt's nur in der installierten App, ned im Browser-Tab. 📲</p>
+          <p>Zum Installieren: aufs Teilen-Symbol (iPhone) bzw. übers Browser-Menü (Android) und "Zum Home-Bildschirm hinzufügen" bzw. "App installieren" wählen. Dann nochmal herkommen und Glück versuchen. 🍀</p>
+        </div>
+      )}
+
+      {standalone && festivalNotStarted && (
         <div className="card pfeffi-status-card">
           <p>No ned so weit — Glücks-Pfeffi startet sobald d'Tore offen san. 🍀</p>
         </div>
       )}
 
-      {festivalOver && (
+      {standalone && festivalOver && (
         <div className="card pfeffi-status-card">
           <p>Des Festival is vorbei. Nächstes Jahr wieder. 🍀</p>
         </div>
       )}
 
-      {drawingClosedForNight && (
+      {standalone && drawingClosedForNight && (
         <div className="card pfeffi-status-card">
           <p>Fürs Glücks-Pfeffi is heid Nacht Schluss — d'Bar macht gleich endgültig zua. War a schöns Fest! 🍀</p>
         </div>
       )}
 
-      {!festivalNotStarted && !festivalOver && !drawingClosedForNight && (
+      {standalone && !festivalNotStarted && !festivalOver && !drawingClosedForNight && (
         <div className="card pfeffi-action-card">
           {trying && <p className="pfeffi-loading">Würfel rolln... 🎲</p>}
 
